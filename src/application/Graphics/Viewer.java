@@ -77,6 +77,7 @@ public class Viewer {
         mainPane.getChildren().add(menu);
     }
 
+    //ridimensionare dinamicamente i pulsanti del menu principale
     public void setMenuChangeListener() {
         mainPane.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
