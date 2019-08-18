@@ -1,5 +1,6 @@
-package application.Graphics.item;
+package application.Graphics.item.scenes;
 
+import application.Graphics.item.myButton;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

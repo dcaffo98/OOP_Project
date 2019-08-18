@@ -1,7 +1,8 @@
 package application.Graphics;
 
-import application.Graphics.item.MainSubScene;
+import application.Graphics.item.scenes.MainSubScene;
 import application.Graphics.item.myButton;
+import application.Graphics.item.stages.MainStage;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,8 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Viewer {
-    private final int WIDTH = 800;
-    private final int HEIGHT = 600;
+//attributes surely useful
+    private Stage mainStage;
+
+
+
     private DoubleProperty sceneWidth;
     private  DoubleProperty sceneHeight;
     private double subSceneWidth;
@@ -33,7 +37,7 @@ public class Viewer {
 
     private AnchorPane mainPane;
     private Scene mainScene;
-    private Stage mainStage;
+
     private TilePane menu;
     private Label title;
     private myButton play;
@@ -44,27 +48,22 @@ public class Viewer {
     private MainSubScene subScene;
 
     public Viewer() {
-        mainPane = new AnchorPane();
-        mainScene = new Scene(mainPane, WIDTH, HEIGHT);
-        mainStage = new Stage();
-        menu = new TilePane();
-        title = new Label("THIS IS THE TITLE");
-        mainStage.setScene(mainScene);
-        mainStage.setTitle("OOP_Exam");
-        mainStage.setMinHeight(HEIGHT);
-        mainStage.setMinWidth(WIDTH);
-        mainScene.getStylesheets().add("resources/style/stylesheet.css");
-        sceneWidth = new SimpleDoubleProperty();
+        mainStage = new MainStage(800, 600, "RythmUp");
+        mainStage.minHeightProperty().bind(mainStage.widthProperty().multiply(0.5));
+        mainStage.maxHeightProperty().bind(mainStage.widthProperty().multiply(0.5));
+
+
+        /*
         sceneWidth.bind(mainPane.widthProperty());
+
         sceneHeight = new SimpleDoubleProperty();
         sceneHeight.bind(mainPane.heightProperty());
         subSceneWidth = sceneWidth.get() * 0.6;
         subSceneHeight = sceneHeight.get() * 0.5;
         subSceneLayoutX = sceneWidth.get() * 0.2;
         subSceneLayoutY = sceneHeight.get() * 0.4;
-        subScene = new MainSubScene();
-        subSceneShowed = false;
-        setBackground();
+        */
+       /*
         setTitle();
         createPlayButton();
         createScoreButton();
@@ -74,24 +73,15 @@ public class Viewer {
         setMenu();
         mainPane.requestFocus();
         setMainSceneChangeListener();
-        manageSubScene();
+       manageSubScene();
+ */
     }
 
     public Stage getMainStage() {
         return mainStage;
     }
+/*
 
-    public void setBackground() {
-        try {
-            Image bgImage = new Image("resources/images/mainBackground.png");
-            BackgroundImage background = new BackgroundImage(bgImage, null, null, BackgroundPosition.CENTER, null);
-            mainPane.setBackground(new Background(background));
-        } catch(Exception e) {
-            e.printStackTrace();
-            mainPane.setBackground(new Background(new BackgroundFill(Color.GRAY, null, null)));
-        }
-
-    }
 
     public void createPlayButton() {
         play = new myButton("Play");
@@ -150,43 +140,9 @@ public class Viewer {
     }
 
     //ridimensionare dinamicamente elementi della scena principale
-    public void setMainSceneChangeListener() {
-        sceneWidth.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                double newWidth = (double) newValue;
-                title.setLayoutX(newWidth * 0.2);
-                title.setPrefWidth(newWidth * 0.6);
-                menu.setPrefWidth(newWidth * 0.2);
-                menu.setPrefTileWidth(newWidth * 0.2);
-                menu.setLayoutX(newWidth * 0.4);
-                subSceneLayoutX = newWidth * 0.2;
-                subSceneWidth = newWidth * 0.6;
-                if (subSceneShowed) {
-                    subScene.setLayoutX(subSceneLayoutX);
-                    subScene.setWidth(subSceneWidth);
-                }
-            }
-        });
 
-        sceneHeight.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                double newHeight = (double) newValue;
-                title.setLayoutY(newHeight * 0.1);
-                title.setPrefHeight(newHeight * 0.2);
-                menu.setPrefHeight(newHeight * 0.5);
-                menu.setPrefTileHeight(sceneHeight.get() * 0.5 / menuButtons.size());
-                menu.setLayoutY(newHeight * 0.4);
-                subSceneLayoutY = newHeight * 0.4;
-                subSceneHeight = newHeight * 0.5;
-                if (subSceneShowed) {
-                    subScene.setLayoutY(subSceneLayoutY);
-                    subScene.setHeight(subSceneHeight);
-                }
-            }
-        });
-    }
+
+
 
     public void setTitle() {
         title.setLayoutY(mainPane.getHeight() * 0.1);
@@ -223,4 +179,7 @@ public class Viewer {
             }
         });
     }
+    */
+
+
 }
