@@ -11,12 +11,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class myButton extends Button {
-    private final String FONT_PATH = "resources/font/SweatyBelvin.ttf";
+    private final String FONT_PATH = "src/resources/font/SweatyBelvin.ttf";
 
     public myButton (String text) {
         setButtonText(text);
-        eventManager();
-        getStylesheets().add("resources/style/myButton.css");
+        //eventManager();
+        //getStylesheets().add("resources/style/stylesheet.css");
         getStyleClass().add("myButton");
     }
 
@@ -24,7 +24,7 @@ public class myButton extends Button {
         try {
             setFont(Font.loadFont(new FileInputStream(FONT_PATH), 23));
         } catch (FileNotFoundException e) {
-            setFont(Font.font("Verdana", 23));
+           setFont(Font.font("Verdana", 23));
         }
         setText(text);
     }

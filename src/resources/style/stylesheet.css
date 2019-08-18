@@ -1,7 +1,8 @@
 .myButton {
     -fx-background-color: #C4C0BF;
     -fx-text-alignment: center;
-    -fx-font-family: 'resources/font/Space_Comics.ttf';
+    -fx-font-family: 'Space_Comics';
+    src: url('resources/font/Space_Comics.ttf');
    
 }
 
