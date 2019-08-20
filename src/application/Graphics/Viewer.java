@@ -47,7 +47,7 @@ public class Viewer {
     private List<myButton> menuButtons = new ArrayList<myButton>();
     private MainSubScene subScene;
 
-    public Viewer() {
+    public Viewer() throws Exception {
         mainStage = new MainStage(800, 600, "RythmUp");
         mainStage.minHeightProperty().bind(mainStage.widthProperty().multiply(0.5));
         mainStage.maxHeightProperty().bind(mainStage.widthProperty().multiply(0.5));

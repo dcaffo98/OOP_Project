@@ -2,7 +2,11 @@ package application.Graphics.item.stages;
 
 import application.Graphics.item.panes.MainPane;
 import application.Graphics.item.scenes.MainScene;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainStage extends Stage {
 
@@ -10,13 +14,14 @@ public class MainStage extends Stage {
     private MainPane mainPane;
 
 
-    public MainStage(double width, double height, String title) {
+    public MainStage(double width, double height, String title) throws Exception {
         setWidth(width);
         setHeight(height);
         setMinHeight(height);
         setMinWidth(width);
         setMainPane(new MainPane());
-        setMainScene(new MainScene(getMainPane(),getWidth(),getHeight()));
+        Parent root = FXMLLoader.load(getClass().getResource("../../MainMenu.fxml"));
+        setMainScene(new MainScene(root,getWidth(),getHeight()));
         getMainPane().bindScene(getMainScene());
         setScene(getMainScene());
         setTitle(title);
