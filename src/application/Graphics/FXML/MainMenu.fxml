@@ -9,19 +9,18 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane id="MainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="MainBorderPane" fx:id="MainMenuBorderPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="598.0" stylesheets="@ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.MainMenuController">
    <center>
-      <VBox alignment="CENTER" prefHeight="324.0" prefWidth="485.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="MainBox" alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="30.0" prefWidth="568.0" text="Button" VBox.vgrow="ALWAYS">
+            <Button mnemonicParsing="false" text="Button" VBox.vgrow="ALWAYS">
                <effect>
                   <Blend mode="RED" opacity="0.0" />
                </effect>
             </Button>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" />
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
          </children>
          <BorderPane.margin>
             <Insets left="20.0" right="20.0" />
@@ -29,7 +28,7 @@
       </VBox>
    </center>
    <top>
-      <ImageView fitHeight="150.0" fitWidth="494.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="Titolo" fitHeight="150.0" fitWidth="494.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@RythmUp%20logo.png" />
          </image>

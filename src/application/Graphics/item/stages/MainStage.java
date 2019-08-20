@@ -20,7 +20,8 @@ public class MainStage extends Stage {
         setMainPane(new MainPane());
         Parent root = FXMLLoader.load(getClass().getResource("../../FXML/MainMenu.fxml"));
         setMainScene(new MainScene(root,getWidth(),getHeight()));
-        getMainPane().bindScene(getMainScene());
+        //getMainPane().bindScene(getMainScene());
+
         setScene(getMainScene());
         setTitle(title);
     }
@@ -41,6 +42,7 @@ public class MainStage extends Stage {
     public void setMainPane(MainPane mainPane) {
         this.mainPane = mainPane;
     }
+
 
 
 
