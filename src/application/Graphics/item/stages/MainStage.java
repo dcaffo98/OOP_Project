@@ -6,8 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class MainStage extends Stage {
 
     private MainScene mainScene;
@@ -20,7 +18,7 @@ public class MainStage extends Stage {
         setMinHeight(height);
         setMinWidth(width);
         setMainPane(new MainPane());
-        Parent root = FXMLLoader.load(getClass().getResource("../../MainMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../../FXML/MainMenu.fxml"));
         setMainScene(new MainScene(root,getWidth(),getHeight()));
         getMainPane().bindScene(getMainScene());
         setScene(getMainScene());
