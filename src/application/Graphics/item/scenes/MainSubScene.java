@@ -1,50 +1,40 @@
 package application.Graphics.item.scenes;
 
-import application.Graphics.item.myButton;
-import javafx.animation.TranslateTransition;
+import application.Graphics.item.panes.SubScenePane;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Parent;
 import javafx.scene.SubScene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
+import javafx.scene.control.Button;
 
 
 public class MainSubScene extends SubScene {
 
-    private AnchorPane sceneRoot;
-    private myButton backButton;
-    public BooleanProperty toShow = new SimpleBooleanProperty();
+    private SubScenePane root;
+    private Button backButton;
+    private BooleanProperty isShowed;
 
-    public MainSubScene(){
-        super(new AnchorPane(), 0, 0);
-        toShow.set(false);
-    }
-
-    public MainSubScene(Parent root, double width, double height) {
-        super(root, width, height);
-        sceneRoot = (AnchorPane) this.getRoot();
-        sceneRoot.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
-        toShow.set(true);
-        backButton = new myButton("Back");
-        sceneRoot.getChildren().add(backButton);
+    public MainSubScene(SubScenePane root) {
+        super(root, root.getWidth(), root.getHeight());
+        this.root = root;
+        backButton = new Button("Back");
+        this.root.getChildren().add(backButton);
+        isShowed = new SimpleBooleanProperty();
+        isShowed.set(true);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                toShow.set(false);
+                isShowed.set(false);
             }
         });
     }
 
-    public void moveSubScene() {
-        TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(0.3));
-        transition.setNode(this);
+    public BooleanProperty isShowedProperty() {
+        return isShowed;
     }
 
+    public void setIsShowed(boolean isShowed) {
+        this.isShowed.set(isShowed);
+    }
 }
