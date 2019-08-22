@@ -1,24 +1,19 @@
 package application.Graphics.FXML;
 
-import application.Graphics.item.panes.MainPane;
 import application.Graphics.item.panes.SubScenePane;
-import application.Graphics.item.scenes.MainScene;
 import application.Graphics.item.scenes.MainSubScene;
-import application.Graphics.item.stages.MainStage;
-import application.Main;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.SubScene;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +42,9 @@ public class MainMenuController {
     private Button exitButton;
 
     private List<Button> buttons;
-    private SubScenePane subScenePane;
     private MainSubScene playSubScene;
+    private MainSubScene scoreSubScene;
+    private MainSubScene songsSubScene;
 
     public MainMenuController(){
     }
@@ -62,11 +58,11 @@ public class MainMenuController {
         buttons.add(songsButton);
         buttons.add(exitButton);
 
-        //creo un'istanza di SubScenePane e MainSubScene, NON vengono visualizzati
-        subScenePane = new SubScenePane(MainMenuBorderPanel);
-        playSubScene = new MainSubScene(subScenePane);
-        //listener che gestisce le sottoscene (work in progress)
-        manageSubScene();
+        playSubScene = new MainSubScene(new SubScenePane(MainMenuBorderPanel));
+        scoreSubScene = new MainSubScene(new SubScenePane(MainMenuBorderPanel));
+        songsSubScene = new MainSubScene(new SubScenePane(MainMenuBorderPanel));
+        //listener che visualizza il menu quando non ci sono SubScene aperte
+        showMenu();
 
         MainBox.prefHeightProperty().bind(MainMenuBorderPanel.heightProperty());
         MainBox.prefWidthProperty().bind(MainMenuBorderPanel.widthProperty());
@@ -104,27 +100,56 @@ public class MainMenuController {
 
     }
 
+    @FXML
+    public void playOnClick() {
+        System.out.println("Play!");
+        MainMenuBorderPanel.getChildren().add(playSubScene.getRoot());
+        //System.out.println("SubScene width: " + playSubScene.getWidth() + "   SubScenePane width: " + ((SubScenePane) playSubScene.getRoot()).getWidth());
+        MainBox.setVisible(false);
+    }
 
     @FXML
-    public void playOnClick () {
-        System.out.println("Clikkato!!");
-        MainMenuBorderPanel.getChildren().remove(MainBox);
-        playSubScene.setIsShowed(true);
-        MainMenuBorderPanel.getChildren().add(subScenePane);
-        System.out.println(playSubScene.isShowedProperty().get());
+    public void scoreOnClick() {
+        System.out.println("Score!");
+        MainMenuBorderPanel.getChildren().add(scoreSubScene.getRoot());
+        MainBox.setVisible(false);
+    }
+
+    @FXML
+    public void songsOnClick() {
+        System.out.println("Songs!");
+        MainMenuBorderPanel.getChildren().add(songsSubScene.getRoot());
+        MainBox.setVisible(false);
+    }
+
+    @FXML
+    public void exitOnClick() {
+        System.out.println("Exit!");
+        ((Stage) exitButton.getScene().getWindow()).close();
     }
 
 
-    public void manageSubScene() {
-            playSubScene.isShowedProperty().addListener(new ChangeListener<Boolean>() {
-                @Override
-                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if ( !newValue.booleanValue()) {
-                        MainMenuBorderPanel.getChildren().remove(subScenePane);
-                        MainMenuBorderPanel.getChildren().add(MainBox);
-                        System.out.println(playSubScene.isShowedProperty().get());
+    public void showMenu() {
+        /*
+         Questo listener viene chiamato ogni volta che un elemento viene aggiunto/eliminato dalla root (cioè il BorderPane)
+         */
+        MainMenuBorderPanel.getChildren().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                boolean subSceneShowed = false;
+                for (Node node : MainMenuBorderPanel.getChildren()) {
+                    //se tra gli elementi viene trovato un SubScenePane, significa che una SubScene è aperta e quindi il menu non deve essere visualizzato
+                    if (node instanceof SubScenePane){
+                        subSceneShowed = true;
+                        break;
                     }
+                    else
+                        subSceneShowed = false;
                 }
-            });
+
+                if (!subSceneShowed)
+                    MainBox.setVisible(true);
+            }
+        });
     }
 }
