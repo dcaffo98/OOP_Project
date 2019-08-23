@@ -1,33 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane id="MainBorderPane" fx:id="MainMenuBorderPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="598.0" stylesheets="@ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.MainMenuController">
-   <center>
-      <VBox fx:id="MainBox" alignment="CENTER" spacing="35.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#playOnClick" text="Play" VBox.vgrow="NEVER">
-               <effect>
-                  <Blend mode="RED" opacity="0.0" />
-               </effect>
-            </Button>
-            <Button fx:id="scoreButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Score" VBox.vgrow="NEVER" />
-            <Button fx:id="songsButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Songs" />
-            <Button fx:id="exitButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Exit" />
-         </children>
-         <BorderPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </BorderPane.margin>
-      </VBox>
-   </center>
+<BorderPane id="MainBorderPane" fx:id="MainMenuBorderPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.MainMenuController">
    <top>
       <ImageView id="Title" fx:id="Title" fitHeight="150.0" fitWidth="365.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
@@ -38,10 +19,18 @@
          </cursor>
       </ImageView>
    </top>
-   <left>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </left>
-   <right>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </right>
+   <center>
+      <VBox fx:id="MainBox" alignment="CENTER" spacing="35.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#playOnClick" text="Play" VBox.vgrow="NEVER">
+               <effect>
+                  <Blend mode="RED" opacity="0.0" />
+               </effect>
+            </Button>
+            <Button fx:id="scoreButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#scoreOnClick" text="Score" VBox.vgrow="NEVER" />
+            <Button fx:id="songsButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#songsOnClick" text="Songs" />
+            <Button fx:id="exitButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#exitOnClick" text="Exit" />
+         </children>
+      </VBox>
+   </center>
 </BorderPane>
