@@ -49,6 +49,7 @@ public class PlayPaneController {
             public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                 if (newValue != null) {
                     mainListener();
+                    setRootPane((Pane) MainBorderPane.getParent());
                 }
             }
         });
