@@ -2,24 +2,27 @@ package application.Graphics.FXML;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
 
 public class PlayPaneController {
 
-    @FXML
-    BorderPane MainBorderPane;
-
+    private Pane root;
 
     @FXML
-    Label LabelTest;
+    private BorderPane MainBorderPane;
+
+    @FXML
+    private Label LabelTest;
+
+    @FXML
+    private Button backButton;
 
     public PlayPaneController(){
 
@@ -61,9 +64,13 @@ public class PlayPaneController {
 
             }
         });
+    }
 
+    public void setRootPane(Pane root) { this.root = root; }
 
-
+    @FXML
+    public void backButtonClicked(ActionEvent event) {
+        this.root.getChildren().remove(MainBorderPane);
     }
 
 
