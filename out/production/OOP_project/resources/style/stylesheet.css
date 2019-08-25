@@ -1,0 +1,11 @@
+.myButton {
+    -fx-background-color: #C4C0BF;
+    -fx-text-alignment: center;
+    -fx-font-family: 'Space_Comics';
+    src: url('resources/font/Space_Comics.ttf');
+   
+}
+
+.myButton:hover {
+    -fx-background-color: #EC3A0E;
+}
