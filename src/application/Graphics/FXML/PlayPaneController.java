@@ -5,10 +5,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 
 public class PlayPaneController {
@@ -23,6 +26,9 @@ public class PlayPaneController {
 
     @FXML
     private Button backButton;
+
+    @FXML
+    private Button playButton;
 
     public PlayPaneController(){
 
@@ -71,6 +77,16 @@ public class PlayPaneController {
     @FXML
     public void backButtonClicked(ActionEvent event) {
         this.root.getChildren().remove(MainBorderPane);
+    }
+
+    @FXML
+    public void playButtonClicked(ActionEvent event) {
+        ((Stage) root.getScene().getWindow()).close();
+        System.out.println("Let's go!");
+        Stage playStage = new Stage();
+        playStage.setScene(new Scene(new AnchorPane(), 800, 800));
+        playStage.setTitle("RythmUp");
+        playStage.show();
     }
 
 

@@ -10,10 +10,10 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class myButton extends Button {
+public class MyButton extends Button {
     private final String FONT_PATH = "src/resources/font/SweatyBelvin.ttf";
 
-    public myButton (String text) {
+    public MyButton(String text) {
         setButtonText(text);
         //eventManager();
         //getStylesheets().add("resources/style/stylesheet.css");

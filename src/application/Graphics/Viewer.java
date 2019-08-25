@@ -1,21 +1,12 @@
 package application.Graphics;
 
 import application.Graphics.item.scenes.MainSubScene;
-import application.Graphics.item.myButton;
+import application.Graphics.item.MyButton;
 import application.Graphics.item.stages.MainStage;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -40,11 +31,11 @@ public class Viewer {
 
     private TilePane menu;
     private Label title;
-    private myButton play;
-    private myButton score;
-    private myButton songs;
-    private myButton exit;
-    private List<myButton> menuButtons = new ArrayList<myButton>();
+    private MyButton play;
+    private MyButton score;
+    private MyButton songs;
+    private MyButton exit;
+    private List<MyButton> menuButtons = new ArrayList<MyButton>();
     private MainSubScene subScene;
 
     public Viewer() throws Exception {
