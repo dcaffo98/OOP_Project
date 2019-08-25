@@ -1,5 +1,6 @@
 package application.Graphics.FXML;
 
+import application.Graphics.item.scenes.GameScene;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -85,7 +86,7 @@ public class PlayPaneController {
         ((Stage) root.getScene().getWindow()).close();
         System.out.println("Let's go!");
         Stage playStage = new Stage();
-        playStage.setScene(new Scene(new AnchorPane(), 800, 800));
+        playStage.setScene(new GameScene(new AnchorPane(), 1200, 800));
         playStage.setTitle("RythmUp");
         playStage.show();
     }
