@@ -1,14 +1,9 @@
 package application.Graphics.FXML;
 
-import application.Graphics.item.panes.SubScenePane;
-import application.Graphics.item.scenes.MainSubScene;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -44,9 +39,6 @@ public class MainMenuController {
     private Button exitButton;
 
     private List<Button> buttons;
-    private MainSubScene playSubScene;
-    private MainSubScene scoreSubScene;
-    private MainSubScene songsSubScene;
 
     public MainMenuController(){
     }
@@ -60,44 +52,19 @@ public class MainMenuController {
         buttons.add(songsButton);
         buttons.add(exitButton);
 
+        //binding elements
+        title.fitWidthProperty().bind(mainMenuBorderPanel.widthProperty());
+        title.fitHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.4));
+        mainBox.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.6));
+        mainBox.spacingProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.07));
+        for (Button button : buttons) {
+            button.prefWidthProperty().bind(mainMenuBorderPanel.widthProperty().multiply(0.1));
+            button.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.07));
+            button.setMaxHeight(60);
+        }
+
         //listener che visualizza il menu quando non ci sono SubScene aperte
         showMenu();
-        
-        mainBox.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty());
-        mainBox.prefWidthProperty().bind(mainMenuBorderPanel.widthProperty());
-        //Title.fitWidthProperty().bind(MainMenuBorderPanel.widthProperty());
-        title.fitHeightProperty().bind(mainMenuBorderPanel.heightProperty());
-
-        mainMenuBorderPanel.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                title.setFitWidth(mainMenuBorderPanel.getWidth() * 0.3);
-                // 4 bottoni, 3 spacing  15 10 15 10 15 10 15
-                //MainBox.setSpacing(MainBox.getHeight() * 0.1);
-
-                mainBox.setPadding(new Insets(mainBox.getHeight() * 0.05, mainBox.getWidth() * 0.05, mainBox.getHeight() * 0.05, mainBox.getWidth() * 0.05));
-                for (Button b: buttons) {
-
-                    b.setPrefWidth(mainBox.getWidth() * 0.2);
-                    //b.setPrefHeight(MainBox.getHeight() * 0.15);
-                }
-
-            }
-        });
-
-        mainMenuBorderPanel.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                //Title.setFitHeight(MainMenuBorderPanel.getHeight() * 0.3);
-                // 4 bottoni, 3 spacing  15 10 15 10 15 10 15
-                mainBox.setSpacing(mainBox.getHeight() * 0.1);
-                for (Button b: buttons) {
-                    b.setPrefHeight(mainBox.getHeight() * 0.15);
-                }
-
-            }
-        });
-
     }
 
     @FXML
@@ -111,8 +78,6 @@ public class MainMenuController {
     @FXML
     public void scoreOnClick() {
         System.out.println("Score!");
-        scoreSubScene = new MainSubScene(new SubScenePane(mainMenuBorderPanel));
-        mainBox.setVisible(false);
     }
 
     @FXML
