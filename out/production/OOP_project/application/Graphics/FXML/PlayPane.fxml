@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="MainBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.PlayPaneController">
+<BorderPane fx:id="playBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="510.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.PlayPaneController">
    <top>
       <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" BorderPane.alignment="TOP_LEFT" />
    </top>

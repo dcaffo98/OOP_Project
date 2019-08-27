@@ -2,7 +2,6 @@ package application.Graphics.FXML;
 
 import application.Graphics.item.panes.SubScenePane;
 import application.Graphics.item.scenes.MainSubScene;
-import application.Main;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
@@ -15,27 +14,22 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenuController {
 
     @FXML
-    private BorderPane MainMenuBorderPanel;
+    private BorderPane mainMenuBorderPanel;
 
     @FXML
-    private ImageView Title;
+    private ImageView title;
 
     @FXML
-    private BorderPane PaneForSubScene;
-
-    @FXML
-    private VBox MainBox;
+    private VBox mainBox;
 
     @FXML
     private Button playButton;
@@ -68,39 +62,37 @@ public class MainMenuController {
 
         //listener che visualizza il menu quando non ci sono SubScene aperte
         showMenu();
-
-        MainBox.prefHeightProperty().bind(MainMenuBorderPanel.heightProperty());
-        MainBox.prefWidthProperty().bind(MainMenuBorderPanel.widthProperty());
+        
+        mainBox.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty());
+        mainBox.prefWidthProperty().bind(mainMenuBorderPanel.widthProperty());
         //Title.fitWidthProperty().bind(MainMenuBorderPanel.widthProperty());
-        Title.fitHeightProperty().bind(MainMenuBorderPanel.heightProperty());
+        title.fitHeightProperty().bind(mainMenuBorderPanel.heightProperty());
 
-        MainMenuBorderPanel.widthProperty().addListener(new ChangeListener<Number>() {
+        mainMenuBorderPanel.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                Title.setFitWidth(MainMenuBorderPanel.getWidth() * 0.3);
+                title.setFitWidth(mainMenuBorderPanel.getWidth() * 0.3);
                 // 4 bottoni, 3 spacing  15 10 15 10 15 10 15
                 //MainBox.setSpacing(MainBox.getHeight() * 0.1);
-                PaneForSubScene.setPrefWidth(MainMenuBorderPanel.getPrefWidth() * 0.8);
 
-                MainBox.setPadding(new Insets(MainBox.getHeight() * 0.05, MainBox.getWidth() * 0.05, MainBox.getHeight() * 0.05, MainBox.getWidth() * 0.05));
+                mainBox.setPadding(new Insets(mainBox.getHeight() * 0.05, mainBox.getWidth() * 0.05, mainBox.getHeight() * 0.05, mainBox.getWidth() * 0.05));
                 for (Button b: buttons) {
 
-                    b.setPrefWidth(MainBox.getWidth() * 0.2);
+                    b.setPrefWidth(mainBox.getWidth() * 0.2);
                     //b.setPrefHeight(MainBox.getHeight() * 0.15);
                 }
 
             }
         });
 
-        MainMenuBorderPanel.heightProperty().addListener(new ChangeListener<Number>() {
+        mainMenuBorderPanel.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 //Title.setFitHeight(MainMenuBorderPanel.getHeight() * 0.3);
                 // 4 bottoni, 3 spacing  15 10 15 10 15 10 15
-                PaneForSubScene.setPrefHeight(MainMenuBorderPanel.getPrefHeight() * 0.8);
-                MainBox.setSpacing(MainBox.getHeight() * 0.1);
+                mainBox.setSpacing(mainBox.getHeight() * 0.1);
                 for (Button b: buttons) {
-                    b.setPrefHeight(MainBox.getHeight() * 0.15);
+                    b.setPrefHeight(mainBox.getHeight() * 0.15);
                 }
 
             }
@@ -112,26 +104,23 @@ public class MainMenuController {
     public void playOnClick() throws Exception {
         System.out.println("Play!");
         Parent playPane = FXMLLoader.load(getClass().getResource("PlayPane.fxml"));
-        //MainMenuBorderPanel.setCenter(playPane);
-        //PaneForSubScene.getChildren().add(playPane);
-        PaneForSubScene.setCenter(playPane);
-        //playSubScene = new MainSubScene(new SubScenePane(MainMenuBorderPanel));
-        //System.out.println("SubScene width: " + playSubScene.getWidth() + "   SubScenePane width: " + ((SubScenePane) playSubScene.getRoot()).getWidth());
-        MainBox.setVisible(false);
+        mainMenuBorderPanel.getChildren().remove(mainBox);
+        mainMenuBorderPanel.setCenter(playPane);
     }
 
     @FXML
     public void scoreOnClick() {
         System.out.println("Score!");
-        scoreSubScene = new MainSubScene(new SubScenePane(MainMenuBorderPanel));
-        MainBox.setVisible(false);
+        scoreSubScene = new MainSubScene(new SubScenePane(mainMenuBorderPanel));
+        mainBox.setVisible(false);
     }
 
     @FXML
     public void songsOnClick() throws Exception{
         System.out.println("Songs!");
-        songsSubScene = new MainSubScene(new SubScenePane(MainMenuBorderPanel));
-        MainBox.setVisible(false);
+        Parent songsPane = FXMLLoader.load(getClass().getResource("SongsPane.fxml"));
+        mainMenuBorderPanel.getChildren().remove(mainBox);
+        mainMenuBorderPanel.setCenter(songsPane);
     }
 
     @FXML
@@ -145,12 +134,12 @@ public class MainMenuController {
         /*
          Questo listener viene chiamato ogni volta che un elemento viene aggiunto/eliminato dalla root (cioè il BorderPane)
          */
-        PaneForSubScene.getChildren().addListener(new InvalidationListener() {
+        mainMenuBorderPanel.getChildren().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
                 System.out.println("Changed!");
                 boolean subSceneShowed = false;
-                for (Node node : PaneForSubScene.getChildren()) {
+                for (Node node : mainMenuBorderPanel.getChildren()) {
                     //se tra gli elementi viene trovato un SubScenePane, significa che una SubScene è aperta e quindi il menu non deve essere visualizzato
                     if (node instanceof Parent){
                         subSceneShowed = true;
@@ -161,7 +150,7 @@ public class MainMenuController {
                 }
 
                 if (!subSceneShowed)
-                    MainBox.setVisible(true);
+                    mainMenuBorderPanel.setCenter(mainBox);
             }
         });
     }
