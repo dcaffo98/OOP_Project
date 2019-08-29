@@ -38,7 +38,7 @@ public class GameScene extends Scene {
         gamePane.getChildren().addAll(notes);
         System.out.println("gameTopPane width:" +note.getCenterX());
         Timeline timeline = new Timeline();
-        this.frameHandler = new FrameHandler(playerBar,timeline,notes);
+        this.frameHandler = new FrameHandler(gamePane,playerBar,timeline,notes);
         timeline.setCycleCount(timeline.INDEFINITE);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));

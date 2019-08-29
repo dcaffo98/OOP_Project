@@ -4,6 +4,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 
@@ -13,9 +14,11 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     public PlayerBar player;
     public Timeline timeline;
     public ArrayList<Note> notes;
+    public AnchorPane gamePane;
 
-    public FrameHandler(PlayerBar player, Timeline timeline, ArrayList<Note> notes) {
+    public FrameHandler(AnchorPane gamePane,PlayerBar player, Timeline timeline, ArrayList<Note> notes) {
 
+        this.gamePane = gamePane;
         this.player = player;
         this.timeline = timeline;
         this.notes = notes;
@@ -42,6 +45,19 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                     player.moveLeft();
                     break;
             }
+        }
+        System.out.println("numero note:"+ notes.size());
+        System.out.println(gamePane.getHeight());
+
+        for (Note n: this.notes) {
+            n.updatePosition();
+            if (n.getBottomBorder() >= gamePane.getHeight()) {
+
+                notes.remove(n);
+                gamePane.getChildren().remove(n);
+
+            }
+
         }
 
         // move rects & check intersection
