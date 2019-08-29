@@ -1,5 +1,6 @@
 package application.Graphics.item.gameObjects;
 
+import application.Graphics.item.panes.GameTopPane;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,17 +12,21 @@ import java.util.ArrayList;
 public class FrameHandler implements EventHandler<ActionEvent> {
 
     public KeyCode code;
+    public GameTopPane gameTopPane;
     public PlayerBar player;
     public Timeline timeline;
     public ArrayList<Note> notes;
     public AnchorPane gamePane;
+    public int score;
 
-    public FrameHandler(AnchorPane gamePane,PlayerBar player, Timeline timeline, ArrayList<Note> notes) {
+    public FrameHandler(AnchorPane gamePane,GameTopPane gameTopPane, PlayerBar player, Timeline timeline, ArrayList<Note> notes) {
 
         this.gamePane = gamePane;
+        this.gameTopPane = gameTopPane;
         this.player = player;
         this.timeline = timeline;
         this.notes = notes;
+        this.score = 0;
     }
 
     public KeyCode getCode() {
@@ -46,53 +51,45 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                     break;
             }
         }
-        System.out.println("numero note:"+ notes.size());
-        System.out.println(gamePane.getHeight());
+        if (notes.size() > 0) {
+            update();
+        }
 
-        for (Note n: this.notes) {
+
+    }
+
+    public void update() {
+        Note toDelete = null;
+        for (Note n: notes) {
             n.updatePosition();
-            if (n.getBottomBorder() >= gamePane.getHeight()) {
-
-                notes.remove(n);
-                gamePane.getChildren().remove(n);
-
-            }
-
+            if ((n.getBottomBorder() >= gamePane.getHeight()) || checkCollision(n)) {
+                    toDelete = n;
+                }
+        }
+        if (toDelete != null) {
+            notes.remove(toDelete);
+            gamePane.getChildren().remove(toDelete);
         }
 
-        // move rects & check intersection
-        /*final Paint color = circle.getFill();
-        final double cx = circle.getCenterX();
-        final double cy = circle.getCenterY();
-        final double r2 = circle.getRadius() * circle.getRadius();
-        boolean lost = false;
-        for (Rectangle rect : rectangles) {
-            rect.setY(frame * RECT_MAX_Y / framesPerIteration);
-            // check for intersections with rects of wrong color
-            if (rect.getFill() != color) {
 
-                double dy = Math.min(Math.abs(rect.getY() - cy),
-                        Math.abs(rect.getY() + rect.getHeight() - cy));
-                dy = dy * dy;
+    }
 
-                if (dy > r2) {
-                    continue; // y-distance too great for intersection
-                }
-                if (cx >= rect.getX() && cx <= rect.getX() + rect.getWidth()) {
-                    lost = true;
-                } else {
-                    double dx = Math.min(Math.abs(rect.getX() - cx),
-                            Math.abs(rect.getX() + rect.getWidth() - cx));
-                    if (dx * dx + dy <= r2) {
-                        lost = true;
-                    }
-                }
-            }
-        }*/
-       // frame = (frame + 1) % framesPerIteration;
-        /*if (lost) {
-            timeline.stop();
+    public boolean checkCollision(Note n) {
+        if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX()+player.getFitWidth())   ) {
+
+            this.score++;
+            gameTopPane.setScore(getScore());
+            System.out.println("COLLISION");
+            return true;
         }
-        */
+        return false;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

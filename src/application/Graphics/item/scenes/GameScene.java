@@ -32,13 +32,12 @@ public class GameScene extends Scene {
         gameTopPane = new GameTopPane();
         playerBar = new PlayerBar("resources/images/paddleRed.png");
         notes = new ArrayList<Note>();
-        gamePane.getChildren().addAll(gameTopPane, playerBar);
+        gamePane.getChildren().addAll(gameTopPane,playerBar);
         note = new Note(gameTopPane.getPrefWidth() / 2 ,gameTopPane.getPrefHeight());
         notes.add(note);
         gamePane.getChildren().addAll(notes);
-        System.out.println("gameTopPane width:" +note.getCenterX());
         Timeline timeline = new Timeline();
-        this.frameHandler = new FrameHandler(gamePane,playerBar,timeline,notes);
+        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,notes);
         timeline.setCycleCount(timeline.INDEFINITE);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));
