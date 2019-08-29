@@ -1,4 +1,4 @@
-package application.Graphics.item;
+package application.Graphics.item.gameObjects;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -22,7 +22,7 @@ public class PlayerBar extends ImageView {
                     currentParentHeight = ((Pane) newValue).getHeight();
                     setFitWidth(currentParentWidth * 0.08);
                     setFitHeight(currentParentHeight * 0.03);
-                    speed = getFitWidth() * 0.6;
+                    speed = getFitWidth() * 0.2;
                     resizeRelocate((currentParentWidth - getFitWidth()) / 2, currentParentHeight - getFitHeight() * 1.5, getFitWidth(), getFitHeight());
                     updateSize();
                 }

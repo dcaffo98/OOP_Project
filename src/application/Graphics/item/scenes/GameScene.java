@@ -1,39 +1,70 @@
 package application.Graphics.item.scenes;
 
-import application.Graphics.item.PlayerBar;
+import application.Graphics.item.gameObjects.FrameHandler;
+import application.Graphics.item.gameObjects.PlayerBar;
+import application.Graphics.item.gameObjects.Note;
 import application.Graphics.item.panes.GameTopPane;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
+
+import java.util.ArrayList;
 
 public class GameScene extends Scene {
+
+    private static final double KEYBOARD_MOVEMENT_DELTA = 5;
 
     private AnchorPane gamePane;
     private GameTopPane gameTopPane;
     private PlayerBar playerBar;
+    private ArrayList<Note> notes;
+    private FrameHandler frameHandler;
+    private Note note;
 
     public GameScene(Parent root, double width, double height) {
         super(root, width, height);
         gamePane = (AnchorPane) root;
         gameTopPane = new GameTopPane();
-        //questo e' un test
         playerBar = new PlayerBar("resources/images/paddleRed.png");
+        notes = new ArrayList<Note>();
         gamePane.getChildren().addAll(gameTopPane, playerBar);
+        note = new Note(gameTopPane.getPrefWidth() / 2 ,gameTopPane.getPrefHeight());
+        notes.add(note);
+        gamePane.getChildren().addAll(notes);
+        System.out.println("gameTopPane width:" +note.getCenterX());
+        Timeline timeline = new Timeline();
+        this.frameHandler = new FrameHandler(playerBar,timeline,notes);
+        timeline.setCycleCount(timeline.INDEFINITE);
+        timeline.getKeyFrames()
+                .add(new KeyFrame(Duration.millis(16), frameHandler));
+        timeline.play();
         setKeyListener();
     }
 
+
     public void setKeyListener() {
         setOnKeyPressed((KeyEvent key) -> {
-            if (key.getCode().equals(KeyCode.RIGHT)) {
-                playerBar.moveRight();
+            KeyCode code = key.getCode();
+            switch (code) {
+                case RIGHT:
+                case LEFT:
+                    frameHandler.setCode(code);
+                    break;
             }
-            if (key.getCode().equals(KeyCode.LEFT)) {
-                playerBar.moveLeft();
+        });
+
+        setOnKeyReleased((KeyEvent key) -> {
+            KeyCode code = key.getCode();
+            if (frameHandler.getCode() == code) {
+                frameHandler.setCode(null);
             }
         });
     }
+
 
 }
