@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
@@ -9,19 +8,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane id="MainBorderPane" fx:id="MainMenuBorderPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.MainMenuController">
-   <top>
-      <ImageView id="Title" fx:id="Title" fitHeight="150.0" fitWidth="365.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@RythmUp%20logo.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="V_RESIZE" />
-         </cursor>
-      </ImageView>
-   </top>
+<BorderPane id="mainBorderPane" fx:id="mainMenuBorderPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.MainMenuController">
    <center>
-      <VBox fx:id="MainBox" alignment="CENTER" spacing="35.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="mainBox" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="35.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#playOnClick" text="Play" VBox.vgrow="NEVER">
                <effect>
@@ -37,4 +26,14 @@
          </BorderPane.margin>
       </VBox>
    </center>
+   <top>
+      <ImageView fx:id="title" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+         <image>
+            <Image url="@../../../resources/images/RythmUpLogo.png" />
+         </image>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </ImageView>
+   </top>
 </BorderPane>

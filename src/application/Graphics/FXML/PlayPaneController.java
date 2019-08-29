@@ -1,11 +1,11 @@
 package application.Graphics.FXML;
 
+import application.Graphics.item.ParentGetter;
+import application.Graphics.item.scenes.GameScene;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -17,12 +17,13 @@ import javafx.stage.Stage;
 public class PlayPaneController {
 
     private Pane root;
+    private ParentGetter parentGetter;
 
     @FXML
-    private BorderPane MainBorderPane;
+    private BorderPane playBorderPane;
 
     @FXML
-    private Label LabelTest;
+    private Label labelTest;
 
     @FXML
     private Button backButton;
@@ -35,49 +36,30 @@ public class PlayPaneController {
     }
 
     public void initialize () {
-
-        hasParent();
-        /* PROVARE A CREARE QUI UN LISTENER SUL MAINBORDERPANE CHE SI COLLEGA AL PARENT. SE NON FUNZIONA PROVARE AD AGGIUNGERE UN CONTROLLO SE IL PARENT ESISTE */
-    }
-
-
-
-
-    public void hasParent() {
-        MainBorderPane.parentProperty().addListener(new ChangeListener<Parent>() {
+        parentGetter = new ParentGetter(playBorderPane, root) {
             @Override
-            public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
-                if (newValue != null) {
-                    mainListener();
-                    setRootPane((Pane) MainBorderPane.getParent());
-                }
+            public void parentGotten() {
+                root = (Pane) getParent();
             }
-        });
+        };
     }
 
+
+    //INUTILE????
     public void mainListener() {
-        ((Pane)MainBorderPane.getParent()).prefWidthProperty().addListener(new ChangeListener<Number>() {
+        ((Pane) playBorderPane.getParent()).prefWidthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-
-                MainBorderPane.setPrefWidth(((Pane)MainBorderPane.getParent()).getPrefWidth() *  1);
-                MainBorderPane.setPrefHeight(((Pane)MainBorderPane.getParent()).getPrefHeight() *  1);
-
-                //.bind(((Pane)MainBorderPane.getParent()).prefWidthProperty());
-                //MainBorderPane.prefHeightProperty().bind(((Pane) MainBorderPane.getParent()).prefHeightProperty());
-
-
-
+                playBorderPane.setPrefWidth(((Pane) playBorderPane.getParent()).getPrefWidth() *  1);
+                playBorderPane.setPrefHeight(((Pane) playBorderPane.getParent()).getPrefHeight() *  1);
             }
         });
     }
 
-    public void setRootPane(Pane root) { this.root = root; }
 
     @FXML
     public void backButtonClicked(ActionEvent event) {
-        this.root.getChildren().remove(MainBorderPane);
+        this.root.getChildren().remove(playBorderPane);
     }
 
     @FXML
@@ -85,7 +67,9 @@ public class PlayPaneController {
         ((Stage) root.getScene().getWindow()).close();
         System.out.println("Let's go!");
         Stage playStage = new Stage();
-        playStage.setScene(new Scene(new AnchorPane(), 800, 800));
+        playStage.setMinWidth(1200);
+        playStage.setMinHeight(800);
+        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight()));
         playStage.setTitle("RythmUp");
         playStage.show();
     }
