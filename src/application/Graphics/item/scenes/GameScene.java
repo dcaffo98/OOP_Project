@@ -19,6 +19,7 @@ public class GameScene extends Scene {
         super(root, width, height);
         gamePane = (AnchorPane) root;
         gameTopPane = new GameTopPane();
+        //questo e' un test
         playerBar = new PlayerBar("resources/images/paddleRed.png");
         gamePane.getChildren().addAll(gameTopPane, playerBar);
         setKeyListener();
