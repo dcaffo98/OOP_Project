@@ -22,7 +22,6 @@ public class GameScene extends Scene {
     private AnchorPane gamePane;
     private GameTopPane gameTopPane;
     private PlayerBar playerBar;
-    private ArrayList<Note> notes;
     private FrameHandler frameHandler;
     private Note note;
 
@@ -31,19 +30,20 @@ public class GameScene extends Scene {
         gamePane = (AnchorPane) root;
         gameTopPane = new GameTopPane();
         playerBar = new PlayerBar("resources/images/paddleRed.png");
-        notes = new ArrayList<Note>();
+
         gamePane.getChildren().addAll(gameTopPane,playerBar);
-        note = new Note(gameTopPane.getPrefWidth() / 2 ,gameTopPane.getPrefHeight());
-        notes.add(note);
-        gamePane.getChildren().addAll(notes);
+
+
         Timeline timeline = new Timeline();
-        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,notes);
+        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline);
         timeline.setCycleCount(timeline.INDEFINITE);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));
         timeline.play();
         setKeyListener();
     }
+
+
 
 
     public void setKeyListener() {
