@@ -1,5 +1,7 @@
 package application.Graphics.item.gameObjects;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
@@ -8,75 +10,37 @@ import javafx.scene.layout.Pane;
 
 public class PlayerBar extends ImageView {
 
-    private double currentParentWidth;
-    private double currentParentHeight;
-    private double speed;
+    private DoubleProperty speed;
 
     public PlayerBar(String url) {
         super(url);
+        speed = new SimpleDoubleProperty();
         parentProperty().addListener(new ChangeListener<Parent>() {
             @Override
             public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                 if(newValue != null) {
-                    currentParentWidth = ((Pane) newValue).getWidth();
-                    currentParentHeight = ((Pane) newValue).getHeight();
-                    setFitWidth(currentParentWidth * 0.08);
-                    setFitHeight(currentParentHeight * 0.03);
-                    speed = getFitWidth() * 0.2;
-                    resizeRelocate((currentParentWidth - getFitWidth()) / 2, currentParentHeight - getFitHeight() * 1.5, getFitWidth(), getFitHeight());
-                    updateSize();
+                    fitWidthProperty().bind(((Pane) newValue).widthProperty().multiply(0.08));
+                    fitHeightProperty().bind(((Pane) newValue).heightProperty().multiply(0.03));
+                    setLayoutX((((Pane) newValue).getWidth() - getFitWidth()) / 2) ;
+                    setManaged(false);          //altrimenti non fa fare il binding del layoutY
+                    layoutYProperty().bind(((Pane) newValue).heightProperty().subtract(getFitHeight() * 1.5));
+                    speed.bind( ((Pane) newValue).widthProperty().multiply(0.01));
                 }
             }
         });
     }
 
-    public double getCurrentParentWidth() {
-        return currentParentWidth;
-    }
-
-    public void setCurrentParentWidth(double currentParentWidth) {
-        this.currentParentWidth = currentParentWidth;
-    }
-
-    public double getCurrentParentHeight() {
-        return currentParentHeight;
-    }
-
-    public void setCurrentParentHeight(double currentParentHeight) {
-        this.currentParentHeight = currentParentHeight;
-    }
-
-    public void updateSize() {
-        ((Pane) getParent()).widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                currentParentWidth = newValue.doubleValue();
-                setFitWidth(currentParentWidth * 0.08);
-                speed = currentParentWidth * 0.01;
-            }
-        });
-
-        ((Pane) getParent()).heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                currentParentHeight = newValue.doubleValue();
-                setFitHeight(currentParentHeight * 0.03);
-                setLayoutY(currentParentHeight - getFitHeight() * 1.5);
-            }
-        });
-    }
-
     public void moveRight() {
-        if(getLayoutX() + getFitWidth() + speed > currentParentWidth)
-            setLayoutX(currentParentWidth - getFitWidth());
+        if(getLayoutX() + getFitWidth() + speed.doubleValue() > ((Pane) getParent()).getWidth())
+            setLayoutX(((Pane) getParent()).getWidth() - getFitWidth());
         else
-            setLayoutX(getLayoutX() + speed);
+            setLayoutX(getLayoutX() + speed.doubleValue());
     }
 
     public void moveLeft() {
-        if(getLayoutX() - speed < 0)
+        if(getLayoutX() - speed.doubleValue() < 0)
             setLayoutX(0);
         else
-            setLayoutX(getLayoutX() - speed);
+            setLayoutX(getLayoutX() - speed.doubleValue());
     }
 }
