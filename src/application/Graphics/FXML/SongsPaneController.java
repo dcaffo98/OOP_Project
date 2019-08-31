@@ -1,14 +1,23 @@
 package application.Graphics.FXML;
 
 import application.Graphics.item.ParentGetter;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URI;
@@ -22,6 +31,10 @@ public class SongsPaneController {
 
     private Pane root;
     private ParentGetter parentGetter;
+    private MediaPlayer mediaPlayer;
+    private Media media;
+    //da eliminare dopo integrazione database
+    private final File directory = new File("file:/C:/Users/david/Desktop/RythmUp");
 
     @FXML
     private BorderPane songsBorderPane;
@@ -30,7 +43,13 @@ public class SongsPaneController {
     private Button backButton;
 
     @FXML
+    private HBox mediaBar;
+
+    @FXML
     private Button playSongButton;
+
+    @FXML
+    private Button pauseSongButton;
 
     @FXML
     private Button uploadSongButton;
@@ -50,6 +69,26 @@ public class SongsPaneController {
         };
 
         populateListView();
+
+        songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                playSongButton.setDisable(false);
+                playSongButton.setOpacity(1);
+                pauseSongButton.setDisable(false);
+                pauseSongButton.setOpacity(1);
+                String filename = directory.getPath() + "//" + songsListView.getSelectionModel().getSelectedItem().toString();
+                if (mediaPlayer != null && mediaPlayer.getCurrentTime().greaterThan(new Duration(0))) {
+                    //mediaPlayer.dispose();
+
+                }
+                media = new Media(filename.replace("\\", "/"));
+                //mediaPlayer = new MediaPlayer(media);
+                if (mediaPlayer == null) {
+                    mediaPlayer = new MediaPlayer(media);
+                }
+            }
+        });
     }
 
     public void setRootPane(Pane root) {
@@ -72,20 +111,22 @@ public class SongsPaneController {
 
     @FXML
     public void playSongButtonClicked(ActionEvent event) {
-        //Media media = new Media("file:/C:/PATH");
-        File directory = new File("file:/C:/Users/david/Desktop/RythmUp");
-        playSongButton.setText("Stop");
-        String filename = directory.getPath() + "//" + songsListView.getSelectionModel().getSelectedItem().toString();
-        AudioClip audioClip = new AudioClip(filename.replace("\\", "/"));
-        playSongButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                audioClip.stop();
-                playSongButton.setText("Play song");
+        if (mediaPlayer.getStatus() == MediaPlayer.Status.PAUSED) {
+            mediaPlayer.play();
+        } else if (mediaPlayer.getStatus() == MediaPlayer.Status.READY) {
+            if (mediaPlayer.getCurrentTime().greaterThan(new Duration(0))) {
+                mediaPlayer.dispose();
             }
-        });
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        }
+    }
 
-        audioClip.play();
+    @FXML
+    public void pauseSongButtonClicked(ActionEvent event) {
+        if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING || media != mediaPlayer.getMedia()) {
+            mediaPlayer.pause();
+        }
     }
 
 }
