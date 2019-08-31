@@ -52,7 +52,7 @@ public class PlayerBar extends ImageView {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 currentParentWidth = newValue.doubleValue();
                 setFitWidth(currentParentWidth * 0.08);
-                speed = getFitWidth() * 0.6;
+                speed = currentParentWidth * 0.01;
             }
         });
 
