@@ -11,10 +11,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.FileChooser;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class SongsPaneController {
@@ -24,7 +26,7 @@ public class SongsPaneController {
     private MediaPlayer mediaPlayer;
     private Media media;
     //da eliminare dopo integrazione database
-    private final File directory = new File("file:/C:/Users/david/Desktop/RythmUp");
+    private final File directory = new File("file:/C://Users/david/Desktop/RythmUp");
 
     @FXML
     private BorderPane songsBorderPane;
@@ -71,15 +73,47 @@ public class SongsPaneController {
 
     public void populateListView() {
         File directory = new File("C://Users/david/Desktop/RythmUp");
-        List<String> songsList = new ArrayList<String>(Arrays.asList(directory.list()));
-        for (String song : songsList) {
-            System.out.println(song);
+        LinkedHashSet<String> songListWithoutDuplicate = new LinkedHashSet<>(Arrays.asList(directory.list()));
+        for (String song : songListWithoutDuplicate) {
             songsListView.getItems().add(song);
         }
     }
 
     @FXML
-    public void backButtonCliked(ActionEvent event) {
+    public void uploadSongButtonClicked(ActionEvent event) {
+        List<File> fileList = new FileChooser().showOpenMultipleDialog(songsBorderPane.getScene().getWindow());
+        if (fileList != null) {
+            for (File file : fileList) {
+                String filename = new File("C://Users/david/Desktop/RythmUp").getPath() + "\\" + file.getName();
+                System.out.println(filename.replace("\\", "/"));
+                File copyFile = new File(filename.replace("\\", "/"));
+                try {
+                    copyFile.createNewFile();
+                    FileInputStream source = new FileInputStream(file);
+                    FileOutputStream destination = new FileOutputStream(copyFile);
+                    byte[] buffer = new byte[1024];
+                    int lenght;
+                    while ((lenght = source.read(buffer)) > 0) {
+                        destination.write(buffer, 0, lenght);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (songsListView.getItems().contains(copyFile.getName())) {
+                    System.out.println("This song is already available" + copyFile.getName());
+                    continue;
+                } else
+                    songsListView.getItems().add(copyFile.getName());
+            }
+        } else {
+            System.out.println("Invalid or no file detected");
+        }
+    }
+
+    @FXML
+    public void backButtonClicked(ActionEvent event) {
         if (mediaPlayer != null) {
             mediaPlayer.dispose();
         }

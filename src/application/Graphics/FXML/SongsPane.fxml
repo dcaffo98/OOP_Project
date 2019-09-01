@@ -11,7 +11,7 @@
 
 <BorderPane fx:id="songsBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.SongsPaneController">
    <top>
-      <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonCliked" text="Back" BorderPane.alignment="TOP_LEFT" />
+      <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" BorderPane.alignment="TOP_LEFT" />
    </top>
    <center>
       <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="70.0" BorderPane.alignment="CENTER">
@@ -38,7 +38,7 @@
                   <Insets bottom="5.0" top="5.0" />
                </padding>
             </VBox>
-            <Button fx:id="uploadSongButton" mnemonicParsing="false" text="Upload song" />
+            <Button fx:id="uploadSongButton" mnemonicParsing="false" onAction="#uploadSongButtonClicked" text="Upload song" />
          </children>
       </HBox>
    </center>
