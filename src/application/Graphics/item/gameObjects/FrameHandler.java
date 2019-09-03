@@ -29,7 +29,6 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.gameTopPane = gameTopPane;
         this.player = player;
         this.timeline = timeline;
-        this.notes = notes;
         this.score = 0;
         this.frameCounter = 0;
         this.notes = new ArrayList<Note>();
@@ -91,9 +90,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
         Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight());
         int leftBorder = (int)note.getRadius();
-        int rightBorder = (int)gameTopPane.getPrefWidth() - leftBorder;
+        int rightBorder = (int)gameTopPane.getPrefWidth() - (leftBorder);
         Random random = new Random();
-        int randomInt = random.nextInt(rightBorder) + leftBorder;
+        int randomInt = random.nextInt(rightBorder - leftBorder) + leftBorder;
         note.setCenterX(randomInt);
         notes.add(note);
         gamePane.getChildren().addAll(note);
