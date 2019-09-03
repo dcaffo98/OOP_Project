@@ -56,6 +56,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                 case LEFT:
                     player.moveLeft();
                     break;
+                case ESCAPE:
+                    timeline.pause();
+                    break;
             }
         }
         if (frameCounter == bpm) {

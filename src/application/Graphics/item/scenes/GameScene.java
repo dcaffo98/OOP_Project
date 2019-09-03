@@ -22,6 +22,7 @@ public class GameScene extends Scene {
     private AnchorPane gamePane;
     private GameTopPane gameTopPane;
     private PlayerBar playerBar;
+    private Timeline timeline;
     private FrameHandler frameHandler;
     private Note note;
 
@@ -34,7 +35,7 @@ public class GameScene extends Scene {
         gamePane.getChildren().addAll(gameTopPane,playerBar);
 
 
-        Timeline timeline = new Timeline();
+        this.timeline = new Timeline();
         this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline);
         timeline.setCycleCount(timeline.INDEFINITE);
         timeline.getKeyFrames()
@@ -52,10 +53,14 @@ public class GameScene extends Scene {
             switch (code) {
                 case RIGHT:
                 case LEFT:
+                case ESCAPE:
                     frameHandler.setCode(code);
                     break;
+                case ENTER:
+                    timeline.play();
             }
         });
+
 
         setOnKeyReleased((KeyEvent key) -> {
             KeyCode code = key.getCode();
