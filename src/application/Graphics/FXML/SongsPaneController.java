@@ -1,6 +1,5 @@
 package application.Graphics.FXML;
 
-import application.Graphics.item.ParentGetter;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -22,8 +21,6 @@ import java.util.List;
 
 public class SongsPaneController {
 
-    private Pane root;
-    private ParentGetter parentGetter;
     private MediaPlayer mediaPlayer;
     private Media media;
     //da eliminare dopo integrazione database
@@ -44,13 +41,6 @@ public class SongsPaneController {
     public SongsPaneController() {}
 
     public void initialize() {
-        parentGetter = new ParentGetter(songsBorderPane, root) {
-            @Override
-            public void parentGotten() {
-                setRootPane((Pane) getParent());
-            }
-        };
-
         populateListView();
 
         songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
@@ -64,10 +54,6 @@ public class SongsPaneController {
                 mediaPlayer.play();
             }
         });
-    }
-
-    public void setRootPane(Pane root) {
-        this.root = root;
     }
 
     public void populateListView() {
@@ -115,7 +101,7 @@ public class SongsPaneController {
         if (mediaPlayer != null) {
             mediaPlayer.dispose();
         }
-        root.getChildren().remove(songsBorderPane);
+        ((Pane) songsBorderPane.getParent()).getChildren().remove(songsBorderPane);
     }
 
 }

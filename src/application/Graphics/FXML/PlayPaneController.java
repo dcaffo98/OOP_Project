@@ -16,9 +16,6 @@ import javafx.stage.Stage;
 
 public class PlayPaneController {
 
-    private Pane root;
-    private ParentGetter parentGetter;
-
     @FXML
     private BorderPane playBorderPane;
 
@@ -32,7 +29,6 @@ public class PlayPaneController {
     private Button playButton;
 
     public PlayPaneController(){
-
     }
 
     public void initialize () {
@@ -59,12 +55,12 @@ public class PlayPaneController {
 
     @FXML
     public void backButtonClicked(ActionEvent event) {
-        this.root.getChildren().remove(playBorderPane);
+        ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
     }
 
     @FXML
     public void playButtonClicked(ActionEvent event) {
-        ((Stage) root.getScene().getWindow()).close();
+        ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
         System.out.println("Let's go!");
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
@@ -73,6 +69,4 @@ public class PlayPaneController {
         playStage.setTitle("RythmUp");
         playStage.show();
     }
-
-
 }
