@@ -14,7 +14,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -26,7 +27,7 @@ public class SongsPaneController {
     private MediaPlayer mediaPlayer;
     private Media media;
     //da eliminare dopo integrazione database
-    private final File directory = new File("file:/C://Users/david/Desktop/RythmUp");
+    private final String songsPath = "src/resources/songs";
 
     @FXML
     private BorderPane songsBorderPane;
@@ -40,8 +41,7 @@ public class SongsPaneController {
     @FXML
     private ListView songsListView;
 
-    public SongsPaneController() {
-    }
+    public SongsPaneController() {}
 
     public void initialize() {
         parentGetter = new ParentGetter(songsBorderPane, root) {
@@ -56,8 +56,7 @@ public class SongsPaneController {
         songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                String filename = directory.getPath() + "//" + songsListView.getSelectionModel().getSelectedItem().toString();
-                media = new Media(filename.replace("\\", "/"));
+                media = new Media(Paths.get(songsPath + "/" + songsListView.getSelectionModel().getSelectedItem().toString()).toUri().toString());
                 if (mediaPlayer != null) {
                     mediaPlayer.dispose();
                 }
@@ -72,8 +71,7 @@ public class SongsPaneController {
     }
 
     public void populateListView() {
-        File directory = new File("C://Users/david/Desktop/RythmUp");
-        LinkedHashSet<String> songListWithoutDuplicate = new LinkedHashSet<>(Arrays.asList(directory.list()));
+        LinkedHashSet<String> songListWithoutDuplicate = new LinkedHashSet<>(Arrays.asList(new File(songsPath).list()));
         for (String song : songListWithoutDuplicate) {
             songsListView.getItems().add(song);
         }
@@ -84,9 +82,9 @@ public class SongsPaneController {
         List<File> fileList = new FileChooser().showOpenMultipleDialog(songsBorderPane.getScene().getWindow());
         if (fileList != null) {
             for (File file : fileList) {
-                String filename = new File("C://Users/david/Desktop/RythmUp").getPath() + "\\" + file.getName();
-                System.out.println(filename.replace("\\", "/"));
-                File copyFile = new File(filename.replace("\\", "/"));
+                //String filename = new File("C://Users/david/Desktop/RythmUp").getPath() + "\\" + file.getName();
+                Path filenamex = Paths.get(songsPath + "/" + file.getName());
+                File copyFile = new File(filenamex.toUri());
                 try {
                     copyFile.createNewFile();
                     FileInputStream source = new FileInputStream(file);
