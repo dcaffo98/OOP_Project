@@ -14,7 +14,7 @@
    <center>
       <TilePane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ComboBox prefWidth="150.0" promptText="Select a song" />
+            <ComboBox fx:id="songsComboBox" onAction="#songsComboBoxSelectionChange" prefWidth="150.0" promptText="Select a song" />
          </children>
       </TilePane>
    </center>

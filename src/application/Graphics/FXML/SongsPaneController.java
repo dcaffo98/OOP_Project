@@ -38,8 +38,7 @@ public class SongsPaneController {
     @FXML
     private ListView songsListView;
 
-    public SongsPaneController() {}
-
+    @FXML
     public void initialize() {
         populateListView();
 

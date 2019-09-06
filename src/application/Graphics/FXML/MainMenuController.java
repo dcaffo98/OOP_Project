@@ -4,6 +4,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -40,10 +41,7 @@ public class MainMenuController {
 
     private List<Button> buttons;
 
-    public MainMenuController(){
-    }
-
-
+    @FXML
     public void initialize() {
 
         buttons = new ArrayList<Button>();
@@ -76,12 +74,15 @@ public class MainMenuController {
     }
 
     @FXML
-    public void scoreOnClick() {
+    public void scoreOnClick() throws Exception {
         System.out.println("Score!");
+        Parent scorePane = FXMLLoader.load(getClass().getResource("ScorePane.fxml"));
+        mainMenuBorderPanel.getChildren().remove(mainBox);
+        mainMenuBorderPanel.setCenter(scorePane);
     }
 
     @FXML
-    public void songsOnClick() throws Exception{
+    public void songsOnClick() throws Exception {
         System.out.println("Songs!");
         Parent songsPane = FXMLLoader.load(getClass().getResource("SongsPane.fxml"));
         mainMenuBorderPanel.getChildren().remove(mainBox);
@@ -95,10 +96,10 @@ public class MainMenuController {
     }
 
 
+    /*
+        Questo listener viene chiamato ogni volta che un elemento viene aggiunto/eliminato dalla root (cioè il BorderPane)
+    */
     public void showMenu() {
-        /*
-         Questo listener viene chiamato ogni volta che un elemento viene aggiunto/eliminato dalla root (cioè il BorderPane)
-         */
         mainMenuBorderPanel.getChildren().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
