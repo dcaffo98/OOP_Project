@@ -1,29 +1,33 @@
 package application.Graphics.FXML;
 
 import application.Graphics.item.scenes.GameScene;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.nio.file.Paths;
 
 
 public class PlayPaneController {
 
-    private Pane root;
+    private final String songsPath = "src/resources/songs";
+    private ObservableList<String> songs = FXCollections.observableArrayList(new File(songsPath).list());
+    private Media selectedSong;
 
     @FXML
-    private BorderPane MainBorderPane;
+    private BorderPane playBorderPane;
 
     @FXML
-    private Label LabelTest;
+    private ComboBox<String> songsComboBox;
 
     @FXML
     private Button backButton;
@@ -31,59 +35,19 @@ public class PlayPaneController {
     @FXML
     private Button playButton;
 
-    public PlayPaneController(){
-
-    }
-
+    @FXML
     public void initialize () {
-
-        hasParent();
-        /* PROVARE A CREARE QUI UN LISTENER SUL MAINBORDERPANE CHE SI COLLEGA AL PARENT. SE NON FUNZIONA PROVARE AD AGGIUNGERE UN CONTROLLO SE IL PARENT ESISTE */
+        songsComboBox.getItems().setAll(songs);
     }
-
-
-
-
-    public void hasParent() {
-        MainBorderPane.parentProperty().addListener(new ChangeListener<Parent>() {
-            @Override
-            public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
-                if (newValue != null) {
-                    mainListener();
-                    setRootPane((Pane) MainBorderPane.getParent());
-                }
-            }
-        });
-    }
-
-    public void mainListener() {
-        ((Pane)MainBorderPane.getParent()).prefWidthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-
-                MainBorderPane.setPrefWidth(((Pane)MainBorderPane.getParent()).getPrefWidth() *  1);
-                MainBorderPane.setPrefHeight(((Pane)MainBorderPane.getParent()).getPrefHeight() *  1);
-
-                //.bind(((Pane)MainBorderPane.getParent()).prefWidthProperty());
-                //MainBorderPane.prefHeightProperty().bind(((Pane) MainBorderPane.getParent()).prefHeightProperty());
-
-
-
-            }
-        });
-    }
-
-    public void setRootPane(Pane root) { this.root = root; }
 
     @FXML
     public void backButtonClicked(ActionEvent event) {
-        this.root.getChildren().remove(MainBorderPane);
+        ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
     }
 
     @FXML
     public void playButtonClicked(ActionEvent event) {
-        ((Stage) root.getScene().getWindow()).close();
+        ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
         System.out.println("Let's go!");
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
@@ -93,5 +57,9 @@ public class PlayPaneController {
         playStage.show();
     }
 
-
+    @FXML
+    public void songsComboBoxSelectionChange(ActionEvent event) {
+        selectedSong = new Media(Paths.get(songsPath + "/" + songsComboBox.getSelectionModel().getSelectedItem().toString()).toUri().toString());
+        System.out.println(songsComboBox.getSelectionModel().getSelectedItem().toString());
+    }
 }
