@@ -1,7 +1,13 @@
 package application.Graphics.FXML;
 
+
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,12 +18,15 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.io.*;
+import java.util.*;
+
+import static java.lang.Math.abs;
 
 public class SongsPaneController {
 
@@ -25,6 +34,7 @@ public class SongsPaneController {
     private Media media;
     //da eliminare dopo integrazione database
     private final String songsPath = "src/resources/songs";
+    private ObservableList<String> songs;
 
     @FXML
     private BorderPane songsBorderPane;
@@ -36,16 +46,20 @@ public class SongsPaneController {
     private Button uploadSongButton;
 
     @FXML
-    private ListView songsListView;
+    private ListView<String> songsListView;
 
     @FXML
     public void initialize() {
-        populateListView();
+        //populateListView();
+        songs = FXCollections.observableArrayList(new File(songsPath).list());
+        songsListView.setItems(songs);
 
-        songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+
+        //gestione file audio
+        songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                media = new Media(Paths.get(songsPath + "/" + songsListView.getSelectionModel().getSelectedItem().toString()).toUri().toString());
+                media = new Media(Paths.get(songsPath + "/" + songsListView.getSelectionModel().getSelectedItem()).toUri().toString());
                 if (mediaPlayer != null) {
                     mediaPlayer.dispose();
                 }
@@ -87,8 +101,13 @@ public class SongsPaneController {
                 if (songsListView.getItems().contains(copyFile.getName())) {
                     System.out.println("This song is already available" + copyFile.getName());
                     continue;
-                } else
-                    songsListView.getItems().add(copyFile.getName());
+                } else {
+                    //songsListView.getItems().add(copyFile.getName());
+                    songs.add(copyFile.getName());
+                    songs.sort((a, b) -> a.compareTo(b));
+                    for (String song : songs)
+                        System.out.println(song);
+                }
             }
         } else {
             System.out.println("Invalid or no file detected");
