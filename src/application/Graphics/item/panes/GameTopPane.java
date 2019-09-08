@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
 public class GameTopPane extends AnchorPane {
 
     private Pane parent;
+    public int score;
+    Label scoreLabel;
 
     public GameTopPane() {
         super();
@@ -28,6 +30,12 @@ public class GameTopPane extends AnchorPane {
                 }
             }
         });
+
+
+        this.scoreLabel = new Label("Score: "+ 0);
+        this.getChildren().add(scoreLabel);
+
+
     }
 
     public void initSize() {
@@ -44,4 +52,14 @@ public class GameTopPane extends AnchorPane {
             }
         });
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+        scoreLabel.setText("Score: "+this.score);
+    }
+
 }
