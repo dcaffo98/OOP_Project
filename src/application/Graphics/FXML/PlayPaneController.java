@@ -7,23 +7,32 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 
 public class PlayPaneController {
 
-    private Pane root;
-    private ParentGetter parentGetter;
+    private final String songsPath = "src/resources/songs";
+    private ObservableList<String> songs = FXCollections.observableArrayList(new File(songsPath).list());
+    private Media selectedSong;
 
     @FXML
     private BorderPane playBorderPane;
 
     @FXML
-    private Label labelTest;
+    private ComboBox<String> songsComboBox;
 
     @FXML
     private Button backButton;
@@ -31,40 +40,19 @@ public class PlayPaneController {
     @FXML
     private Button playButton;
 
-    public PlayPaneController(){
-
-    }
-
+    @FXML
     public void initialize () {
-        parentGetter = new ParentGetter(playBorderPane, root) {
-            @Override
-            public void parentGotten() {
-                root = (Pane) getParent();
-            }
-        };
+        songsComboBox.getItems().setAll(songs);
     }
-
-
-    //INUTILE????
-    public void mainListener() {
-        ((Pane) playBorderPane.getParent()).prefWidthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                playBorderPane.setPrefWidth(((Pane) playBorderPane.getParent()).getPrefWidth() *  1);
-                playBorderPane.setPrefHeight(((Pane) playBorderPane.getParent()).getPrefHeight() *  1);
-            }
-        });
-    }
-
 
     @FXML
     public void backButtonClicked(ActionEvent event) {
-        this.root.getChildren().remove(playBorderPane);
+        ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
     }
 
     @FXML
     public void playButtonClicked(ActionEvent event) {
-        ((Stage) root.getScene().getWindow()).close();
+        ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
         System.out.println("Let's go!");
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
@@ -74,5 +62,9 @@ public class PlayPaneController {
         playStage.show();
     }
 
-
+    @FXML
+    public void songsComboBoxSelectionChange(ActionEvent event) {
+        selectedSong = new Media(Paths.get(songsPath + "/" + songsComboBox.getSelectionModel().getSelectedItem().toString()).toUri().toString());
+        System.out.println(songsComboBox.getSelectionModel().getSelectedItem().toString());
+    }
 }
