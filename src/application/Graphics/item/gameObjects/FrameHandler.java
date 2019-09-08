@@ -6,24 +6,27 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class FrameHandler implements EventHandler<ActionEvent> {
 
-    public KeyCode code;
-    public GameTopPane gameTopPane;
-    public PlayerBar player;
-    public Timeline timeline;
-    public ArrayList<Note> notes;
-    public AnchorPane gamePane;
-    public int score;
+    private KeyCode code;
+    private GameTopPane gameTopPane;
+    private PlayerBar player;
+    private Timeline timeline;
+    private ArrayList<Note> notes;
+    private AnchorPane gamePane;
+    private MediaPlayer mediaPlayer;
+    private int score;
     private int frameCounter;
     private int bpm;
+
     
 
-    public FrameHandler(AnchorPane gamePane,GameTopPane gameTopPane, PlayerBar player, Timeline timeline) {
+    public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer) {
 
         this.gamePane = gamePane;
         this.gameTopPane = gameTopPane;
@@ -33,6 +36,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.frameCounter = 0;
         this.notes = new ArrayList<Note>();
         this.bpm = 60;
+        this.mediaPlayer = mediaPlayer;
     }
 
     public KeyCode getCode() {
@@ -48,6 +52,12 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         
         // move player, if key is pressed
         frameCounter++;
+        if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
+
+            timeline.stop();
+
+
+        }
         if (code != null) {
             switch (code) {
                 case RIGHT:

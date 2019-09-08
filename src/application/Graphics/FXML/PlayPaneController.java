@@ -52,14 +52,15 @@ public class PlayPaneController {
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
         playStage.setMinHeight(800);
-        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight()));
+        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(),this.selectedSong));
         playStage.setTitle("RythmUp");
         playStage.show();
     }
 
     @FXML
     public void songsComboBoxSelectionChange(ActionEvent event) {
-        selectedSong = new Media(Paths.get(songsPath + "/" + songsComboBox.getSelectionModel().getSelectedItem().toString()).toUri().toString());
+        this.selectedSong = new Media(Paths.get(songsPath + "/" + songsComboBox.getSelectionModel().getSelectedItem().toString()).toUri().toString());
         System.out.println(songsComboBox.getSelectionModel().getSelectedItem().toString());
+
     }
 }

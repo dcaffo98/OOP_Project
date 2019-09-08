@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,6 +62,7 @@ public class SongsPaneController {
                     mediaPlayer.dispose();
                 }
                 mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.setStartTime(Duration.millis(90000));
                 mediaPlayer.play();
             }
         });
