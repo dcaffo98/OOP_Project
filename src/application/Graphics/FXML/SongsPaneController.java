@@ -76,7 +76,7 @@ public class SongsPaneController {
     }
 
     @FXML
-    public void uploadSongButtonClicked(ActionEvent event) {
+    public void uploadSongButtonClicked(ActionEvent event) throws IOException, InterruptedException {
         List<File> fileList = new FileChooser().showOpenMultipleDialog(songsBorderPane.getScene().getWindow());
         if (fileList != null) {
             for (File file : fileList) {
@@ -103,15 +103,20 @@ public class SongsPaneController {
                 } else {
                     //songsListView.getItems().add(copyFile.getName());
                     songs.add(copyFile.getName());
+                    try {
+                        Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar src/trackanalyzer/songs/*.mp3 -w -o results.txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     songs.sort((a, b) -> a.compareTo(b));
                     for (String song : songs)
                         System.out.println(song);
-                }
+}
             }
-        } else {
-            System.out.println("Invalid or no file detected");
-        }
-    }
+                    } else {
+                    System.out.println("Invalid or no file detected");
+                    }
+                    }
 
     @FXML
     public void backButtonClicked(ActionEvent event) {
