@@ -31,7 +31,7 @@ public class SongsPaneController {
     private MediaPlayer mediaPlayer;
     private Media media;
     //da eliminare dopo integrazione database
-    private final String songsPath = "src/resources/songs";
+    private final String songsPath = "src/trackanalyzer/songs";
     private ObservableList<String> songs;
 
     @FXML

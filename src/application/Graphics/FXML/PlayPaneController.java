@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 
 public class PlayPaneController {
 
-    private final String songsPath = "src/resources/songs";
+    private final String songsPath = "src/trackanalyzer/songs";
     private ObservableList<String> songs = FXCollections.observableArrayList(new File(songsPath).list());
     private Media selectedSong;
 
