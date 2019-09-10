@@ -11,16 +11,18 @@ import javafx.scene.layout.Pane;
 public class PlayerBar extends ImageView {
 
     private DoubleProperty speed;
+    private double position;
 
     public PlayerBar(String url) {
         super(url);
         speed = new SimpleDoubleProperty();
+        position = getLayoutX() + (getFitWidth() / 2);
         parentProperty().addListener(new ChangeListener<Parent>() {
             @Override
             public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                 if(newValue != null) {
-                    fitWidthProperty().bind(((Pane) newValue).widthProperty().multiply(0.08));
-                    fitHeightProperty().bind(((Pane) newValue).heightProperty().multiply(0.03));
+                    fitWidthProperty().bind(((Pane) newValue).widthProperty().multiply(0.06));
+                    fitHeightProperty().bind(((Pane) newValue).heightProperty().multiply(0.02));
                     setLayoutX((((Pane) newValue).getWidth() - getFitWidth()) / 2) ;
                     setManaged(false);          //altrimenti non fa fare il binding del layoutY
                     layoutYProperty().bind(((Pane) newValue).heightProperty().subtract(getFitHeight() * 1.5));
@@ -42,5 +44,19 @@ public class PlayerBar extends ImageView {
             setLayoutX(0);
         else
             setLayoutX(getLayoutX() - speed.doubleValue());
+    }
+
+    public double getPosition() {
+        return position;
+    }
+
+    public void setPosition(double length) {
+        this.position = position;
+    }
+
+    public void updatePosition() {
+
+            position = getLayoutX() + (getFitWidth() / 2);
+
     }
 }
