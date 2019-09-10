@@ -105,18 +105,23 @@ public class SongsPaneController {
                     songs.add(copyFile.getName());
                     try {
                         Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar src/trackanalyzer/songs/*.mp3 -w -o results.txt");
+                        BufferedReader csvReader = new BufferedReader(new FileReader("results.txt"));
+                        String line;
+                        while ((line = csvReader.readLine()) != null) {
+                            System.out.println("Song: " + line.split(";")[0].replace("\\", "/").split("/")[3] + "\tBPM: " + line.split(";")[2]);
+                            double bpm = Double.parseDouble(line.split(";")[2]);
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     songs.sort((a, b) -> a.compareTo(b));
-                    for (String song : songs)
-                        System.out.println(song);
-}
+                }
             }
                     } else {
                     System.out.println("Invalid or no file detected");
                     }
-                    }
+    }
 
     @FXML
     public void backButtonClicked(ActionEvent event) {
