@@ -1,6 +1,7 @@
 package application.Graphics.FXML;
 
 
+import application.Graphics.item.scenes.GameScene;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -9,11 +10,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -35,7 +38,10 @@ public class SongsPaneController {
     private ObservableList<String> songs;
 
     @FXML
-    private BorderPane songsBorderPane;
+    private BorderPane playBorderPane;
+
+    @FXML
+    private Button playButton;
 
     @FXML
     private Button backButton;
@@ -48,10 +54,8 @@ public class SongsPaneController {
 
     @FXML
     public void initialize() {
-        //populateListView();
         songs = FXCollections.observableArrayList(new File(songsPath).list());
         songsListView.setItems(songs);
-
 
         //gestione file audio
         songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
@@ -68,16 +72,23 @@ public class SongsPaneController {
         });
     }
 
-    public void populateListView() {
-        LinkedHashSet<String> songListWithoutDuplicate = new LinkedHashSet<>(Arrays.asList(new File(songsPath).list()));
-        for (String song : songListWithoutDuplicate) {
-            songsListView.getItems().add(song);
-        }
+    @FXML
+    public void playButtonClicked(ActionEvent event) {
+        ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
+        System.out.println("Let's go!");
+        mediaPlayer.dispose();
+        Stage playStage = new Stage();
+        playStage.setMinWidth(1200);
+        playStage.setMinHeight(800);
+        Media selectedSong = new Media(Paths.get(songsPath + "/" + songsListView.getSelectionModel().getSelectedItem()).toUri().toString());
+        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), selectedSong));
+        playStage.setTitle("RythmUp");
+        playStage.show();
     }
 
     @FXML
     public void uploadSongButtonClicked(ActionEvent event) throws IOException, InterruptedException {
-        List<File> fileList = new FileChooser().showOpenMultipleDialog(songsBorderPane.getScene().getWindow());
+        List<File> fileList = new FileChooser().showOpenMultipleDialog(playBorderPane.getScene().getWindow());
         if (fileList != null) {
             for (File file : fileList) {
                 //String filename = new File("C://Users/david/Desktop/RythmUp").getPath() + "\\" + file.getName();
@@ -128,7 +139,7 @@ public class SongsPaneController {
         if (mediaPlayer != null) {
             mediaPlayer.dispose();
         }
-        ((Pane) songsBorderPane.getParent()).getChildren().remove(songsBorderPane);
+        ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
     }
 
 }

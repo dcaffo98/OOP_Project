@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="songsBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.SongsPaneController">
+<BorderPane fx:id="playBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.SongsPaneController">
    <top>
       <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" BorderPane.alignment="TOP_LEFT" />
    </top>
@@ -29,7 +29,7 @@
                         <Font name="System Bold Italic" size="16.0" />
                      </font>
                   </Label>
-                  <ListView fx:id="songsListView" onEditStart="#populateListView" />
+                  <ListView fx:id="songsListView" />
                </children>
                <HBox.margin>
                   <Insets />
@@ -38,7 +38,15 @@
                   <Insets bottom="5.0" top="5.0" />
                </padding>
             </VBox>
-            <Button fx:id="uploadSongButton" mnemonicParsing="false" onAction="#uploadSongButtonClicked" text="Upload song" />
+            <VBox spacing="50.0">
+               <children>
+                  <Button fx:id="uploadSongButton" mnemonicParsing="false" onAction="#uploadSongButtonClicked" text="Upload song" />
+                  <Button fx:id="playButton" mnemonicParsing="false" onAction="#playButtonClicked" text="Let's play!" />
+               </children>
+               <padding>
+                  <Insets top="50.0" />
+               </padding>
+            </VBox>
          </children>
       </HBox>
    </center>
