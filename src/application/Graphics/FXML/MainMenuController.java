@@ -4,7 +4,6 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -28,13 +27,13 @@ public class MainMenuController {
     private VBox mainBox;
 
     @FXML
-    private Button playButton;
+    private Button playButtonDeprecated;
 
     @FXML
     private Button scoreButton;
 
     @FXML
-    private Button songsButton;
+    private Button playButton;
 
     @FXML
     private Button exitButton;
@@ -45,9 +44,9 @@ public class MainMenuController {
     public void initialize() {
 
         buttons = new ArrayList<Button>();
-        buttons.add(playButton);
+        buttons.add(playButtonDeprecated);
         buttons.add(scoreButton);
-        buttons.add(songsButton);
+        buttons.add(playButton);
         buttons.add(exitButton);
 
         //binding elements
@@ -68,7 +67,15 @@ public class MainMenuController {
     @FXML
     public void playOnClick() throws Exception {
         System.out.println("Play!");
-        Parent playPane = FXMLLoader.load(getClass().getResource("PlayPane.fxml"));
+        Parent songsPane = FXMLLoader.load(getClass().getResource("PlayPane.fxml"));
+        mainMenuBorderPanel.getChildren().remove(mainBox);
+        mainMenuBorderPanel.setCenter(songsPane);
+    }
+
+    @FXML
+    public void playOnClickDeprecated() throws Exception {
+        System.out.println("Play!");
+        Parent playPane = FXMLLoader.load(getClass().getResource("PlayPaneDeprecated.fxml"));
         mainMenuBorderPanel.getChildren().remove(mainBox);
         mainMenuBorderPanel.setCenter(playPane);
     }
@@ -79,14 +86,6 @@ public class MainMenuController {
         Parent scorePane = FXMLLoader.load(getClass().getResource("ScorePane.fxml"));
         mainMenuBorderPanel.getChildren().remove(mainBox);
         mainMenuBorderPanel.setCenter(scorePane);
-    }
-
-    @FXML
-    public void songsOnClick() throws Exception {
-        System.out.println("Songs!");
-        Parent songsPane = FXMLLoader.load(getClass().getResource("SongsPane.fxml"));
-        mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(songsPane);
     }
 
     @FXML
