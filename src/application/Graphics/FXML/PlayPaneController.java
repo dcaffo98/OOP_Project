@@ -1,6 +1,7 @@
 package application.Graphics.FXML;
 
 
+import application.Graphics.item.SongDownloader;
 import application.Graphics.item.scenes.GameScene;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
@@ -40,9 +41,15 @@ public class PlayPaneController {
     private MediaPlayer mediaPlayer;
     private Media media;
     //da eliminare dopo integrazione database
-    private final String songsPath = "src/trackanalyzer/songs";
+    private final String SONGS_PATH = "src/trackanalyzer/songs/";
     private ObservableList<String> songs;
-    
+    private final String DB_AUTH_STRING = "mongodb+srv://base-user:RythmUp@rythmup-v9vh2.gcp.mongodb.net/test?retryWrites=true&w=majority";
+    private MongoClientURI uri;
+    private MongoClient mongoClient;
+    private MongoDatabase database;
+    private File tempSongFile;
+    private SongDownloader songDownloader;
+    private String selectedSong;
 
     @FXML
     private BorderPane playBorderPane;
@@ -61,14 +68,29 @@ public class PlayPaneController {
 
     @FXML
     public void initialize() {
-        songs = FXCollections.observableArrayList(new File(songsPath).list());
+        this.uri = new MongoClientURI(DB_AUTH_STRING);
+        this.mongoClient = new MongoClient(uri);
+        this.database = mongoClient.getDatabase("MusicDatabase");
+        //aggiungo tutti i nomi delle canzoni presenti sul database     ************************************
+        List<String> collectionList = new ArrayList<String>();
+        database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(a));
+        songs = FXCollections.observableArrayList(collectionList);
         songsListView.setItems(songs);
 
-        //gestione file audio
+
+        //quando una canzone è selezionata: se è presente in locale parte l'audio, se non lo è prima viene scaricata dal db         *****************
         songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                media = new Media(Paths.get(songsPath + "/" + songsListView.getSelectionModel().getSelectedItem()).toUri().toString());
+                selectedSong = songsListView.getSelectionModel().getSelectedItem();
+                if (Arrays.asList(new File(SONGS_PATH).list()).contains(selectedSong)) {
+                    media = new Media(Paths.get(SONGS_PATH + selectedSong).toUri().toString());
+                } else {
+                    songDownloader = new SongDownloader(database, SONGS_PATH + selectedSong);
+                    media = new Media(songDownloader.getMediaPathString());
+                    tempSongFile = new File(songDownloader.getMediaPathString());
+                }
+
                 if (mediaPlayer != null) {
                     mediaPlayer.dispose();
                 }
@@ -87,7 +109,7 @@ public class PlayPaneController {
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
         playStage.setMinHeight(800);
-        Media selectedSong = new Media(Paths.get(songsPath + "/" + songsListView.getSelectionModel().getSelectedItem()).toUri().toString());
+        Media selectedSong = new Media(Paths.get(SONGS_PATH + "/" + songsListView.getSelectionModel().getSelectedItem()).toUri().toString());
         playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), selectedSong));
         playStage.setTitle("RythmUp");
         playStage.show();
@@ -103,9 +125,15 @@ public class PlayPaneController {
                     correctName = file.getName().replace(" ", "");
                 else
                     correctName = file.getName();
-                Path filename = Paths.get(songsPath + "/" + correctName);
-                File copyFile = new File(filename.toUri());
+                //controllo che la canzone non sia già presente                 *************************************
+                if (songsListView.getItems().contains(correctName)) {
+                    System.out.println("This song is already available" + correctName);
+                    continue;
+                }
+                Path filePath = Paths.get(SONGS_PATH + correctName);
+                File copyFile = new File(filePath.toUri());
                 try {
+                    //copio il file in locale               *********************************
                     copyFile.createNewFile();
                     FileInputStream source = new FileInputStream(file);
                     FileOutputStream destination = new FileOutputStream(copyFile);
@@ -113,64 +141,31 @@ public class PlayPaneController {
                     byte[] buffer = new byte[lenght];
                     source.read(buffer);
                     destination.write(buffer, 0, lenght);
-
-
-                    MongoClientURI uri = new MongoClientURI(
-                            "mongodb+srv://base-user:RythmUp@rythmup-v9vh2.gcp.mongodb.net/test?retryWrites=true&w=majority");
-
-                    MongoClient mongoClient = new MongoClient(uri);
-                    MongoDatabase database = mongoClient.getDatabase("MusicDatabase");
-                    List<String> collectionList = new ArrayList<String>();
-                    database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(a));
-                    if (collectionList.contains(file.getName())) {
-                        System.out.println("Song already available: " + file.getName());
-                    } else {
-                        database.createCollection(correctName);
-                        MongoCollection collection = database.getCollection(correctName);
-                        Process proc =  Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar " + copyFile.getCanonicalPath());
-                        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                        String line = stdInput.readLine();
-                        System.out.println(line);
-                        double bpm = Double.parseDouble(line.split("BPM: ")[1]);
-                        System.out.println("BPM VALUE: "+ bpm);
-                        Document doc = new Document("songFile", buffer)
-                                .append("bpm", bpm);
-                        collection.insertOne(doc);
-
-                        FindIterable<Document> x = collection.find();
-                        doc = x.first();
-                        Binary bin = (Binary) doc.get("songFile");
-                        double bpmx = (Double) doc.get("bpm");
-                        System.out.println("BPM OBTAINED FROM DB: " + bpmx);
-                        buffer = bin.getData();
-                        File test = new File("test.mp3");
-                        FileOutputStream outputStream = new FileOutputStream(test);
-                        outputStream.write(buffer, 0, buffer.length);
-                    }
-
-                    /*Document doc = new Document("songName", file.getName())
-                            .append("songFile", buffer)
-                            .append("bpm", 100.0);
-                    collection.insertOne(doc);*/
-                    mongoClient.close();
-
-
+                    //estraggo i bpm                **********************************
+                    Process proc =  Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar " + copyFile.getCanonicalPath());
+                    BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+                    String line = stdInput.readLine();
+                    System.out.println(line);
+                    double bpm = Double.parseDouble(line.split("BPM: ")[1]);
+                    System.out.println("BPM VALUE: "+ bpm);
+                    //creo il bson document e faccio l'upload sul database            *****************************
+                    database.createCollection(correctName);
+                    MongoCollection collection = database.getCollection(correctName);
+                    Document doc = new Document("songFile", buffer)
+                            .append("bpm", bpm);
+                    collection.insertOne(doc);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (songsListView.getItems().contains(copyFile.getName())) {
-                    System.out.println("This song is already available" + copyFile.getName());
-                    continue;
-                } else {
-                    songs.add(copyFile.getName());
-                    songs.sort((a, b) -> a.compareTo(b));
-                }
+                //aggiungo il nome della canzone alla listView          *************************
+                songs.add(correctName);
+                songs.sort((a, b) -> a.compareTo(b));
             }
-                    } else {
-                    System.out.println("Invalid or no file detected");
-                    }
+        } else {
+            System.out.println("Invalid or no file detected");
+        }
     }
 
     @FXML
