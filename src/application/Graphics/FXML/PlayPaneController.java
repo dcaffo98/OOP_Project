@@ -2,6 +2,10 @@ package application.Graphics.FXML;
 
 
 import application.Graphics.item.scenes.GameScene;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,6 +22,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.bson.Document;
+import org.bson.types.Binary;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +42,7 @@ public class PlayPaneController {
     //da eliminare dopo integrazione database
     private final String songsPath = "src/trackanalyzer/songs";
     private ObservableList<String> songs;
+    
 
     @FXML
     private BorderPane playBorderPane;
@@ -91,18 +98,63 @@ public class PlayPaneController {
         List<File> fileList = new FileChooser().showOpenMultipleDialog(playBorderPane.getScene().getWindow());
         if (fileList != null) {
             for (File file : fileList) {
-                //String filename = new File("C://Users/david/Desktop/RythmUp").getPath() + "\\" + file.getName();
-                Path filenamex = Paths.get(songsPath + "/" + file.getName());
-                File copyFile = new File(filenamex.toUri());
+                String correctName;
+                if (file.getName().contains(" "))
+                    correctName = file.getName().replace(" ", "");
+                else
+                    correctName = file.getName();
+                Path filename = Paths.get(songsPath + "/" + correctName);
+                File copyFile = new File(filename.toUri());
                 try {
                     copyFile.createNewFile();
                     FileInputStream source = new FileInputStream(file);
                     FileOutputStream destination = new FileOutputStream(copyFile);
-                    byte[] buffer = new byte[1024];
-                    int lenght;
-                    while ((lenght = source.read(buffer)) > 0) {
-                        destination.write(buffer, 0, lenght);
+                    int lenght = (int) file.length();
+                    byte[] buffer = new byte[lenght];
+                    source.read(buffer);
+                    destination.write(buffer, 0, lenght);
+
+
+                    MongoClientURI uri = new MongoClientURI(
+                            "mongodb+srv://base-user:RythmUp@rythmup-v9vh2.gcp.mongodb.net/test?retryWrites=true&w=majority");
+
+                    MongoClient mongoClient = new MongoClient(uri);
+                    MongoDatabase database = mongoClient.getDatabase("MusicDatabase");
+                    List<String> collectionList = new ArrayList<String>();
+                    database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(a));
+                    if (collectionList.contains(file.getName())) {
+                        System.out.println("Song already available: " + file.getName());
+                    } else {
+                        database.createCollection(correctName);
+                        MongoCollection collection = database.getCollection(correctName);
+                        Process proc =  Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar " + copyFile.getCanonicalPath());
+                        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+                        String line = stdInput.readLine();
+                        System.out.println(line);
+                        double bpm = Double.parseDouble(line.split("BPM: ")[1]);
+                        System.out.println("BPM VALUE: "+ bpm);
+                        Document doc = new Document("songFile", buffer)
+                                .append("bpm", bpm);
+                        collection.insertOne(doc);
+
+                        FindIterable<Document> x = collection.find();
+                        doc = x.first();
+                        Binary bin = (Binary) doc.get("songFile");
+                        double bpmx = (Double) doc.get("bpm");
+                        System.out.println("BPM OBTAINED FROM DB: " + bpmx);
+                        buffer = bin.getData();
+                        File test = new File("test.mp3");
+                        FileOutputStream outputStream = new FileOutputStream(test);
+                        outputStream.write(buffer, 0, buffer.length);
                     }
+
+                    /*Document doc = new Document("songName", file.getName())
+                            .append("songFile", buffer)
+                            .append("bpm", 100.0);
+                    collection.insertOne(doc);*/
+                    mongoClient.close();
+
+
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -112,20 +164,7 @@ public class PlayPaneController {
                     System.out.println("This song is already available" + copyFile.getName());
                     continue;
                 } else {
-                    //songsListView.getItems().add(copyFile.getName());
                     songs.add(copyFile.getName());
-                    try {
-                        Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar src/trackanalyzer/songs/*.mp3 -w -o results.txt");
-                        BufferedReader csvReader = new BufferedReader(new FileReader("results.txt"));
-                        String line;
-                        while ((line = csvReader.readLine()) != null) {
-                            System.out.println("Song: " + line.split(";")[0].replace("\\", "/").split("/")[3] + "\tBPM: " + line.split(";")[2]);
-                            double bpm = Double.parseDouble(line.split(";")[2]);
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                     songs.sort((a, b) -> a.compareTo(b));
                 }
             }
