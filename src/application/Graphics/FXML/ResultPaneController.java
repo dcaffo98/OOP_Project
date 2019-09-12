@@ -57,12 +57,11 @@ public class ResultPaneController {
 
 
     public void setData(int maxCombo, String songName, int score, int missedNotes, int hitNotes) {
-
         scoreLabel.setText(((Integer) score).toString());
         maxComboLabel.setText("Max combo: " + ((Integer) maxCombo).toString());
         hitNotesLabel.setText("Hit notes: " + ((Integer) hitNotes).toString());
         missedNotesLabel.setText("Missed notes: " + ((Integer) missedNotes).toString());
-        songNameLabel.setText(songName);
+        songNameLabel.setText(songName.split("/")[songName.split("/").length - 1]);
     }
 
 }
