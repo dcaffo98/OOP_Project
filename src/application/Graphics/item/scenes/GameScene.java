@@ -64,6 +64,7 @@ public class GameScene extends Scene {
                     break;
                 case ENTER:
                     timeline.play();
+                    mediaPlayer.play();
             }
         });
 

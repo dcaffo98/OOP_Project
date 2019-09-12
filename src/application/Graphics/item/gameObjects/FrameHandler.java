@@ -70,6 +70,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                     break;
                 case ESCAPE:
                     timeline.pause();
+                    mediaPlayer.pause();
                     break;
             }
         }
