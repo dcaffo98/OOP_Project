@@ -29,17 +29,19 @@ public class GameScene extends Scene {
     private Note note;
     private Media selectedSong;
     private MediaPlayer mediaPlayer;
+    private double bpm;
 
-    public GameScene(Parent root, double width, double height, Media selectedSong) {
+    public GameScene(Parent root, double width, double height, Media selectedSong, double bpm) {
         super(root, width, height);
         gamePane = (AnchorPane) root;
         gameTopPane = new GameTopPane();
         this.selectedSong = selectedSong;
+        this.bpm = bpm;
         this.mediaPlayer = new MediaPlayer(this.selectedSong);
         playerBar = new PlayerBar("resources/images/paddleRed.png");
         gamePane.getChildren().addAll(gameTopPane,playerBar);
         this.timeline = new Timeline();
-        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer);
+        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer, bpm);
         timeline.setCycleCount(timeline.INDEFINITE);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));

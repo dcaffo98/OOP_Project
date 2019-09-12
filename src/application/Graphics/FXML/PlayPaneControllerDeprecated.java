@@ -53,7 +53,7 @@ public class PlayPaneControllerDeprecated {
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
         playStage.setMinHeight(800);
-        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(),this.selectedSong));
+        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(),this.selectedSong, 100));
         playStage.setTitle("RythmUp");
         playStage.show();
     }

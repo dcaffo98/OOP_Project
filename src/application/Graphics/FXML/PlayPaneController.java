@@ -87,7 +87,9 @@ public class PlayPaneController {
                     if (Arrays.asList(new File(SONGS_PATH).list()).contains(selectedSong)) {
                         media = new Media(Paths.get(SONGS_PATH + selectedSong).toUri().toString());
                     } else {
-                        songDownloader = new SongDownloader(database, SONGS_PATH + selectedSong);
+                        System.out.println(SONGS_PATH + selectedSong);
+                        System.out.println(selectedSong);
+                        songDownloader = new SongDownloader(database, selectedSong, SONGS_PATH);
                         media = new Media(songDownloader.getMediaPathString());
                         tempSongFile = new File(songDownloader.getMediaPathString());
                     }
@@ -114,7 +116,7 @@ public class PlayPaneController {
             Stage playStage = new Stage();
             playStage.setMinWidth(1200);
             playStage.setMinHeight(800);
-            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media));
+            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media, bpm));
             playStage.setTitle("RythmUp");
             playStage.show();
         } else {

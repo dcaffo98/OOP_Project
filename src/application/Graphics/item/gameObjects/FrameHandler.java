@@ -27,7 +27,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
     
 
-    public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer) {
+    public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer, double bpm) {
 
         this.gamePane = gamePane;
         this.gameTopPane = gameTopPane;
@@ -36,7 +36,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.score = 0;
         this.frameCounter = 0;
         this.notes = new ArrayList<Note>();
-        this.bpm = 97.6;
+        this.bpm = bpm;
         this.mediaPlayer = mediaPlayer;
         this.frameBeat = (1.0 / (bpm/60.0)) / 0.016;
     }

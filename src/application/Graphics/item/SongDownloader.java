@@ -16,13 +16,15 @@ public class SongDownloader {
     private MongoDatabase database;
     private MongoCollection collection;
     private String songName;
+    private String songPath;
     private String mediaPathString;
     private File tempSongFile;
 
-    public SongDownloader(MongoDatabase database, String songName) {
+    public SongDownloader(MongoDatabase database, String songName, String songDir) {
         this.database = database;
         this.collection = database.getCollection(songName);
         this.songName = songName;
+        this.songPath = songDir + songName;
         this.tempSongFile = downloadSong();
         this.mediaPathString = Paths.get(tempSongFile.getPath()).toUri().toString();
     }
@@ -40,7 +42,8 @@ public class SongDownloader {
             double bpmx = (Double) doc.get("bpm");
             System.out.println("BPM OBTAINED FROM DB: " + bpmx);
             byte[] buffer = bin.getData();
-            tmp = new File(songName);
+            tmp = new File(songPath);
+            tmp.createNewFile();
             FileOutputStream outputStream = new FileOutputStream(tmp);
             outputStream.write(buffer, 0, buffer.length);
         } catch (FileNotFoundException e) {
