@@ -108,12 +108,21 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         int leftBorder = (int)note.getRadius();
         int rightBorder = (int)gameTopPane.getPrefWidth() - (leftBorder);
         Random random = new Random();
-        int randomInt;
+        double randomInt;
         player.updatePosition();
+        double possibleWidth = 0.2 * gamePane.getWidth();
         do {
             randomInt = random.nextInt(rightBorder - leftBorder) + leftBorder;
             System.out.println(player.getPosition());
-        } while ((randomInt < (player.getPosition() - (player.getPosition() *0.25))) && (randomInt > player.getPosition() + (player.getPosition() *0.25)));
+        } while ((randomInt < (player.getPosition() - possibleWidth)) || (randomInt > player.getPosition() + possibleWidth));
+        if (notes.size() > 0) {
+            Note previousNote = notes.get(notes.size() - 1);
+            if (randomInt > (previousNote.getCenterX() + (possibleWidth * 1.2))) {
+                randomInt = previousNote.getCenterX() + (possibleWidth * 1.2);
+            } else if (randomInt < (previousNote.getCenterX() - (possibleWidth * 1.2))) {
+                randomInt = previousNote.getCenterX() - (possibleWidth * 1.2);
+            }
+        }
         note.setCenterX(randomInt);
         notes.add(note);
         gamePane.getChildren().addAll(note);

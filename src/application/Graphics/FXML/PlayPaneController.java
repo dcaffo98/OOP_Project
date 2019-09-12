@@ -114,8 +114,8 @@ public class PlayPaneController {
             double bpm = getBPM(selectedSong);
             System.out.println(selectedSong + " BPM: " + bpm);
             Stage playStage = new Stage();
-            playStage.setMinWidth(1200);
-            playStage.setMinHeight(800);
+            playStage.setMinWidth(1080);
+            playStage.setMinHeight(600);
             playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media, bpm));
             playStage.setTitle("RythmUp");
             playStage.show();
