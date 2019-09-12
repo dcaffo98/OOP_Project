@@ -26,7 +26,7 @@ public class Note extends Circle {
                 public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                     if(newValue != null) {
                         //la velocità dipende dai bpm, quando l'ottava nota viene creata una arriva in fondo a ritmo
-                        speed.bind( ((Pane) getParent()).heightProperty().divide(frameBeat * 8));   
+                        speed.bind( ((Pane) getParent()).heightProperty().divide(frameBeat * 8));
                     }
                 }
             });

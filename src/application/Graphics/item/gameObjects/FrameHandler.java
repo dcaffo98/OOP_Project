@@ -27,6 +27,8 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     private int frameCounter;
     private double bpm;
     private double frameBeat;
+    private double lastNoteTime;
+    private double endOfGenerationTime;
 
     
 
@@ -42,6 +44,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.bpm = bpm;
         this.mediaPlayer = mediaPlayer;
         this.frameBeat = (1.0 / (bpm/60.0)) / 0.016; //formula che indica quanti frame devono passare per aggiungere una nota.
+        this.lastNoteTime = (frameBeat * 8) * 16; //millisecondi necessari all'ultima nota per arrivare alla fine dello schermo
+        this.endOfGenerationTime = mediaPlayer.getMedia().getDuration().toMillis() - lastNoteTime;
+
     }
 
     public KeyCode getCode() {
@@ -64,6 +69,10 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
 
         }
+
+
+
+
         if (code != null) {
             switch (code) {
                 case RIGHT:
@@ -78,7 +87,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                     break;
             }
         }
-        if (frameCounter > this.frameBeat) {
+        if ((frameCounter > this.frameBeat) && (mediaPlayer.getCurrentTime().toMillis() < endOfGenerationTime)) {
             addNote();
             frameCounter = 0;
         }
