@@ -3,9 +3,8 @@ package application.Graphics.FXML;
 
 import application.Graphics.item.SongDownloader;
 import application.Graphics.item.scenes.GameScene;
+import application.Graphics.item.scenes.MainScene;
 import com.mongodb.Block;
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
 import com.mongodb.client.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -24,7 +24,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.bson.Document;
-import org.bson.types.Binary;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,22 +33,17 @@ import java.nio.file.Paths;
 import java.io.*;
 import java.util.*;
 
-import static java.lang.Math.abs;
-
 public class PlayPaneController {
 
     private MediaPlayer mediaPlayer;
     private Media media;
-    //da eliminare dopo integrazione database
     private final String SONGS_PATH = "src/trackanalyzer/songs/";
-    private ObservableList<String> songs;
     private final String DB_AUTH_STRING = "mongodb+srv://base-user:RythmUp@rythmup-v9vh2.gcp.mongodb.net/test?retryWrites=true&w=majority";
-    private MongoClientURI uri;
-    private MongoClient mongoClient;
+    private String selectedSong;
+    private ObservableList<String> songs;
     private MongoDatabase database;
     private File tempSongFile;
     private SongDownloader songDownloader;
-    private String selectedSong;
 
     @FXML
     private BorderPane playBorderPane;
@@ -66,17 +60,22 @@ public class PlayPaneController {
     @FXML
     private ListView<String> songsListView;
 
+
     @FXML
     public void initialize() {
-        this.uri = new MongoClientURI(DB_AUTH_STRING);
-        this.mongoClient = new MongoClient(uri);
-        this.database = mongoClient.getDatabase("MusicDatabase");
-        //aggiungo tutti i nomi delle canzoni presenti sul database     ************************************
-        List<String> collectionList = new ArrayList<String>();
-        database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(a));
-        songs = FXCollections.observableArrayList(collectionList);
-        songsListView.setItems(songs);
-
+        playBorderPane.parentProperty().addListener(new ChangeListener<Parent>() {
+            @Override
+            public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
+                if (newValue != null) {
+                    //aggiungo tutti i nomi delle canzoni presenti sul database     ************************************
+                    database = ((MainScene) playBorderPane.getParent().getScene()).getDBConnection();
+                    List<String> collectionList = new ArrayList<String>();
+                    database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(a));
+                    songs = FXCollections.observableArrayList(collectionList);
+                    songsListView.setItems(songs);
+                }
+            }
+        });
 
         //quando una canzone è selezionata: se è presente in locale parte l'audio, se non lo è prima viene scaricata dal db         *****************
         songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
@@ -103,16 +102,19 @@ public class PlayPaneController {
 
     @FXML
     public void playButtonClicked(ActionEvent event) {
-        ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
-        System.out.println("Let's go!");
-        mediaPlayer.dispose();
-        Stage playStage = new Stage();
-        playStage.setMinWidth(1200);
-        playStage.setMinHeight(800);
-        Media selectedSong = new Media(Paths.get(SONGS_PATH + "/" + songsListView.getSelectionModel().getSelectedItem()).toUri().toString());
-        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), selectedSong));
-        playStage.setTitle("RythmUp");
-        playStage.show();
+        if (media != null) {
+            ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
+            System.out.println("Let's go!");
+            mediaPlayer.dispose();
+            double bpm = getBPM(selectedSong);
+            System.out.println(selectedSong + " BPM: " + bpm);
+            Stage playStage = new Stage();
+            playStage.setMinWidth(1200);
+            playStage.setMinHeight(800);
+            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media));
+            playStage.setTitle("RythmUp");
+            playStage.show();
+        }
     }
 
     @FXML
@@ -174,6 +176,13 @@ public class PlayPaneController {
             mediaPlayer.dispose();
         }
         ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
+    }
+
+    public double getBPM(String selectedSong) {
+        MongoCollection collection = database.getCollection(selectedSong);
+        FindIterable<Document> docList = collection.find();
+        double bpm = (Double) docList.first().get("bpm");
+        return bpm;
     }
 
 }
