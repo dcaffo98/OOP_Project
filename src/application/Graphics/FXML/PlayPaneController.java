@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -82,27 +83,29 @@ public class PlayPaneController {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 selectedSong = songsListView.getSelectionModel().getSelectedItem();
-                if (Arrays.asList(new File(SONGS_PATH).list()).contains(selectedSong)) {
-                    media = new Media(Paths.get(SONGS_PATH + selectedSong).toUri().toString());
-                } else {
-                    songDownloader = new SongDownloader(database, SONGS_PATH + selectedSong);
-                    media = new Media(songDownloader.getMediaPathString());
-                    tempSongFile = new File(songDownloader.getMediaPathString());
-                }
+                if (selectedSong !=  null) {
+                    if (Arrays.asList(new File(SONGS_PATH).list()).contains(selectedSong)) {
+                        media = new Media(Paths.get(SONGS_PATH + selectedSong).toUri().toString());
+                    } else {
+                        songDownloader = new SongDownloader(database, SONGS_PATH + selectedSong);
+                        media = new Media(songDownloader.getMediaPathString());
+                        tempSongFile = new File(songDownloader.getMediaPathString());
+                    }
 
-                if (mediaPlayer != null) {
-                    mediaPlayer.dispose();
+                    if (mediaPlayer != null) {
+                        mediaPlayer.dispose();
+                    }
+                    mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.setStartTime(Duration.millis(90000));
+                    mediaPlayer.play();
                 }
-                mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setStartTime(Duration.millis(90000));
-                mediaPlayer.play();
             }
         });
     }
 
     @FXML
     public void playButtonClicked(ActionEvent event) {
-        if (media != null) {
+        if (media != null && selectedSong != null) {
             ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
             System.out.println("Let's go!");
             mediaPlayer.dispose();
@@ -114,6 +117,9 @@ public class PlayPaneController {
             playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media));
             playStage.setTitle("RythmUp");
             playStage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select the song you want to play with");
+            alert.showAndWait();
         }
     }
 
@@ -129,6 +135,8 @@ public class PlayPaneController {
                     correctName = file.getName();
                 //controllo che la canzone non sia già presente                 *************************************
                 if (songsListView.getItems().contains(correctName)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, correctName + " already available");
+                    alert.showAndWait();
                     System.out.println("This song is already available" + correctName);
                     continue;
                 }
