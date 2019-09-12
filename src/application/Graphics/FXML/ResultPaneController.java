@@ -45,20 +45,6 @@ public class ResultPaneController {
 
     @FXML
     public void initialize() {
-
-        resultBorderPane.sceneProperty().addListener(new ChangeListener<Scene>() {
-            @Override
-            public void changed(ObservableValue<? extends Scene> observableValue, Scene oldScene, Scene newScene) {
-                if (newScene != null) {
-                    scoreScene = (ScoreScene) resultBorderPane.getScene();
-                    scoreLabel.setText(((Integer) scoreScene.getScore()).toString());
-                    maxComboLabel.setText("Max combo: " + ((Integer) scoreScene.getMaxCombo()).toString());
-                    hitNotesLabel.setText("Hit notes: " + ((Integer) scoreScene.getHitNotes()).toString());
-                    missedNotesLabel.setText("Missed notes: " + ((Integer) scoreScene.getMissedNotes()).toString());
-                    songNameLabel.setText(scoreScene.getSongName());
-                }
-            }
-        });
     }
 
     @FXML
@@ -68,4 +54,15 @@ public class ResultPaneController {
         ((Stage) exitButton.getScene().getWindow()).close();
 
     }
+
+
+    public void setData(int maxCombo, String songName, int score, int missedNotes, int hitNotes) {
+
+        scoreLabel.setText(((Integer) score).toString());
+        maxComboLabel.setText("Max combo: " + ((Integer) maxCombo).toString());
+        hitNotesLabel.setText("Hit notes: " + ((Integer) hitNotes).toString());
+        missedNotesLabel.setText("Missed notes: " + ((Integer) missedNotes).toString());
+        songNameLabel.setText(songName);
+    }
+
 }

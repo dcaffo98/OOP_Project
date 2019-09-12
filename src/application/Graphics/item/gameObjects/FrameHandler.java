@@ -1,7 +1,7 @@
 package application.Graphics.item.gameObjects;
 
+import application.Graphics.FXML.ResultPaneController;
 import application.Graphics.item.panes.GameTopPane;
-import application.Graphics.item.scenes.ScoreScene;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +15,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,11 +79,15 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
             timeline.stop();
             try {
-                Parent resultPane = FXMLLoader.load(getClass().getResource("../../FXML/ResultPane.fxml"));
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("../../FXML/ResultPane.fxml"));
+                Parent resultPane = loader.load();
+                ResultPaneController controller = loader.getController();
+                controller.setData(maxCombo,mediaPlayer.getMedia().getSource(),score,missedNotes,hitNotes);
                 Stage tmp = ((Stage) gamePane.getScene().getWindow());
                 tmp.setMinWidth(600);
                 tmp.setMinHeight(400);
-                tmp.setScene(new ScoreScene(resultPane,maxCombo,mediaPlayer.getMedia().getSource(),score,missedNotes,hitNotes));
+                tmp.setScene(new Scene(resultPane));
                 tmp.setResizable(false);
             } catch (IOException e) {
                 e.printStackTrace();
