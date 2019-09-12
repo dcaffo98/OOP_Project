@@ -13,7 +13,7 @@ public class Note extends Circle {
         private double bottomBorder;
         private DoubleProperty speed;
 
-        public Note(double X, double Y) {
+        public Note(double X, double Y,double frameBeat) {
 
             super();
             setCenterX(X);
@@ -25,13 +25,13 @@ public class Note extends Circle {
                 @Override
                 public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                     if(newValue != null) {
-                        speed.bind( ((Pane) getParent()).heightProperty().multiply(0.0041));
+                        //la velocità dipende dai bpm, quando l'ottava nota viene creata una arriva in fondo a ritmo
+                        speed.bind( ((Pane) getParent()).heightProperty().divide(frameBeat * 8));   
                     }
                 }
             });
 
         }
-
 
         public void updatePosition() {
 

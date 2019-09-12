@@ -6,7 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -38,7 +41,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.notes = new ArrayList<Note>();
         this.bpm = bpm;
         this.mediaPlayer = mediaPlayer;
-        this.frameBeat = (1.0 / (bpm/60.0)) / 0.016;
+        this.frameBeat = (1.0 / (bpm/60.0)) / 0.016; //formula che indica quanti frame devono passare per aggiungere una nota.
     }
 
     public KeyCode getCode() {
@@ -53,6 +56,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent event) {
         
         // move player, if key is pressed
+        gamePane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         frameCounter++;
         if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
 
@@ -90,9 +94,13 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         Note toDelete = null;
         for (Note n: notes) {
             n.updatePosition();
-            if ((n.getBottomBorder() >= gamePane.getHeight()) || checkCollision(n)) {
+            if ((n.getBottomBorder() >= gamePane.getHeight())) {
                     toDelete = n;
+                    gamePane.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
                 }
+            if (checkCollision(n)) {
+                    toDelete = n;
+            }
         }
         if (toDelete != null) {
             notes.remove(toDelete);
@@ -104,7 +112,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
     public void addNote() {
 
-        Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight());
+        Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight(), frameBeat);
         int leftBorder = (int)note.getRadius();
         int rightBorder = (int)gameTopPane.getPrefWidth() - (leftBorder);
         Random random = new Random();
@@ -132,7 +140,6 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     }
     public boolean checkCollision(Note n) {
         if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX()+player.getFitWidth())   ) {
-
             this.score++;
             gameTopPane.setScore(getScore());
             System.out.println("COLLISION");
