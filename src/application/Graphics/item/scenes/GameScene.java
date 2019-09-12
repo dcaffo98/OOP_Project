@@ -41,8 +41,8 @@ public class GameScene extends Scene {
         playerBar = new PlayerBar("resources/images/paddleRed.png");
         gamePane.getChildren().addAll(gameTopPane,playerBar);
         this.timeline = new Timeline();
-        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer, bpm);
-        timeline.setCycleCount(timeline.INDEFINITE);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer, this.bpm);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));
         mediaPlayer.play();
