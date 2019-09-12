@@ -1,36 +1,15 @@
 package application.Graphics.item.scenes;
 
-import application.Graphics.item.panes.MainPane;
-import application.Graphics.item.panes.MenuPane;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 public class MainScene extends Scene {
 
-    private MenuPane menuPane;
-
     public MainScene(Parent root, double width, double height) {
         super(root, width, height);
-        setMenuPane(new MenuPane());
         getStylesheets().add("resources/style/stylesheet.css");
 
     }
-
-    public MenuPane getMenuPane() {
-        return menuPane;
-    }
-
-    public void setMenuPane(MenuPane menuPane) {
-        this.menuPane = menuPane;
-    }
-
 
 }
 
