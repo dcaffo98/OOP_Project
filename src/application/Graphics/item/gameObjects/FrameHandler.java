@@ -1,16 +1,23 @@
 package application.Graphics.item.gameObjects;
 
 import application.Graphics.item.panes.GameTopPane;
+import application.Graphics.item.scenes.ScoreScene;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,6 +31,10 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     private AnchorPane gamePane;
     private MediaPlayer mediaPlayer;
     private int score;
+    private int missedNotes;
+    private int hitNotes;
+    private int maxCombo;
+    private int combo;
     private int frameCounter;
     private double bpm;
     private double frameBeat;
@@ -46,7 +57,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.frameBeat = (1.0 / (bpm/60.0)) / 0.016; //formula che indica quanti frame devono passare per aggiungere una nota.
         this.lastNoteTime = (frameBeat * 8) * 16; //millisecondi necessari all'ultima nota per arrivare alla fine dello schermo
         this.endOfGenerationTime = mediaPlayer.getMedia().getDuration().toMillis() - lastNoteTime;
-
+        this.maxCombo = 0;
+        this.hitNotes = 0;
+        this.missedNotes = 0;
     }
 
     public KeyCode getCode() {
@@ -66,6 +79,17 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
 
             timeline.stop();
+            try {
+                Parent resultPane = FXMLLoader.load(getClass().getResource("../../FXML/ResultPane.fxml"));
+                Stage tmp = ((Stage) gamePane.getScene().getWindow());
+                tmp.setMinWidth(600);
+                tmp.setMinHeight(400);
+                tmp.setScene(new ScoreScene(resultPane,maxCombo,mediaPlayer.getMedia().getSource(),score,missedNotes,hitNotes));
+                tmp.setResizable(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
 
         }
@@ -87,9 +111,12 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                     break;
             }
         }
+
+
         if ((frameCounter > this.frameBeat) && (mediaPlayer.getCurrentTime().toMillis() < endOfGenerationTime)) {
             addNote();
             frameCounter = 0;
+            if (combo > maxCombo) maxCombo = combo;
         }
         if (notes.size() > 0) {
             update();
@@ -105,6 +132,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
             n.updatePosition();
             if ((n.getBottomBorder() >= gamePane.getHeight())) {
                     toDelete = n;
+                    this.missedNotes++;
+                    score+= combo * 3;
+                    this.combo = 0;
                     gamePane.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
                 }
             if (checkCollision(n)) {
@@ -149,7 +179,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     }
     public boolean checkCollision(Note n) {
         if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX()+player.getFitWidth())   ) {
-            this.score++;
+            this.hitNotes++;
+            this.combo++;
+            score = score + 100 * combo;
             gameTopPane.setScore(getScore());
             System.out.println("COLLISION");
             return true;
