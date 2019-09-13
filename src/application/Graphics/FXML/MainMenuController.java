@@ -1,5 +1,6 @@
 package application.Graphics.FXML;
 
+import application.Graphics.item.MongoDBConnector;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenuController {
+
+    private MongoDBConnector mongoDBConnector;
 
     @FXML
     private BorderPane mainMenuBorderPanel;
@@ -44,6 +47,8 @@ public class MainMenuController {
     @FXML
     public void initialize() {
 
+        mongoDBConnector = new MongoDBConnector();
+
         buttons = new ArrayList<Button>();
         buttons.add(playButtonDeprecated);
         buttons.add(scoreButton);
@@ -68,9 +73,13 @@ public class MainMenuController {
     @FXML
     public void playOnClick(ActionEvent event) throws Exception {
         System.out.println("Play!");
-        Parent songsPane = FXMLLoader.load(getClass().getResource("PlayPane.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("PlayPane.fxml"));
+        Parent playPane = loader.load();
+        PlayPaneController controller = loader.getController();
+        controller.setMongoDBConnector(this.mongoDBConnector);
         mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(songsPane);
+        mainMenuBorderPanel.setCenter(playPane);
     }
 
     @FXML
@@ -119,5 +128,13 @@ public class MainMenuController {
                     mainMenuBorderPanel.setCenter(mainBox);
             }
         });
+    }
+
+    public MongoDBConnector getMongoDBConnector() {
+        return mongoDBConnector;
+    }
+
+    public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
+        this.mongoDBConnector = mongoDBConnector;
     }
 }

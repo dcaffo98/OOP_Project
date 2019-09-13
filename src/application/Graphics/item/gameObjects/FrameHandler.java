@@ -1,6 +1,7 @@
 package application.Graphics.item.gameObjects;
 
 import application.Graphics.FXML.ResultPaneController;
+import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.panes.GameTopPane;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;

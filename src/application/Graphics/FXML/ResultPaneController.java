@@ -1,5 +1,6 @@
 package application.Graphics.FXML;
 
+import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.stages.MainStage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,8 +12,9 @@ import javafx.stage.StageStyle;
 
 
 public class ResultPaneController {
-    
+
     private String username;
+    private MongoDBConnector mongoDBConnector;
 
     @FXML
     private BorderPane resultBorderPane;
@@ -44,7 +46,7 @@ public class ResultPaneController {
 
     @FXML
     public void exitButtonClicked(ActionEvent event) throws Exception {
-        MainStage mainStage = new MainStage(800, 600, "RythmUp");
+        MainStage mainStage = new MainStage(800, 600, "RythmUp", mongoDBConnector);
         mainStage.show();
         ((Stage) exitButton.getScene().getWindow()).close();
 
@@ -81,4 +83,11 @@ public class ResultPaneController {
         songNameLabel.setText(songName.split("/")[songName.split("/").length - 1]);
     }
 
+    public MongoDBConnector getMongoDBConnector() {
+        return mongoDBConnector;
+    }
+
+    public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
+        this.mongoDBConnector = mongoDBConnector;
+    }
 }

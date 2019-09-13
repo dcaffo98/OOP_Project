@@ -1,6 +1,8 @@
 package application;
 
 import application.Graphics.Viewer;
+import application.Graphics.item.MongoDBConnector;
+import application.Graphics.item.stages.MainStage;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
@@ -20,9 +22,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            Viewer viewer = new Viewer();
-            primaryStage = viewer.getMainStage();
-            primaryStage.show();
+            MongoDBConnector mongoDBConnector = new MongoDBConnector();
+            MainStage mainStage = new MainStage(800, 600, "RythmUp", mongoDBConnector);
+            mainStage.show();
         } catch(Exception e) {
             e.printStackTrace();
         }

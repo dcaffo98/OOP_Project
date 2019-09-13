@@ -1,6 +1,7 @@
 package application.Graphics.FXML;
 
 
+import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.SongDownloader;
 import application.Graphics.item.scenes.GameScene;
 import application.Graphics.item.scenes.MainScene;
@@ -39,12 +40,11 @@ public class PlayPaneController {
     private MediaPlayer mediaPlayer;
     private Media media;
     private final String SONGS_PATH = "src/trackanalyzer/songs/";
-    private final String DB_AUTH_STRING = "mongodb+srv://base-user:RythmUp@rythmup-v9vh2.gcp.mongodb.net/test?retryWrites=true&w=majority";
     private String selectedSong;
     private ObservableList<String> songs;
-    private MongoDatabase database;
-    private File tempSongFile;
-    private SongDownloader songDownloader;
+    private MongoDBConnector mongoDBConnector;
+    private File tmpSongFile;
+    private double bpm;
 
     @FXML
     private BorderPane playBorderPane;
@@ -69,9 +69,7 @@ public class PlayPaneController {
             public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                 if (newValue != null) {
                     //aggiungo tutti i nomi delle canzoni presenti sul database     ************************************
-                    database = ((MainScene) playBorderPane.getParent().getScene()).getDBConnection();
-                    List<String> collectionList = new ArrayList<String>();
-                    database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(a));
+                    List<String> collectionList = mongoDBConnector.populateSongList();
                     songs = FXCollections.observableArrayList(collectionList);
                     songsListView.setItems(songs);
                 }
@@ -87,12 +85,11 @@ public class PlayPaneController {
                     if (Arrays.asList(new File(SONGS_PATH).list()).contains(selectedSong)) {
                         media = new Media(Paths.get(SONGS_PATH + selectedSong).toUri().toString());
                     } else {
-                        System.out.println(SONGS_PATH + selectedSong);
-                        System.out.println(selectedSong);
-                        songDownloader = new SongDownloader(database, selectedSong, SONGS_PATH);
-                        media = new Media(songDownloader.getMediaPathString());
-                        tempSongFile = new File(songDownloader.getMediaPathString());
+                        tmpSongFile = mongoDBConnector.downloadSong(SONGS_PATH, selectedSong);
+                        media = new Media(Paths.get(tmpSongFile.getPath()).toUri().toString());
                     }
+
+                    bpm = mongoDBConnector.getBPM(selectedSong);
 
                     if (mediaPlayer != null) {
                         mediaPlayer.dispose();
@@ -111,12 +108,11 @@ public class PlayPaneController {
             ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
             System.out.println("Let's go!");
             mediaPlayer.dispose();
-            double bpm = getBPM(selectedSong);
-            System.out.println(selectedSong + " BPM: " + bpm);
+            System.out.println(this.selectedSong + " BPM: " + this.bpm);
             Stage playStage = new Stage();
             playStage.setMinWidth(1080);
             playStage.setMinHeight(600);
-            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media, bpm));
+            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media, this.bpm));
             playStage.setTitle("RythmUp");
             playStage.show();
         } else {
@@ -158,14 +154,10 @@ public class PlayPaneController {
                     BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
                     String line = stdInput.readLine();
                     System.out.println(line);
-                    double bpm = Double.parseDouble(line.split("BPM: ")[1]);
-                    System.out.println("BPM VALUE: "+ bpm);
+                    double newSongBPM = Double.parseDouble(line.split("BPM: ")[1]);
+                    System.out.println("BPM VALUE: "+ newSongBPM);
                     //creo il bson document e faccio l'upload sul database            *****************************
-                    database.createCollection(correctName);
-                    MongoCollection collection = database.getCollection(correctName);
-                    Document doc = new Document("songFile", buffer)
-                            .append("bpm", bpm);
-                    collection.insertOne(doc);
+                    mongoDBConnector.uploadSong(correctName, buffer, newSongBPM);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -188,11 +180,12 @@ public class PlayPaneController {
         ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
     }
 
-    public double getBPM(String selectedSong) {
-        MongoCollection collection = database.getCollection(selectedSong);
-        FindIterable<Document> docList = collection.find();
-        double bpm = (Double) docList.first().get("bpm");
-        return bpm;
+    public MongoDBConnector getMongoDBConnector() {
+        return mongoDBConnector;
+    }
+
+    public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
+        this.mongoDBConnector = mongoDBConnector;
     }
 
 }

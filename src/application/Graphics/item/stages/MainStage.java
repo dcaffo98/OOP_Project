@@ -1,5 +1,8 @@
 package application.Graphics.item.stages;
 
+import application.Graphics.FXML.MainMenuController;
+import application.Graphics.FXML.ResultPaneController;
+import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.panes.MainPane;
 import application.Graphics.item.scenes.MainScene;
 import javafx.fxml.FXMLLoader;
@@ -12,19 +15,25 @@ public class MainStage extends Stage {
     private MainPane mainPane;
 
 
-    public MainStage(double width, double height, String title) throws Exception {
+    public MainStage(double width, double height, String title, MongoDBConnector mongoDBConnector) throws Exception {
         setWidth(width);
         setHeight(height);
         setMinHeight(height);
         setMinWidth(width);
         setMainPane(new MainPane());
-        Parent root = FXMLLoader.load(getClass().getResource("../../FXML/MainMenu.fxml"));
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("../../FXML/MainMenu.fxml"));
+        Parent root = loader.load();
+        MainMenuController controller = loader.getController();
+        controller.setMongoDBConnector(mongoDBConnector);
         setMainScene(new MainScene(root,getWidth(),getHeight()));
         //getMainPane().bindScene(getMainScene());
 
         setScene(getMainScene());
         setTitle(title);
     }
+
 
     public MainScene getMainScene() {
         return mainScene;
