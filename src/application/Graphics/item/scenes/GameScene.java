@@ -15,7 +15,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
 
 public class GameScene extends Scene {
 
@@ -42,7 +41,7 @@ public class GameScene extends Scene {
         gamePane.getChildren().addAll(gameTopPane,playerBar);
         this.timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer, this.bpm);
+        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer,this.bpm);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));
         mediaPlayer.play();

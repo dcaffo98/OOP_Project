@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -42,7 +43,6 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     private double frameBeat;
     private double lastNoteTime;
     private double endOfGenerationTime;
-
     
 
     public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer, double bpm) {
@@ -78,6 +78,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         // move player, if key is pressed
         gamePane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         frameCounter++;
+        gameTopPane.getProgress().setProgress((mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getMedia().getDuration().toMillis()));
         if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
             timeline.stop();
             if (combo > maxCombo)
@@ -127,6 +128,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                     if (combo > maxCombo)
                         maxCombo = combo;
                     this.combo = 0;
+                    gameTopPane.setShowCombo(combo);
                     gamePane.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
                 }
             if (checkCollision(n)) {
@@ -173,9 +175,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX()+player.getFitWidth())   ) {
             this.hitNotes++;
             this.combo++;
+            gameTopPane.setShowCombo(combo);
             score = score + 100 * combo;
             gameTopPane.setScore(getScore());
-            System.out.println("COLLISION");
             return true;
         }
         return false;
