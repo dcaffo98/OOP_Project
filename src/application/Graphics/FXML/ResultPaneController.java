@@ -1,9 +1,6 @@
 package application.Graphics.FXML;
 
-import application.Graphics.item.scenes.ScoreScene;
 import application.Graphics.item.stages.MainStage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,8 +11,7 @@ import javafx.stage.StageStyle;
 
 
 public class ResultPaneController {
-
-    private ScoreScene scoreScene;
+    
     private String username;
 
     @FXML

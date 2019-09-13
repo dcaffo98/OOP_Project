@@ -79,6 +79,8 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         frameCounter++;
         if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
             timeline.stop();
+            if (combo > maxCombo)
+                maxCombo = combo;
             showResultPane();
         }
 
@@ -104,7 +106,6 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         if ((frameCounter > this.frameBeat) && (mediaPlayer.getCurrentTime().toMillis() < endOfGenerationTime)) {
             addNote();
             frameCounter = 0;
-            if (combo > maxCombo) maxCombo = combo;
         }
         if (notes.size() > 0) {
             update();
@@ -121,7 +122,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
             if ((n.getBottomBorder() >= gamePane.getHeight())) {
                     toDelete = n;
                     this.missedNotes++;
-                    score+= combo * 3;
+                    score += combo * 3;
+                    if (combo > maxCombo)
+                        maxCombo = combo;
                     this.combo = 0;
                     gamePane.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
                 }
