@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -14,6 +15,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -76,25 +78,8 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         gamePane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         frameCounter++;
         if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
-
             timeline.stop();
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("../../FXML/ResultPane.fxml"));
-                Parent resultPane = loader.load();
-                ResultPaneController controller = loader.getController();
-                controller.setData(maxCombo ,mediaPlayer.getMedia().getSource(), score, missedNotes, hitNotes);
-                Stage tmp = ((Stage) gamePane.getScene().getWindow());
-                tmp.setMinWidth(600);
-                tmp.setMinHeight(400);
-                tmp.setScene(new Scene(resultPane));
-                tmp.setResizable(false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-
+            showResultPane();
         }
 
 
@@ -198,5 +183,26 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void showResultPane() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("../../FXML/ResultPane.fxml"));
+            Parent resultPane = loader.load();
+            ResultPaneController controller = loader.getController();
+            controller.setData(maxCombo ,mediaPlayer.getMedia().getSource(), score, missedNotes, hitNotes);
+            Stage tmp = ((Stage) gamePane.getScene().getWindow());
+            tmp.setMinWidth(600);
+            tmp.setMinHeight(400);
+            tmp.setScene(new Scene(resultPane));
+            //per centrare la scena
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            tmp.setX((screenBounds.getWidth() - tmp.getWidth()) / 2);
+            tmp.setY((screenBounds.getHeight() - tmp.getHeight()) / 2);
+            tmp.setResizable(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -27,7 +27,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="saveButton" mnemonicParsing="false" text="Save Score" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save Score" />
          </children>
       </VBox>
    </center>
