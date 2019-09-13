@@ -2,6 +2,7 @@ package application.Graphics.FXML;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -65,7 +66,7 @@ public class MainMenuController {
     }
 
     @FXML
-    public void playOnClick() throws Exception {
+    public void playOnClick(ActionEvent event) throws Exception {
         System.out.println("Play!");
         Parent songsPane = FXMLLoader.load(getClass().getResource("PlayPane.fxml"));
         mainMenuBorderPanel.getChildren().remove(mainBox);
@@ -73,7 +74,7 @@ public class MainMenuController {
     }
 
     @FXML
-    public void playOnClickDeprecated() throws Exception {
+    public void playOnClickDeprecated(ActionEvent event) throws Exception {
         System.out.println("Play!");
         Parent playPane = FXMLLoader.load(getClass().getResource("PlayPaneDeprecated.fxml"));
         mainMenuBorderPanel.getChildren().remove(mainBox);
@@ -81,7 +82,7 @@ public class MainMenuController {
     }
 
     @FXML
-    public void scoreOnClick() throws Exception {
+    public void scoreOnClick(ActionEvent event) throws Exception {
         System.out.println("Score!");
         Parent scorePane = FXMLLoader.load(getClass().getResource("ScorePane.fxml"));
         mainMenuBorderPanel.getChildren().remove(mainBox);
@@ -89,7 +90,7 @@ public class MainMenuController {
     }
 
     @FXML
-    public void exitOnClick() {
+    public void exitOnClick(ActionEvent event) {
         System.out.println("Exit!");
         ((Stage) exitButton.getScene().getWindow()).close();
     }

@@ -42,18 +42,14 @@
                   <Font name="System Bold" size="25.0" />
                </font>
             </Label>
-            <Button fx:id="exitButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exitButtonClicked" text="Exit">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
+            <Button fx:id="exitButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exitButtonClicked" text="Exit" />
          </children>
       </HBox>
    </bottom>
    <top>
-      <Label fx:id="songNameLabel" text="SONGNAME.mp3" BorderPane.alignment="CENTER">
+      <Label fx:id="songNameLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="SONGNAME.mp3" BorderPane.alignment="CENTER">
          <font>
-            <Font size="51.0" />
+            <Font name="Impact" size="22.0" />
          </font>
          <BorderPane.margin>
             <Insets top="20.0" />

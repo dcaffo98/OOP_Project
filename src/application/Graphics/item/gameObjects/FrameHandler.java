@@ -83,7 +83,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                 loader.setLocation(getClass().getResource("../../FXML/ResultPane.fxml"));
                 Parent resultPane = loader.load();
                 ResultPaneController controller = loader.getController();
-                controller.setData(maxCombo,mediaPlayer.getMedia().getSource(),score,missedNotes,hitNotes);
+                controller.setData(maxCombo ,mediaPlayer.getMedia().getSource(), score, missedNotes, hitNotes);
                 Stage tmp = ((Stage) gamePane.getScene().getWindow());
                 tmp.setMinWidth(600);
                 tmp.setMinHeight(400);

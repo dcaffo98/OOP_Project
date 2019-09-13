@@ -1,19 +1,13 @@
 package application.Graphics.FXML;
 
 import application.Graphics.item.scenes.ScoreScene;
-import application.Graphics.item.stages.MainStage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
 
-import java.awt.event.ActionEvent;
 
 public class ResultPaneController {
 
@@ -48,7 +42,7 @@ public class ResultPaneController {
     }
 
     @FXML
-    public void exitButtonClicked(javafx.event.ActionEvent event) {
+    public void exitButtonClicked(ActionEvent event) {
         //MainStage mainStage = new MainStage(800, 600, "RythmUp");
         //mainStage.show();
         ((Stage) exitButton.getScene().getWindow()).close();
