@@ -3,6 +3,7 @@ package application.Graphics.item.gameObjects;
 import application.Graphics.FXML.ResultPaneController;
 import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.panes.GameTopPane;
+import application.Graphics.item.stages.MainStage;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -43,9 +44,11 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     private double frameBeat;
     private double lastNoteTime;
     private double endOfGenerationTime;
+    private  MongoDBConnector mongoDBConnector;
+    private  MainStage mainStage;
     
 
-    public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer, double bpm) {
+    public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer, double bpm, MongoDBConnector mongoDBConnector, MainStage mainStage) {
 
         this.gamePane = gamePane;
         this.gameTopPane = gameTopPane;
@@ -62,6 +65,8 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.maxCombo = 0;
         this.hitNotes = 0;
         this.missedNotes = 0;
+        this.mongoDBConnector = mongoDBConnector;
+        this.mainStage = mainStage;
     }
 
     public KeyCode getCode() {
@@ -197,7 +202,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
             loader.setLocation(getClass().getResource("../../FXML/ResultPane.fxml"));
             Parent resultPane = loader.load();
             ResultPaneController controller = loader.getController();
-            controller.setData(maxCombo ,mediaPlayer.getMedia().getSource(), score, missedNotes, hitNotes);
+            controller.setData(maxCombo ,mediaPlayer.getMedia().getSource(), score, missedNotes, hitNotes, mongoDBConnector, mainStage);
             Stage tmp = ((Stage) gamePane.getScene().getWindow());
             tmp.setMinWidth(600);
             tmp.setMinHeight(400);

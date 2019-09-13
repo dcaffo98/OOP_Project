@@ -5,6 +5,7 @@ import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.SongDownloader;
 import application.Graphics.item.scenes.GameScene;
 import application.Graphics.item.scenes.MainScene;
+import application.Graphics.item.stages.MainStage;
 import com.mongodb.Block;
 import com.mongodb.client.*;
 import javafx.beans.value.ChangeListener;
@@ -90,6 +91,7 @@ public class PlayPaneController {
                     }
 
                     bpm = mongoDBConnector.getBPM(selectedSong);
+                    System.out.println(selectedSong + " BPM: " + bpm);
 
                     if (mediaPlayer != null) {
                         mediaPlayer.dispose();
@@ -105,14 +107,15 @@ public class PlayPaneController {
     @FXML
     public void playButtonClicked(ActionEvent event) {
         if (media != null && selectedSong != null) {
-            ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
+            MainStage mainStage = (MainStage) playBorderPane.getParent().getScene().getWindow();
+            mainStage.hide();
             System.out.println("Let's go!");
             mediaPlayer.dispose();
-            System.out.println(this.selectedSong + " BPM: " + this.bpm);
+            System.out.println(this.selectedSong + " BPM: " + bpm);
             Stage playStage = new Stage();
             playStage.setMinWidth(1080);
             playStage.setMinHeight(600);
-            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media, this.bpm));
+            playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(), media, bpm, mongoDBConnector, mainStage));
             playStage.setTitle("RythmUp");
             playStage.show();
         } else {

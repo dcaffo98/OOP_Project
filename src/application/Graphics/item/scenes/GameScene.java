@@ -1,9 +1,11 @@
 package application.Graphics.item.scenes;
 
+import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.gameObjects.FrameHandler;
 import application.Graphics.item.gameObjects.PlayerBar;
 import application.Graphics.item.gameObjects.Note;
 import application.Graphics.item.panes.GameTopPane;
+import application.Graphics.item.stages.MainStage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Parent;
@@ -30,7 +32,7 @@ public class GameScene extends Scene {
     private MediaPlayer mediaPlayer;
     private double bpm;
 
-    public GameScene(Parent root, double width, double height, Media selectedSong, double bpm) {
+    public GameScene(Parent root, double width, double height, Media selectedSong, double bpm, MongoDBConnector mongoDBConnector, MainStage mainStage) {
         super(root, width, height);
         gamePane = (AnchorPane) root;
         gameTopPane = new GameTopPane();
@@ -41,7 +43,7 @@ public class GameScene extends Scene {
         gamePane.getChildren().addAll(gameTopPane,playerBar);
         this.timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer,this.bpm);
+        this.frameHandler = new FrameHandler(gamePane,gameTopPane,playerBar,timeline,mediaPlayer,this.bpm, mongoDBConnector, mainStage);
         timeline.getKeyFrames()
                 .add(new KeyFrame(Duration.millis(16), frameHandler));
         mediaPlayer.play();

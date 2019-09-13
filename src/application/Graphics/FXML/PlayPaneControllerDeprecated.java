@@ -1,5 +1,6 @@
 package application.Graphics.FXML;
 
+import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.scenes.GameScene;
 import com.mongodb.MongoClient;
 import javafx.collections.FXCollections;
@@ -23,6 +24,7 @@ public class PlayPaneControllerDeprecated {
     private final String songsPath = "src/trackanalyzer/songs";
     private ObservableList<String> songs = FXCollections.observableArrayList(new File(songsPath).list());
     private Media selectedSong;
+    private MongoDBConnector mongoDBConnector;
 
     @FXML
     private BorderPane playBorderPane;
@@ -48,14 +50,16 @@ public class PlayPaneControllerDeprecated {
 
     @FXML
     public void playButtonClicked(ActionEvent event) {
-        ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
+
+       /* ((Stage) playBorderPane.getParent().getScene().getWindow()).close();
         System.out.println("Let's go!");
         Stage playStage = new Stage();
         playStage.setMinWidth(1200);
         playStage.setMinHeight(800);
-        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(),this.selectedSong, 100));
+        playStage.setScene(new GameScene(new AnchorPane(), playStage.getMinWidth(), playStage.getMinHeight(),this.selectedSong, 100, mongoDBConnector,));
         playStage.setTitle("RythmUp");
         playStage.show();
+        */
     }
 
     @FXML

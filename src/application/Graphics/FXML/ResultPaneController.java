@@ -2,11 +2,14 @@ package application.Graphics.FXML;
 
 import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.stages.MainStage;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -15,6 +18,7 @@ public class ResultPaneController {
 
     private String username;
     private MongoDBConnector mongoDBConnector;
+    private MainStage mainStage;
 
     @FXML
     private BorderPane resultBorderPane;
@@ -46,7 +50,14 @@ public class ResultPaneController {
 
     @FXML
     public void exitButtonClicked(ActionEvent event) throws Exception {
-        MainStage mainStage = new MainStage(800, 600, "RythmUp", mongoDBConnector);
+        ObservableList<Node> childrenList = ((Pane) mainStage.getScene().getRoot()).getChildren();
+        for (Node n: childrenList) {
+            if (n instanceof BorderPane) {
+                ((Pane) mainStage.getScene().getRoot()).getChildren().remove(n);
+                break;
+            }
+        }
+
         mainStage.show();
         ((Stage) exitButton.getScene().getWindow()).close();
 
@@ -75,12 +86,15 @@ public class ResultPaneController {
     }
 
 
-    public void setData(int maxCombo, String songName, int score, int missedNotes, int hitNotes) {
+    public void setData(int maxCombo, String songName, int score, int missedNotes, int hitNotes, MongoDBConnector mongoDBConnector, MainStage mainStage) {
         scoreLabel.setText(((Integer) score).toString());
         maxComboLabel.setText("Max combo: " + ((Integer) maxCombo).toString());
         hitNotesLabel.setText("Hit notes: " + ((Integer) hitNotes).toString());
         missedNotesLabel.setText("Missed notes: " + ((Integer) missedNotes).toString());
         songNameLabel.setText(songName.split("/")[songName.split("/").length - 1]);
+        setMongoDBConnector(mongoDBConnector);
+        this.mainStage = mainStage;
+
     }
 
     public MongoDBConnector getMongoDBConnector() {
