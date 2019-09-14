@@ -31,7 +31,7 @@ public class MainMenuController {
     private VBox mainBox;
 
     @FXML
-    private Button playButtonDeprecated;
+    private Button songScoreButton;
 
     @FXML
     private Button scoreButton;
@@ -50,7 +50,7 @@ public class MainMenuController {
         mongoDBConnector = new MongoDBConnector();
 
         buttons = new ArrayList<Button>();
-        buttons.add(playButtonDeprecated);
+        buttons.add(songScoreButton);
         buttons.add(scoreButton);
         buttons.add(playButton);
         buttons.add(exitButton);
@@ -78,16 +78,22 @@ public class MainMenuController {
         Parent playPane = loader.load();
         PlayPaneController controller = loader.getController();
         controller.setMongoDBConnector(this.mongoDBConnector);
+        controller.setListViewItem();
         mainMenuBorderPanel.getChildren().remove(mainBox);
         mainMenuBorderPanel.setCenter(playPane);
     }
 
     @FXML
-    public void playOnClickDeprecated(ActionEvent event) throws Exception {
-        System.out.println("Play!");
-        Parent playPane = FXMLLoader.load(getClass().getResource("PlayPaneDeprecated.fxml"));
+    public void scoreButtonClicked(ActionEvent event) throws Exception {
+        System.out.println("SongScore");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("SongScorePane.fxml"));
+        Parent songScorePane = loader.load();
+        SongScoreController controller = loader.getController();
+        controller.setMongoDBConnector(this.mongoDBConnector);
+        controller.setComboBoxItems();
         mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(playPane);
+        mainMenuBorderPanel.setCenter(songScorePane);
     }
 
     @FXML

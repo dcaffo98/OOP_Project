@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="songScoreBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="204.0" prefWidth="510.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.SongScoreController">
+   <top>
+      <HBox spacing="100.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
+            <ComboBox fx:id="songsComboBox" onAction="#songsComboBoxSelectionChange" prefWidth="150.0" promptText="Select a song" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn prefWidth="75.0" text="#" />
+          <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="200.0" text="Username" />
+          <TableColumn maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="100.0" text="Score" />
+        </columns>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+</BorderPane>
