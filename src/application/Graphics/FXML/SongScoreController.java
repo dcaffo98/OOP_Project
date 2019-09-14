@@ -1,6 +1,7 @@
 package application.Graphics.FXML;
 
 import application.Graphics.item.MongoDBConnector;
+import application.Graphics.item.SongScoreTableRow;
 import application.Graphics.item.scenes.GameScene;
 import com.mongodb.MongoClient;
 import javafx.beans.value.ChangeListener;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,15 +72,18 @@ public class SongScoreController {
     public void songsComboBoxSelectionChange(ActionEvent event) {
         String selectedSong = songsComboBox.getSelectionModel().getSelectedItem();
         ArrayList<Pair<String,Integer>> scoreTable = mongoDBConnector.downloadSongScore(selectedSong);
-        int pos = 1;
-        ArrayList<Integer> posArray = new ArrayList<>(pos);
-        for (Pair<String,Integer> score: scoreTable) {
-            System.out.println("Name:  "+score.getKey()+" Score:  "+score.getValue());
-            posArray.add(++pos);
-        }
-        scoreTable.sort((a, b) -> a.getValue().compareTo(b.getValue()));
+        scoreTable.sort((a,b) -> a.getValue().compareTo(b.getValue()));
         Collections.reverse(scoreTable);
-        scoreTable.forEach(a -> System.out.println(a));
+        ArrayList<SongScoreTableRow> tableRows = new ArrayList<SongScoreTableRow>();
+        int index = 1;
+            for (Pair<String, Integer> score : scoreTable) {
+                tableRows.add(new SongScoreTableRow(index,score.getKey(),score.getValue()));
+                index++;
+            }
+
+        for (SongScoreTableRow row:tableRows) {
+            System.out.println("index: "+row.getIndex()+"  name: "+ row.getName()+"  score: "+row.getScore());
+        }
     }
 
     public MongoDBConnector getMongoDBConnector() {
