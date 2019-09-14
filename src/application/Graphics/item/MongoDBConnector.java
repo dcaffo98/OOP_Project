@@ -75,7 +75,8 @@ public class MongoDBConnector {
         database.createCollection(songName);
         collection = getCollection(songName);
         Document doc = new Document("songFile", binarySongFile)
-                .append("bpm", bpm);
+                .append("bpm", bpm)
+                .append("results", new ArrayList<>());
         collection.insertOne(doc);
     }
 
