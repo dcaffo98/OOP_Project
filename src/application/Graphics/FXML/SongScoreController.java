@@ -17,9 +17,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,7 +52,14 @@ public class SongScoreController {
 
     @FXML
     public void songsComboBoxSelectionChange(ActionEvent event) {
-        System.out.println(songsComboBox.getSelectionModel().getSelectedItem().toString());
+        String selectedSong = songsComboBox.getSelectionModel().getSelectedItem();
+        ArrayList<Pair<String,Integer>> scoreTable = mongoDBConnector.downloadSongScore(selectedSong);
+        int posizione = 1;
+        for (Pair<String,Integer> score: scoreTable) {
+
+            System.out.println("Name:  "+score.getKey()+" Score:  "+score.getValue());
+            posizione++;
+        }
     }
 
     public MongoDBConnector getMongoDBConnector() {
