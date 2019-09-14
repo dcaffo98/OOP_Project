@@ -7,6 +7,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.Binary;
 
 import java.io.File;
@@ -91,5 +92,27 @@ public class MongoDBConnector {
         List<String> songList = new ArrayList<String>();
         this.database.listCollectionNames().forEach((Block<? super String>) a -> songList.add(a));
         return songList;
+    }
+
+    public void uploadResult(String songName, String username, int score) {
+        /*
+        BasicDBObject newDocument = new BasicDBObject();
+	newDocument.append("$set", new BasicDBObject().append("clients", 110));
+
+	BasicDBObject searchQuery = new BasicDBObject().append("hosting", "hostB");
+
+	collection.update(searchQuery, newDocument);
+         */
+
+        collection = getCollection(songName);
+        FindIterable<Document> docList = collection.find();
+        Document doc = docList.first();
+        Bson updatedValue = new Document("results", new Document(username,score));
+        Bson updateOperation = new Document("$push", updatedValue);
+        //doc.append("$set", new BasicDBObject().append(username, score));
+        //BasicDBObject newDocument = new BasicDBObject();
+        //newDocument.append("$set", new BasicDBObject().append(username, score));
+        //BasicDBObject searchQuery = new BasicDBObject().append("results", "results");
+        collection.updateOne(doc, updateOperation);
     }
 }

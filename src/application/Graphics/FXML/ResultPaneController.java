@@ -18,6 +18,8 @@ import javafx.stage.StageStyle;
 public class ResultPaneController {
 
     private String username;
+    private String songName;
+    private int score;
     private MongoDBConnector mongoDBConnector;
     private MainStage mainStage;
 
@@ -78,6 +80,8 @@ public class ResultPaneController {
                     dialogEvent.consume();
                 }
                 else {
+                    mongoDBConnector.uploadResult(songName, username, score);
+                    exitButton.fire();
                     System.out.println(username);
                 }
             }
@@ -94,6 +98,8 @@ public class ResultPaneController {
         hitNotesLabel.setText("Hit notes: " + ((Integer) hitNotes).toString());
         missedNotesLabel.setText("Missed notes: " + ((Integer) missedNotes).toString());
         songNameLabel.setText(songName.split("/")[songName.split("/").length - 1]);
+        this.score = score;
+        this.songName = songNameLabel.getText();
         setMongoDBConnector(mongoDBConnector);
         this.mainStage = mainStage;
 
