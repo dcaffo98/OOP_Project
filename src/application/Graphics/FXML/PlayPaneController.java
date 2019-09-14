@@ -66,18 +66,6 @@ public class PlayPaneController {
 
     @FXML
     public void initialize() {
-        playBorderPane.parentProperty().addListener(new ChangeListener<Parent>() {
-            @Override
-            public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
-                if (newValue != null) {
-                    //aggiungo tutti i nomi delle canzoni presenti sul database     ************************************
-                    List<String> collectionList = mongoDBConnector.populateSongList();
-                    songs = FXCollections.observableArrayList(collectionList);
-                    songsListView.setItems(songs);
-                }
-            }
-        });
-
         //quando una canzone è selezionata: se è presente in locale parte l'audio, se non lo è prima viene scaricata dal db         *****************
         songsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
             @Override
@@ -189,6 +177,12 @@ public class PlayPaneController {
 
     public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
         this.mongoDBConnector = mongoDBConnector;
+    }
+
+    public void setListViewItem() {
+        //List<String> collectionList = mongoDBConnector.populateSongList();
+        songs = FXCollections.observableArrayList(mongoDBConnector.populateSongList());
+        songsListView.setItems(songs);
     }
 
 }
