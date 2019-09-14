@@ -1,13 +1,19 @@
 package application.Graphics.FXML;
 
+import application.Graphics.item.HighScoreTableRow;
 import application.Graphics.item.MongoDBConnector;
+import application.Graphics.item.SongScoreTableRow;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+
+import java.util.ArrayList;
 
 public class HighScorePaneController {
 
@@ -21,6 +27,9 @@ public class HighScorePaneController {
 
     @FXML
     private TableView highScoreTable;
+
+    @FXML
+    private TableColumn positionCol;
 
     @FXML
     private TableColumn usernameCol;
@@ -45,5 +54,20 @@ public class HighScorePaneController {
         this.mongoDBConnector = mongoDBConnector;
     }
 
-    public void doStuffWithDB() {mongoDBConnector.downloadHighScore();}
+    public void doStuffWithDB() {
+
+        ArrayList<HighScoreTableRow> highScore = mongoDBConnector.downloadHighScore();
+        int index = 1;
+        for (HighScoreTableRow row:highScore) {
+            row.setIndex(index);
+            index++;
+        }
+
+        positionCol.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("index"));
+        usernameCol.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, String>("name"));
+        songCol.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, String>("songName"));
+        scoreCol.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("score"));
+
+        highScoreTable.setItems(FXCollections.observableArrayList(highScore));
+    }
 }

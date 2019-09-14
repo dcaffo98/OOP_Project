@@ -10,6 +10,7 @@
    <center>
       <TableView fx:id="highScoreTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
         <columns>
+            <TableColumn fx:id="positionCol" maxWidth="500.0" prefWidth="99.19992065429688" text="#" />
           <TableColumn fx:id="songCol" prefWidth="309.59997594356537" text="Song" />
           <TableColumn fx:id="usernameCol" minWidth="0.0" prefWidth="144.00006103515625" text="Username" />
             <TableColumn fx:id="scoreCol" maxWidth="500.0" prefWidth="99.19992065429688" text="Score" />
