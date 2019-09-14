@@ -1,12 +1,15 @@
 package application.Graphics.item;
 
 import application.Graphics.item.gameObjects.Note;
+import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import javafx.collections.FXCollections;
 import javafx.util.Pair;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -91,36 +94,22 @@ public class MongoDBConnector {
 
     public List<String> populateSongList() {
         List<String> songList = new ArrayList<String>();
-        this.database.listCollectionNames().forEach((Block<? super String>) a -> songList.add(a));
+        database.listCollectionNames().forEach((Block<? super String>) a -> songList.add(a));
         return songList;
     }
 
     public void uploadResult(String songName, String username, int score) {
-        /*
-        BasicDBObject newDocument = new BasicDBObject();
-	newDocument.append("$set", new BasicDBObject().append("clients", 110));
-
-	BasicDBObject searchQuery = new BasicDBObject().append("hosting", "hostB");
-
-	collection.update(searchQuery, newDocument);
-         */
-
         collection = getCollection(songName);
         FindIterable<Document> docList = collection.find();
         Document doc = docList.first();
         Bson updatedValue = new Document("results", new Document(username,score));
         Bson updateOperation = new Document("$push", updatedValue);
-        //doc.append("$set", new BasicDBObject().append(username, score));
-        //BasicDBObject newDocument = new BasicDBObject();
-        //newDocument.append("$set", new BasicDBObject().append(username, score));
-        //BasicDBObject searchQuery = new BasicDBObject().append("results", "results");
         collection.updateOne(doc, updateOperation);
     }
 
-    public ArrayList<Pair<String,Integer>> downloadSongScore (String songName) {
+    public ArrayList<Pair<String, Integer>> downloadSongScore (String songName) {
         collection = getCollection(songName);
         ArrayList<Pair<String,Integer>> scores = new ArrayList<Pair<String,Integer>>();
-        //HashMap<String, Integer> scores = new HashMap<String,Integer>();
         List<Document> docList = (List<Document>) collection.find().into(new ArrayList<Document>());
         for (Document songData : docList) {
             List<Document> results = (List<Document>) songData.get("results");
@@ -131,9 +120,33 @@ public class MongoDBConnector {
                 Integer value = (Integer)valueIterator.next();
                 scores.add(new Pair<>(name,value));
             }
+        }
+        return scores;
+    }
+
+    public ArrayList<HighScoreTableRow> downloadHighScore () {
+        ArrayList<HighScoreTableRow> highScores = new ArrayList<HighScoreTableRow>();
+        List<MongoCollection> collectionList = new ArrayList<MongoCollection>();
+        database.listCollectionNames().forEach((Block<? super String>) a -> collectionList.add(getCollection(a)));
+        ArrayList<Pair<String,Integer>> scores = new ArrayList<Pair<String,Integer>>();
+        for(MongoCollection col : collectionList) {
+            List<Document> docList = (List<Document>) col.find().into(new ArrayList<Document>());
+            String colName = col.getNamespace().getCollectionName();
+            for (Document songData : docList) {
+                List<Document> results = (List<Document>) songData.get("results");
+                for (Document result : results) {
+                    Iterator<String> iterator = result.keySet().iterator();
+                    String name = iterator.next();
+                    Iterator<Object> valueIterator = result.values().iterator();
+                    Integer value = (Integer)valueIterator.next();
+                    scores.add(new Pair<>(name,value));
+                }
+                scores.sort((a,b) -> a.getValue().compareTo(b.getValue()));
+                Collections.reverse(scores);
+                highScores.add(new HighScoreTableRow(colName,scores.get(0).getKey(),scores.get(0).getValue()));
+            }
 
         }
-
-        return scores;
+        return highScores;
     }
 }

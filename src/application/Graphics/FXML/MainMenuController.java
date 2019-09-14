@@ -34,7 +34,7 @@ public class MainMenuController {
     private Button songScoreButton;
 
     @FXML
-    private Button scoreButton;
+    private Button highScoreButton;
 
     @FXML
     private Button playButton;
@@ -51,7 +51,7 @@ public class MainMenuController {
 
         buttons = new ArrayList<Button>();
         buttons.add(songScoreButton);
-        buttons.add(scoreButton);
+        buttons.add(highScoreButton);
         buttons.add(playButton);
         buttons.add(exitButton);
 
@@ -97,11 +97,16 @@ public class MainMenuController {
     }
 
     @FXML
-    public void scoreOnClick(ActionEvent event) throws Exception {
-        System.out.println("Score!");
-        Parent scorePane = FXMLLoader.load(getClass().getResource("ScorePane.fxml"));
+    public void highScoreButtonClicked(ActionEvent event) throws Exception {
+        System.out.println("HighScore!");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("HighScorePane.fxml"));
+        Parent highScorePane = loader.load();
+        HighScorePaneController controller = loader.getController();
+        controller.setMongoDBConnector(this.mongoDBConnector);
+        controller.doStuffWithDB();
         mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(scorePane);
+        mainMenuBorderPanel.setCenter(highScorePane);
     }
 
     @FXML
