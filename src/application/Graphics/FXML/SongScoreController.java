@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -84,6 +85,11 @@ public class SongScoreController {
         for (SongScoreTableRow row:tableRows) {
             System.out.println("index: "+row.getIndex()+"  name: "+ row.getName()+"  score: "+row.getScore());
         }
+        position.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("index"));
+        username.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, String>("name"));
+        score.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("score"));
+
+        ranking.setItems(FXCollections.observableArrayList(tableRows));
     }
 
     public MongoDBConnector getMongoDBConnector() {
