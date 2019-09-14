@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -22,6 +24,8 @@ import javafx.util.Pair;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -41,6 +45,18 @@ public class SongScoreController {
     @FXML
     private Button backButton;
 
+    @FXML
+    private TableView ranking;
+
+    @FXML
+    private TableColumn position;
+
+    @FXML
+    private TableColumn username;
+
+    @FXML
+    private TableColumn score;
+
 
     @FXML
     public void initialize () {}
@@ -54,12 +70,15 @@ public class SongScoreController {
     public void songsComboBoxSelectionChange(ActionEvent event) {
         String selectedSong = songsComboBox.getSelectionModel().getSelectedItem();
         ArrayList<Pair<String,Integer>> scoreTable = mongoDBConnector.downloadSongScore(selectedSong);
-        int posizione = 1;
+        int pos = 1;
+        ArrayList<Integer> posArray = new ArrayList<>(pos);
         for (Pair<String,Integer> score: scoreTable) {
-
             System.out.println("Name:  "+score.getKey()+" Score:  "+score.getValue());
-            posizione++;
+            posArray.add(++pos);
         }
+        scoreTable.sort((a, b) -> a.getValue().compareTo(b.getValue()));
+        Collections.reverse(scoreTable);
+        scoreTable.forEach(a -> System.out.println(a));
     }
 
     public MongoDBConnector getMongoDBConnector() {

@@ -18,11 +18,11 @@
       </HBox>
    </top>
    <center>
-      <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+      <TableView fx:id="ranking" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn prefWidth="75.0" text="#" />
-          <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="200.0" text="Username" />
-          <TableColumn maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="100.0" text="Score" />
+            <TableColumn fx:id="position" prefWidth="75.0" text="#" />
+          <TableColumn fx:id="username" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="200.0" text="Username" />
+          <TableColumn fx:id="score" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="100.0" text="Score" />
         </columns>
          <BorderPane.margin>
             <Insets top="10.0" />
