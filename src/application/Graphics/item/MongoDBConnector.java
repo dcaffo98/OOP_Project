@@ -1,11 +1,13 @@
 package application.Graphics.item;
 
+import application.Graphics.item.gameObjects.Note;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import javafx.util.Pair;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.Binary;
@@ -14,8 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MongoDBConnector {
 
@@ -114,5 +115,25 @@ public class MongoDBConnector {
         //newDocument.append("$set", new BasicDBObject().append(username, score));
         //BasicDBObject searchQuery = new BasicDBObject().append("results", "results");
         collection.updateOne(doc, updateOperation);
+    }
+
+    public ArrayList<Pair<String,Integer>> downloadSongScore (String songName) {
+        collection = getCollection(songName);
+        ArrayList<Pair<String,Integer>> scores = new ArrayList<Pair<String,Integer>>();
+        //HashMap<String, Integer> scores = new HashMap<String,Integer>();
+        List<Document> docList = (List<Document>) collection.find().into(new ArrayList<Document>());
+        for (Document songData : docList) {
+            List<Document> results = (List<Document>) songData.get("results");
+            for (Document result : results) {
+                Iterator<String> iterator = result.keySet().iterator();
+                String name = iterator.next();
+                Iterator<Object> valueIterator = result.values().iterator();
+                Integer value = (Integer)valueIterator.next();
+                scores.add(new Pair<>(name,value));
+            }
+
+        }
+
+        return scores;
     }
 }

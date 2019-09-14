@@ -26,6 +26,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import org.bson.Document;
 
 import java.io.File;
@@ -89,7 +90,6 @@ public class PlayPaneController {
                         tmpSongFile = mongoDBConnector.downloadSong(SONGS_PATH, selectedSong);
                         media = new Media(Paths.get(tmpSongFile.getPath()).toUri().toString());
                     }
-
                     bpm = mongoDBConnector.getBPM(selectedSong);
                     System.out.println(selectedSong + " BPM: " + bpm);
 
