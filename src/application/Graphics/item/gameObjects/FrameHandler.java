@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -107,6 +108,17 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                 case ESCAPE:
                     timeline.pause();
                     mediaPlayer.pause();
+                    try {
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("../../FXML/PausePane.fxml"));
+                        Parent pausePane = loader.load();
+                        PausePaneController controller = loader.getController();
+                        gamePane.setManaged(true);
+                        gamePane.getChildren().add(pausePane);
+                        controller.setData(gamePane, this, mainStage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
@@ -219,4 +231,8 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         }
     }
 
+    public void onResumeRequest() {
+        timeline.play();
+        mediaPlayer.play();
+    }
 }

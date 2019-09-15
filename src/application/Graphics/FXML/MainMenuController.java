@@ -68,6 +68,7 @@ public class MainMenuController {
 
         //listener che visualizza il menu quando non ci sono SubScene aperte
         showMenu();
+        
     }
 
     @FXML

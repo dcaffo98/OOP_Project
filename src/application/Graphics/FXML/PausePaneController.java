@@ -1,19 +1,26 @@
 package application.Graphics.FXML;
 
 import application.Graphics.item.gameObjects.FrameHandler;
+import application.Graphics.item.stages.MainStage;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 public class PausePaneController {
 
     private Pane parentPane;
     private FrameHandler frameHandler;
+    private MainStage mainStage;
 
     @FXML
-    private StackPane pausePane;
+    private AnchorPane pausePane;
 
     @FXML
     private Button resumeButton;
@@ -32,7 +39,20 @@ public class PausePaneController {
     @FXML
     public void resumeButtonClicked(ActionEvent event) {
         parentPane.getChildren().remove(pausePane);
-        //frameHandler.onResumeRequest();
+        frameHandler.onResumeRequest();
+    }
+
+    @FXML
+    public void backToMenuButtonClicked(ActionEvent event) {
+        ObservableList<Node> childrenList = ((Pane) mainStage.getScene().getRoot()).getChildren();
+        for (Node n: childrenList) {
+            if (n instanceof BorderPane) {
+                ((Pane) mainStage.getScene().getRoot()).getChildren().remove(n);
+                break;
+            }
+        }
+        mainStage.show();
+        ((Stage) parentPane.getScene().getWindow()).close();
     }
 
     public Pane getParentPane() {
@@ -51,11 +71,19 @@ public class PausePaneController {
         this.frameHandler = frameHandler;
     }
 
-    public void setLayout(Pane parentPane) {
-        setParentPane(parentPane);
-        pausePane.setLayoutX((parentPane.getPrefWidth() + pausePane.getWidth()) / 2);
-        pausePane.setLayoutY((parentPane.getPrefHeight() + pausePane.getHeight()) / 2);
-        //pausePane.layoutXProperty().bind(parentPane.layoutXProperty().add((parentPane.getPrefWidth() + pausePane.getWidth()) / 2));
-        //pausePane.layoutYProperty().bind(parentPane.layoutYProperty().add((parentPane.getPrefHeight() + pausePane.getHeight()) / 2));
+    public MainStage getMainStage() {
+        return mainStage;
+    }
+
+    public void setMainStage(MainStage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public void setData(Pane parentPane, FrameHandler frameHandler, MainStage mainStage) {
+        this.parentPane = parentPane;
+        this.frameHandler = frameHandler;
+        this.mainStage = mainStage;
+        System.out.println("Parent width: " + parentPane.getWidth() + " PausePane width: " + pausePane.getWidth());
+        System.out.println("Parent pref_width: " + parentPane.getPrefWidth() + " PausePane pref_width: " + pausePane.getPrefWidth());
     }
 }

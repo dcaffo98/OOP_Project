@@ -63,7 +63,6 @@ public class ResultPaneController {
 
         mainStage.show();
         ((Stage) exitButton.getScene().getWindow()).close();
-
     }
 
     @FXML
