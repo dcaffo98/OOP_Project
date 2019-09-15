@@ -63,6 +63,8 @@ public class GameScene extends Scene {
                 case ESCAPE:
                     frameHandler.setCode(code);
                     break;
+                case ENTER:
+                    frameHandler.resume();
             }
         });
 

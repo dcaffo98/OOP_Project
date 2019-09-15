@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -97,4 +99,13 @@ public class PausePaneController {
         pausePane.setLayoutX((parentPane.getWidth() - pausePane.getPrefWidth()) / 2);
         pausePane.setLayoutY((parentPane.getHeight() - pausePane.getPrefHeight()) / 2);
     }
+
+    public void resume() {
+
+        parentPane.getChildren().remove(pausePane);
+        ((Stage) parentPane.getScene().getWindow()).setResizable(true);
+        frameHandler.onResumeRequest();
+
+    }
+
 }

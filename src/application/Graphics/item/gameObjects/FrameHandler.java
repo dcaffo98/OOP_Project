@@ -50,6 +50,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     private double endOfGenerationTime;
     private  MongoDBConnector mongoDBConnector;
     private  MainStage mainStage;
+    private PausePaneController pausePaneController;
     
 
     public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer, double bpm, MongoDBConnector mongoDBConnector, MainStage mainStage) {
@@ -113,10 +114,10 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(getClass().getResource("../../FXML/PausePane.fxml"));
                         Parent pausePane = loader.load();
-                        PausePaneController controller = loader.getController();
+                        pausePaneController = loader.getController();
                         gamePane.getChildren().add(pausePane);
-                        controller.setData(gamePane, this, mainStage);
-                        controller.setLayout();
+                        pausePaneController.setData(gamePane, this, mainStage);
+                        pausePaneController.setLayout();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -250,5 +251,12 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.maxCombo = 0;
         gameTopPane.setShowCombo(combo);
         gameTopPane.setScore(getScore());
+    }
+
+    public void resume() {
+
+        pausePaneController.resume();
+
+
     }
 }
