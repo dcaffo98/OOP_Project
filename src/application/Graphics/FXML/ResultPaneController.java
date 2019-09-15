@@ -70,12 +70,26 @@ public class ResultPaneController {
         TextInputDialog textInputDialog = new TextInputDialog();
         textInputDialog.setHeaderText("Insert a username");
         ((Stage) textInputDialog.getDialogPane().getScene().getWindow()).initStyle(StageStyle.UNDECORATED);
+        Button undoButton =  (Button) textInputDialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+        undoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                textInputDialog.setOnCloseRequest(new EventHandler<DialogEvent>() {
+                    @Override
+                    public void handle(DialogEvent dialogEvent) {
+                        textInputDialog.close();
+                    }
+                });
+                textInputDialog.close();
+            }
+        });
         textInputDialog.setOnCloseRequest(new EventHandler<DialogEvent>() {
             @Override
             public void handle(DialogEvent dialogEvent) {
                 username = textInputDialog.getEditor().getText();
                 if (username.isBlank()) {
                     dialogEvent.consume();
+                    textInputDialog.setHeaderText("'username' cannot be blank");
                 }
                 else {
                     mongoDBConnector.uploadResult(songName, username, score);

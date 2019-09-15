@@ -7,17 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://D:/Download/mongodb-driver-sync-3.11.0-javadoc.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="JavaFX" level="application" />
-    <orderEntry type="library" name="mongo-java-driver-3.11.0" level="application" />
-    <orderEntry type="library" name="javafx11" level="application" />
+    <orderEntry type="library" exported="" name="JavaFX" level="application" />
+    <orderEntry type="library" exported="" name="mongo-java-driver-3.11.0" level="application" />
   </component>
 </module>
