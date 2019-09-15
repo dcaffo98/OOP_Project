@@ -174,7 +174,6 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         double possibleWidth = 0.2 * gamePane.getWidth();
         do {
             randomInt = random.nextInt(rightBorder - leftBorder) + leftBorder;
-            System.out.println(player.getPosition());
         } while ((randomInt < (player.getPosition() - possibleWidth)) || (randomInt > player.getPosition() + possibleWidth));
         if (notes.size() > 0) {
             Note previousNote = notes.get(notes.size() - 1);

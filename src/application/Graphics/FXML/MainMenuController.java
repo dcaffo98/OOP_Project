@@ -72,7 +72,6 @@ public class MainMenuController {
 
     @FXML
     public void playOnClick(ActionEvent event) throws Exception {
-        System.out.println("Play!");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("PlayPane.fxml"));
         Parent playPane = loader.load();
@@ -85,7 +84,6 @@ public class MainMenuController {
 
     @FXML
     public void scoreButtonClicked(ActionEvent event) throws Exception {
-        System.out.println("SongScore");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("SongScorePane.fxml"));
         Parent songScorePane = loader.load();
@@ -98,7 +96,6 @@ public class MainMenuController {
 
     @FXML
     public void highScoreButtonClicked(ActionEvent event) throws Exception {
-        System.out.println("HighScore!");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("HighScorePane.fxml"));
         Parent highScorePane = loader.load();
@@ -111,7 +108,6 @@ public class MainMenuController {
 
     @FXML
     public void exitOnClick(ActionEvent event) {
-        System.out.println("Exit!");
         ((Stage) exitButton.getScene().getWindow()).close();
     }
 
@@ -123,7 +119,6 @@ public class MainMenuController {
         mainMenuBorderPanel.getChildren().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
-                System.out.println("Changed!");
                 boolean subSceneShowed = false;
                 for (Node node : mainMenuBorderPanel.getChildren()) {
                     //se tra gli elementi viene trovato un SubScenePane, significa che una SubScene è aperta e quindi il menu non deve essere visualizzato

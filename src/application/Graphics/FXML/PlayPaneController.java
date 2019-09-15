@@ -2,19 +2,14 @@ package application.Graphics.FXML;
 
 
 import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.SongDownloader;
 import application.Graphics.item.scenes.GameScene;
-import application.Graphics.item.scenes.MainScene;
 import application.Graphics.item.stages.MainStage;
-import com.mongodb.Block;
-import com.mongodb.client.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -26,8 +21,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.util.Pair;
-import org.bson.Document;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -79,7 +72,6 @@ public class PlayPaneController {
                         media = new Media(Paths.get(tmpSongFile.getPath()).toUri().toString());
                     }
                     bpm = mongoDBConnector.getBPM(selectedSong);
-                    System.out.println(selectedSong + " BPM: " + bpm);
 
                     if (mediaPlayer != null) {
                         mediaPlayer.dispose();
@@ -97,9 +89,7 @@ public class PlayPaneController {
         if (media != null && selectedSong != null) {
             MainStage mainStage = (MainStage) playBorderPane.getParent().getScene().getWindow();
             mainStage.hide();
-            System.out.println("Let's go!");
             mediaPlayer.dispose();
-            System.out.println(this.selectedSong + " BPM: " + bpm);
             Stage playStage = new Stage();
             playStage.setMinWidth(1080);
             playStage.setMinHeight(600);
@@ -126,7 +116,6 @@ public class PlayPaneController {
                 if (songsListView.getItems().contains(correctName)) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, correctName + " already available");
                     alert.showAndWait();
-                    System.out.println("This song is already available" + correctName);
                     continue;
                 }
                 Path filePath = Paths.get(SONGS_PATH + correctName);
@@ -144,9 +133,7 @@ public class PlayPaneController {
                     Process proc =  Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar " + copyFile.getCanonicalPath());
                     BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
                     String line = stdInput.readLine();
-                    System.out.println(line);
                     double newSongBPM = Double.parseDouble(line.split("BPM: ")[1]);
-                    System.out.println("BPM VALUE: "+ newSongBPM);
                     //creo il bson document e faccio l'upload sul database            *****************************
                     mongoDBConnector.uploadSong(correctName, buffer, newSongBPM);
                 } catch (FileNotFoundException e) {
@@ -159,7 +146,8 @@ public class PlayPaneController {
                 songs.sort((a, b) -> a.compareTo(b));
             }
         } else {
-            System.out.println("Invalid or no file detected");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid or no file detected");
+            alert.showAndWait();
         }
     }
 

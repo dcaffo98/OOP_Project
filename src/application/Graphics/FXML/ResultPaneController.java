@@ -75,19 +75,16 @@ public class ResultPaneController {
             public void handle(DialogEvent dialogEvent) {
                 username = textInputDialog.getEditor().getText();
                 if (username.isBlank()) {
-                    System.out.println("Empty username or null username");
                     dialogEvent.consume();
                 }
                 else {
                     mongoDBConnector.uploadResult(songName, username, score);
                     exitButton.fire();
-                    System.out.println(username);
                 }
             }
         });
 
         textInputDialog.showAndWait();
-        System.out.println("YOUR USERNAME: " + username);
     }
 
 

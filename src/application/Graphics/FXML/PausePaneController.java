@@ -90,8 +90,6 @@ public class PausePaneController {
         this.frameHandler = frameHandler;
         this.mainStage = mainStage;
         pausePane.requestFocus();
-        System.out.println("Parent width: " + parentPane.getWidth() + " PausePane width: " + pausePane.getWidth());
-        System.out.println("Parent pref_width: " + parentPane.getPrefWidth() + " PausePane pref_width: " + pausePane.getPrefWidth());
     }
 
     public void setLayout() {

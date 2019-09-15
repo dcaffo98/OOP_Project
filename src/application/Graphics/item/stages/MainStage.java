@@ -8,6 +8,7 @@ import application.Graphics.item.scenes.MainScene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainStage extends Stage {
 
@@ -28,8 +29,6 @@ public class MainStage extends Stage {
         MainMenuController controller = loader.getController();
         controller.setMongoDBConnector(mongoDBConnector);
         setMainScene(new MainScene(root,getWidth(),getHeight()));
-        //getMainPane().bindScene(getMainScene());
-
         setScene(getMainScene());
         setTitle(title);
     }

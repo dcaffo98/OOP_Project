@@ -82,9 +82,6 @@ public class SongScoreController {
                 index++;
             }
 
-        for (SongScoreTableRow row:tableRows) {
-            System.out.println("index: "+row.getIndex()+"  name: "+ row.getName()+"  score: "+row.getScore());
-        }
         position.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("index"));
         username.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, String>("name"));
         score.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("score"));
