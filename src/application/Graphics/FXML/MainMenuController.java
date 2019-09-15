@@ -104,7 +104,7 @@ public class MainMenuController {
         Parent highScorePane = loader.load();
         HighScorePaneController controller = loader.getController();
         controller.setMongoDBConnector(this.mongoDBConnector);
-        controller.doStuffWithDB();
+        controller.setTableViewItems();
         mainMenuBorderPanel.getChildren().remove(mainBox);
         mainMenuBorderPanel.setCenter(highScorePane);
     }

@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HighScorePaneController {
 
@@ -54,11 +55,13 @@ public class HighScorePaneController {
         this.mongoDBConnector = mongoDBConnector;
     }
 
-    public void doStuffWithDB() {
+    public void setTableViewItems() {
 
-        ArrayList<HighScoreTableRow> highScore = mongoDBConnector.downloadHighScore();
+        ArrayList<HighScoreTableRow> highScores = mongoDBConnector.downloadHighScore();
+        highScores.sort((a, b) -> ((Integer)a.getScore()).compareTo(((Integer) b.getScore())));
+        Collections.reverse(highScores);
         int index = 1;
-        for (HighScoreTableRow row:highScore) {
+        for (HighScoreTableRow row:highScores) {
             row.setIndex(index);
             index++;
         }
@@ -68,6 +71,6 @@ public class HighScorePaneController {
         songCol.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, String>("songName"));
         scoreCol.setCellValueFactory(new PropertyValueFactory<SongScoreTableRow, Integer>("score"));
 
-        highScoreTable.setItems(FXCollections.observableArrayList(highScore));
+        highScoreTable.setItems(FXCollections.observableArrayList(highScores));
     }
 }
