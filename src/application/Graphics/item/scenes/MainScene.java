@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 
 public class MainScene extends Scene {
 
-    private MongoDBConnector mongoDBConnector;
+    //private MongoDBConnector mongoDBConnector;
 
     public MainScene(Parent root, double width, double height) {
         super(root, width, height);

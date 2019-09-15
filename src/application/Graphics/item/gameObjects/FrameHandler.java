@@ -1,5 +1,7 @@
 package application.Graphics.item.gameObjects;
 
+import application.Graphics.FXML.HighScorePaneController;
+import application.Graphics.FXML.PausePaneController;
 import application.Graphics.FXML.ResultPaneController;
 import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.panes.GameTopPane;
@@ -216,4 +218,5 @@ public class FrameHandler implements EventHandler<ActionEvent> {
             e.printStackTrace();
         }
     }
+
 }

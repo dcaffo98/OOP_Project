@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="pausePane" maxHeight="450.0" maxWidth="350.0" minHeight="300.0" minWidth="250.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.PausePaneController">
+   <children>
+      <VBox alignment="CENTER" spacing="40.0" StackPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../resources/images/RythmUpLogo.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#resumeButtonClicked" text="Resume" />
+            <Button fx:id="restartButton" mnemonicParsing="false" text="Restart" />
+            <Button fx:id="backToMenuButton" mnemonicParsing="false" text="Back to Menu" />
+         </children>
+         <padding>
+            <Insets bottom="30.0" top="30.0" />
+         </padding>
+         <StackPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>
