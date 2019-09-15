@@ -21,7 +21,7 @@ public class PlayerBar extends ImageView {
             @Override
             public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {
                 if(newValue != null) {
-                    fitWidthProperty().bind(((Pane) newValue).widthProperty().multiply(0.06));
+                    fitWidthProperty().bind(((Pane) newValue).widthProperty().multiply(0.07));
                     fitHeightProperty().bind(((Pane) newValue).heightProperty().multiply(0.02));
                     setLayoutX((((Pane) newValue).getWidth() - getFitWidth()) / 2) ;
                     setManaged(false);          //altrimenti non fa fare il binding del layoutY

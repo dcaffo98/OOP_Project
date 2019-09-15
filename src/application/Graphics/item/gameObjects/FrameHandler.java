@@ -164,11 +164,10 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     }
 
     public void addNote() {
-
-        Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight(), frameBeat);
+        Random random = new Random();
+        Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight(), frameBeat, random.nextInt(5));
         int leftBorder = (int)note.getRadius();
         int rightBorder = (int)gameTopPane.getPrefWidth() - (leftBorder);
-        Random random = new Random();
         double randomInt;
         player.updatePosition();
         double possibleWidth = 0.2 * gamePane.getWidth();
