@@ -68,7 +68,6 @@ public class MainMenuController {
 
         //listener che visualizza il menu quando non ci sono SubScene aperte
         showMenu();
-        
     }
 
     @FXML
@@ -136,8 +135,10 @@ public class MainMenuController {
                         subSceneShowed = false;
                 }
 
-                if (!subSceneShowed)
+                if (!subSceneShowed) {
                     mainMenuBorderPanel.setCenter(mainBox);
+                    mainMenuBorderPanel.requestFocus();
+                }
             }
         });
     }

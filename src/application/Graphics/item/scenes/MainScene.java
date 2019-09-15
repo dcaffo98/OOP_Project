@@ -10,6 +10,7 @@ public class MainScene extends Scene {
 
     public MainScene(Parent root, double width, double height) {
         super(root, width, height);
+        root.requestFocus();
         getStylesheets().add("resources/style/stylesheet.css");
     }
 
