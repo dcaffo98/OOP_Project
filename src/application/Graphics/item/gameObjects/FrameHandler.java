@@ -22,6 +22,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -234,5 +235,22 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     public void onResumeRequest() {
         timeline.play();
         mediaPlayer.play();
+    }
+
+    public void restart() {
+
+        player.setLayoutX((gamePane.getWidth()  - player.getFitWidth()) / 2);
+        gamePane.getChildren().removeAll(notes);
+        notes = new ArrayList<Note>();
+        timeline.playFrom(new Duration(0));
+        mediaPlayer.seek(new Duration(0));
+        mediaPlayer.play();
+        this.score = 0;
+        this.combo = 0;
+        this.hitNotes = 0;
+        this.missedNotes = 0;
+        this.maxCombo = 0;
+        gameTopPane.setShowCombo(combo);
+        gameTopPane.setScore(getScore());
     }
 }

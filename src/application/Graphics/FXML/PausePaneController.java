@@ -44,6 +44,8 @@ public class PausePaneController {
     @FXML
     public void restartButtonClicked(ActionEvent event) {
 
+        frameHandler.restart();
+        parentPane.getChildren().remove(pausePane);
     }
 
     @FXML
