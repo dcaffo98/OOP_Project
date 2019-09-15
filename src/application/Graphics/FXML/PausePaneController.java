@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class PausePaneController {
 
@@ -38,6 +39,11 @@ public class PausePaneController {
     public void resumeButtonClicked(ActionEvent event) {
         parentPane.getChildren().remove(pausePane);
         frameHandler.onResumeRequest();
+    }
+
+    @FXML
+    public void restartButtonClicked(ActionEvent event) {
+
     }
 
     @FXML
@@ -81,7 +87,7 @@ public class PausePaneController {
         this.parentPane = parentPane;
         this.frameHandler = frameHandler;
         this.mainStage = mainStage;
-        //pausePane.requestFocus();
+        pausePane.requestFocus();
         System.out.println("Parent width: " + parentPane.getWidth() + " PausePane width: " + pausePane.getWidth());
         System.out.println("Parent pref_width: " + parentPane.getPrefWidth() + " PausePane pref_width: " + pausePane.getPrefWidth());
     }

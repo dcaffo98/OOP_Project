@@ -180,7 +180,6 @@ public class PlayPaneController {
     }
 
     public void setListViewItem() {
-        //List<String> collectionList = mongoDBConnector.populateSongList();
         songs = FXCollections.observableArrayList(mongoDBConnector.populateSongList());
         songsListView.setItems(songs);
     }

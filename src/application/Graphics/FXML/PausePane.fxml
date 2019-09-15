@@ -17,7 +17,7 @@
                </image>
             </ImageView>
             <Button fx:id="resumeButton" mnemonicParsing="false" onAction="#resumeButtonClicked" text="Resume" />
-            <Button fx:id="restartButton" mnemonicParsing="false" text="Restart" />
+            <Button fx:id="restartButton" mnemonicParsing="false" onAction="#restartButtonClicked" text="Restart" />
             <Button fx:id="backToMenuButton" mnemonicParsing="false" onAction="#backToMenuButtonClicked" text="Back to Menu" />
          </children>
          <padding>

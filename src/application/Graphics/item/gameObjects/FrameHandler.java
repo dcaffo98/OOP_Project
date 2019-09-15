@@ -115,6 +115,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                         PausePaneController controller = loader.getController();
                         gamePane.setManaged(true);
                         gamePane.getChildren().add(pausePane);
+
                         controller.setData(gamePane, this, mainStage);
                     } catch (IOException e) {
                         e.printStackTrace();

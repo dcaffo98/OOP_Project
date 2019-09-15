@@ -63,9 +63,6 @@ public class GameScene extends Scene {
                 case ESCAPE:
                     frameHandler.setCode(code);
                     break;
-                case ENTER:
-                    timeline.play();
-                    mediaPlayer.play();
             }
         });
 
