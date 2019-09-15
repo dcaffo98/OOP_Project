@@ -10,9 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class PausePaneController {
 
@@ -33,11 +31,13 @@ public class PausePaneController {
     private Button backToMenuButton;
 
     @FXML
-    public void initialize() {}
+    public void initialize() {
+    }
 
     @FXML
     public void resumeButtonClicked(ActionEvent event) {
         parentPane.getChildren().remove(pausePane);
+        ((Stage) parentPane.getScene().getWindow()).setResizable(true);
         frameHandler.onResumeRequest();
     }
 
@@ -90,5 +90,11 @@ public class PausePaneController {
         pausePane.requestFocus();
         System.out.println("Parent width: " + parentPane.getWidth() + " PausePane width: " + pausePane.getWidth());
         System.out.println("Parent pref_width: " + parentPane.getPrefWidth() + " PausePane pref_width: " + pausePane.getPrefWidth());
+    }
+
+    public void setLayout() {
+        ((Stage) parentPane.getScene().getWindow()).setResizable(false);
+        pausePane.setLayoutX((parentPane.getWidth() - pausePane.getPrefWidth()) / 2);
+        pausePane.setLayoutY((parentPane.getHeight() - pausePane.getPrefHeight()) / 2);
     }
 }

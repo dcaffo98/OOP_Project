@@ -113,10 +113,9 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                         loader.setLocation(getClass().getResource("../../FXML/PausePane.fxml"));
                         Parent pausePane = loader.load();
                         PausePaneController controller = loader.getController();
-                        gamePane.setManaged(true);
                         gamePane.getChildren().add(pausePane);
-
                         controller.setData(gamePane, this, mainStage);
+                        controller.setLayout();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
