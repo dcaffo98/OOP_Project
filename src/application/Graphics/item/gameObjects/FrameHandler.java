@@ -166,7 +166,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
     public void addNote() {
         Random random = new Random();
-        Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight(), frameBeat, random.nextInt(5));
+        Note note = new Note(gameTopPane.getPrefWidth() / 2, gameTopPane.getPrefHeight(), frameBeat, random.nextInt(10));
         int leftBorder = (int)note.getRadius();
         int rightBorder = (int)gameTopPane.getPrefWidth() - (leftBorder);
         double randomInt;
@@ -191,7 +191,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
     }
     public boolean checkCollision(Note n) {
-        if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX()+player.getFitWidth())   ) {
+        if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX() + player.getFitWidth())   ) {
             this.hitNotes++;
             this.combo++;
             gameTopPane.setShowCombo(combo);

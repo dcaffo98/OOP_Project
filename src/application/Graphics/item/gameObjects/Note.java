@@ -8,47 +8,38 @@ import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Note extends Circle {
 
-        private final String BLACK_CHIP = "src/resources/images/notes/chipBlackWhite_border.png";
-        private final String BLUE_CHIP = "src/resources/images/notes/chipBlueWhite_border.png";
-        private final String GREEN_CHIP = "src/resources/images/notes/chipGreenWhite_border.png";
-        private final String RED_CHIP = "src/resources/images/notes/chipRedWhite_border.png";
-        private final String ORANGE_CHIP = "src/resources/images/notes/chipOrangeWhite_border.png";
-        private final String BLACK_PIECE = "src/resources/images/notes/pieceBlack_single10.png";
-        private final String BLUE_PIECE = "src/resources/images/notes/pieceBlue_single09.png";
-        private final String GREEN_PIECE = "src/resources/images/notes/pieceGreen_single10.png";
-        private final String PURPLE_PIECE = "src/resources/images/notes/piecePurple_single11.png";
-        private final String RED_PIECE = "src/resources/images/notes/pieceRed_single11.png";
-        private final String YELLOW_PIECE = "src/resources/images/notes/pieceYellow_single10.png";
-
-
-    private String[] colors = {
-            BLACK_CHIP,
-            BLUE_CHIP,
-            GREEN_CHIP,
-            RED_CHIP,
-            ORANGE_CHIP
-            /*BLACK_PIECE,
-            BLUE_PIECE,
-            GREEN_PIECE,
-            PURPLE_PIECE,
-            RED_PIECE,
-            YELLOW_PIECE,*/
-    };
+        private final String BLACK_CHIP = "src/resources/images/notes/chipBlack.png";
+        private final String BLUE_CHIP = "src/resources/images/notes/chipBlue.png";
+        private final String DARK_GREEN_CHIP = "src/resources/images/notes/chipDarkGreen.png";
+        private final String GRAY_CHIP = "src/resources/images/notes/chipGray.png";
+        private final String GREEN_CHIP = "src/resources/images/notes/chipGreen.png";
+        private final String LIGHT_BLUE_CHIIP = "src/resources/images/notes/chipLightBlue.png";
+        private final String ORANGE_CHIP = "src/resources/images/notes/chipOrange.png";
+        private final String PURPLE_CHIP = "src/resources/images/notes/chipPurple.png";
+        private final String RED_CHIP = "src/resources/images/notes/chipRed.png";
+        private final String YELLOW_CHIP = "src/resources/images/notes/chipYellow.png";
+        private String[] colors = {BLACK_CHIP, BLUE_CHIP, DARK_GREEN_CHIP, GRAY_CHIP, GREEN_CHIP, LIGHT_BLUE_CHIIP, ORANGE_CHIP, PURPLE_CHIP, RED_CHIP, YELLOW_CHIP };
+        private ArrayList<Color> colors2 = new ArrayList<>(Arrays.asList(Color.CORAL, Color.BLUE, Color.RED, Color.ORANGE, Color.YELLOW, Color.LIGHTBLUE, Color.FUCHSIA, Color.GREEN, Color.GRAY, Color.SIENNA));
         private double bottomBorder;
         private DoubleProperty speed;
 
         public Note(double X, double Y,double frameBeat,int colorIndex) {
             super();
-            setFill(new ImagePattern(new Image(Paths.get(new File(colors[colorIndex]).getPath()).toUri().toString())));
+            //setFill(new ImagePattern(new Image(Paths.get(new File(colors[colorIndex]).getPath()).toUri().toString())));
+            setFill(colors2.get(colorIndex));
+            setStroke(Color.BLACK);
+            setStrokeWidth(3);
             setCenterX(X);
             setCenterY(Y);
             setRadius(17);
