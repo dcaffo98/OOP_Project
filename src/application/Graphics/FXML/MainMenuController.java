@@ -61,7 +61,7 @@ public class MainMenuController {
         mainBox.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.6));
         mainBox.spacingProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.07));
         for (Button button : buttons) {
-            button.prefWidthProperty().bind(mainMenuBorderPanel.widthProperty().multiply(0.1));
+            button.prefWidthProperty().bind(mainMenuBorderPanel.widthProperty().multiply(0.11));
             button.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.07));
             button.setMaxHeight(60);
         }

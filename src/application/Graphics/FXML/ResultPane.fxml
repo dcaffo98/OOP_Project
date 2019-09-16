@@ -14,7 +14,7 @@
          <children>
             <Label fx:id="scoreLabel" text="98095959" textFill="WHITE">
                <font>
-                  <Font name="System Bold" size="50.0" />
+                  <Font name="Verdana Bold" size="50.0" />
                </font>
             </Label>
             <Label fx:id="hitNotesLabel" style="-fx-border: black;" text="Hit notes: 1325" textFill="WHITE">

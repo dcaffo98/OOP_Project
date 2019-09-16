@@ -26,7 +26,7 @@
                <children>
                   <Label text="Available songs:" textAlignment="CENTER">
                      <font>
-                        <Font name="System Bold Italic" size="16.0" />
+                        <Font name="Verdana Bold" size="16.0" />
                      </font>
                   </Label>
                   <ListView fx:id="songsListView" />
