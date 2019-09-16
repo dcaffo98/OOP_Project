@@ -104,7 +104,10 @@ public class PlayPaneController {
 
     @FXML
     public void uploadSongButtonClicked(ActionEvent event) throws IOException, InterruptedException {
-        List<File> fileList = new FileChooser().showOpenMultipleDialog(playBorderPane.getScene().getWindow());
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter mp3Filter = new FileChooser.ExtensionFilter("MP3 files (*.mp3)", "*.mp3");
+        fileChooser.getExtensionFilters().add(mp3Filter);
+        List<File> fileList = fileChooser.showOpenMultipleDialog(playBorderPane.getScene().getWindow());
         if (fileList != null) {
             for (File file : fileList) {
                 String correctName;
