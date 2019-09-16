@@ -1,15 +1,11 @@
 package application.Graphics.item;
 
-import application.Graphics.item.gameObjects.Note;
-import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import javafx.collections.FXCollections;
 import javafx.util.Pair;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -20,6 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+
+/*
+questa classe si occupa di gestire la comunicazione col database MongoDB utilizzando l'apposito driver Java
+ */
 
 public class MongoDBConnector {
 
@@ -55,6 +55,9 @@ public class MongoDBConnector {
         return database;
     }
 
+    /*
+    scarica la canzone "songName" come file binario dal database e la inserisce nella cartella locale "songDir"
+     */
     public File downloadSong(String songDir, String songName) {
         File tmp = null;
         String songPath = songDir + songName;
@@ -76,6 +79,9 @@ public class MongoDBConnector {
         return tmp;
     }
 
+    /*
+    crea una nuova collection sul db
+     */
     public void uploadSong(String songName, byte[] binarySongFile, double bpm) {
         database.createCollection(songName);
         collection = getCollection(songName);
@@ -85,6 +91,9 @@ public class MongoDBConnector {
         collection.insertOne(doc);
     }
 
+    /*
+    query al db per ottenere i bpm di una canzone
+     */
     public double getBPM(String songName) {
         collection = getCollection(songName);
         FindIterable<Document> docList = collection.find();
@@ -92,12 +101,18 @@ public class MongoDBConnector {
         return bpm;
     }
 
+    /*
+    richiamato dal PlayPaneController per inizializzare gli elementi da visualizzare nella ListView
+     */
     public List<String> populateSongList() {
         List<String> songList = new ArrayList<String>();
         database.listCollectionNames().forEach((Block<? super String>) a -> songList.add(a));
         return songList;
     }
 
+    /*
+    upload sul db del risultato della partita
+     */
     public void uploadResult(String songName, String username, int score) {
         collection = getCollection(songName);
         FindIterable<Document> docList = collection.find();
@@ -107,6 +122,9 @@ public class MongoDBConnector {
         collection.updateOne(doc, updateOperation);
     }
 
+    /*
+    query per ottenere tutti i risultati di una determinata canzone
+     */
     public ArrayList<Pair<String, Integer>> downloadSongScore (String songName) {
         collection = getCollection(songName);
         ArrayList<Pair<String,Integer>> scores = new ArrayList<Pair<String,Integer>>();
@@ -124,6 +142,9 @@ public class MongoDBConnector {
         return scores;
     }
 
+    /*
+    query per ottenere il massimo punteggio ottenuto per ogni canzone
+     */
     public ArrayList<HighScoreTableRow> downloadHighScore () {
         ArrayList<HighScoreTableRow> highScores = new ArrayList<HighScoreTableRow>();
         List<MongoCollection> collectionList = new ArrayList<MongoCollection>();

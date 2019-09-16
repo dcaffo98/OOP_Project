@@ -50,6 +50,9 @@ public class ResultPaneController {
     public void initialize() {
     }
 
+    /*
+    ritorna al menu principale
+     */
     @FXML
     public void exitButtonClicked(ActionEvent event) throws Exception {
         ObservableList<Node> childrenList = ((Pane) mainStage.getScene().getRoot()).getChildren();
@@ -64,6 +67,10 @@ public class ResultPaneController {
         ((Stage) exitButton.getScene().getWindow()).close();
     }
 
+    /*
+    richiama un pop-up per inserire il nome del giocatore che ha terminato la partita, da salvare sul db insieme al punteggio;
+    effettua un controllo su eventuali nomi vuoti
+     */
     @FXML
     public void saveButtonClicked(ActionEvent event) {
         TextInputDialog textInputDialog = new TextInputDialog();

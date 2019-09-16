@@ -2,35 +2,22 @@ package application.Graphics.FXML;
 
 import application.Graphics.item.MongoDBConnector;
 import application.Graphics.item.SongScoreTableRow;
-import application.Graphics.item.scenes.GameScene;
-import com.mongodb.MongoClient;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Collections;
-import java.util.List;
-
 
 public class SongScoreController {
 
@@ -69,6 +56,10 @@ public class SongScoreController {
         ((Pane) songScoreBorderPane.getParent()).getChildren().remove(songScoreBorderPane);
     }
 
+    /*
+    gestisce la selezione degli elementi dalla ComboBox;
+    viene interrogato il db per scaricare e visualizzare la classifica dei punteggi della canzone attualmente selezionata
+     */
     @FXML
     public void songsComboBoxSelectionChange(ActionEvent event) {
         String selectedSong = songsComboBox.getSelectionModel().getSelectedItem();

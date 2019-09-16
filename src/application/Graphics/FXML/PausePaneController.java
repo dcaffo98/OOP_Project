@@ -5,11 +5,8 @@ import application.Graphics.item.stages.MainStage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -37,20 +34,26 @@ public class PausePaneController {
     public void initialize() {
     }
 
+    /*
+    metodo che fa riprendere il gioco dal punto in cui era stato stoppato
+     */
     @FXML
     public void resumeButtonClicked(ActionEvent event) {
-        parentPane.getChildren().remove(pausePane);
-        ((Stage) parentPane.getScene().getWindow()).setResizable(true);
-        frameHandler.onResumeRequest();
+        resume();
     }
 
+    /*
+    metodo che fa ripartire il gioco dall'inizio
+    */
     @FXML
     public void restartButtonClicked(ActionEvent event) {
-
         frameHandler.restart();
         parentPane.getChildren().remove(pausePane);
     }
 
+    /*
+    esce dal gameplay e ritorna al menu principale
+     */
     @FXML
     public void backToMenuButtonClicked(ActionEvent event) {
         ObservableList<Node> childrenList = ((Pane) mainStage.getScene().getRoot()).getChildren();
@@ -88,6 +91,9 @@ public class PausePaneController {
         this.mainStage = mainStage;
     }
 
+    /*
+    metodo chiamato dal loader dell'FXML per inizializzare alcuni attributi della classe
+     */
     public void setData(Pane parentPane, FrameHandler frameHandler, MainStage mainStage) {
         this.parentPane = parentPane;
         this.frameHandler = frameHandler;
@@ -95,12 +101,18 @@ public class PausePaneController {
         pausePane.requestFocus();
     }
 
+    /*
+    metodo chiamato dal loader dell'FXML per inizializzare il layout del PausePane
+     */
     public void setLayout() {
         ((Stage) parentPane.getScene().getWindow()).setResizable(false);
         pausePane.setLayoutX((parentPane.getWidth() - pausePane.getPrefWidth()) / 2);
         pausePane.setLayoutY((parentPane.getHeight() - pausePane.getPrefHeight()) / 2);
     }
 
+    /*
+    metodo per far ripartire il gameplay
+     */
     public void resume() {
         parentPane.getChildren().remove(pausePane);
         ((Stage) parentPane.getScene().getWindow()).setResizable(true);

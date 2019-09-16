@@ -70,6 +70,9 @@ public class MainMenuController {
         showMenu();
     }
 
+    /*
+    apre la finestra di selezione canzoni per giocare
+     */
     @FXML
     public void playOnClick(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -82,6 +85,9 @@ public class MainMenuController {
         mainMenuBorderPane.setCenter(playPane);
     }
 
+    /*
+    apre la finestra per visualizzare il punteggio di una data canzone
+     */
     @FXML
     public void scoreButtonClicked(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -94,6 +100,9 @@ public class MainMenuController {
         mainMenuBorderPane.setCenter(songScorePane);
     }
 
+    /*
+    apre la finestra per visualizzare il ranking dei punteggi più alti
+     */
     @FXML
     public void highScoreButtonClicked(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -106,6 +115,9 @@ public class MainMenuController {
         mainMenuBorderPane.setCenter(highScorePane);
     }
 
+    /*
+    chiude lo stage principale, terminando l'applicazione
+     */
     @FXML
     public void exitOnClick(ActionEvent event) {
         ((Stage) exitButton.getScene().getWindow()).close();
