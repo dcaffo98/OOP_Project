@@ -1,4 +1,4 @@
-package application.Graphics.item.gameObjects;
+package application.graphics.item.gameObjects;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

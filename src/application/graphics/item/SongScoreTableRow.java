@@ -1,20 +1,18 @@
-package application.Graphics.item;
+package application.graphics.item;
 
+public class SongScoreTableRow {
 
-public class HighScoreTableRow {
     private int index;
-    private String songName;
     private String name;
     private int score;
 
-    public HighScoreTableRow(String songName, String name, int score){
+    public SongScoreTableRow(int index, String name, int score) {
 
-        this.songName = songName;
+        this.index = index;
         this.score = score;
         this.name = name;
 
     }
-
 
     public int getIndex() {
         return index;
@@ -39,13 +37,4 @@ public class HighScoreTableRow {
     public void setScore(int score) {
         this.score = score;
     }
-
-    public String getSongName() {
-        return songName;
-    }
-
-    public void setSongName(String songName) {
-        this.songName = songName;
-    }
-
 }

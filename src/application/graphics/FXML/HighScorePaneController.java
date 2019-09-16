@@ -1,8 +1,8 @@
-package application.Graphics.FXML;
+package application.graphics.FXML;
 
-import application.Graphics.item.HighScoreTableRow;
-import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.SongScoreTableRow;
+import application.graphics.item.HighScoreTableRow;
+import application.graphics.item.MongoDBConnector;
+import application.graphics.item.SongScoreTableRow;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

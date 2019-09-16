@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane fx:id="songScoreBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mainBorderPane" stylesheets="@../../../resources/style/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.SongScoreController">
+<BorderPane fx:id="songScoreBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mainBorderPane" stylesheets="@../../../resources/style/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.graphics.FXML.SongScoreController">
    <top>
       <HBox spacing="100.0" BorderPane.alignment="TOP_LEFT">
          <children>

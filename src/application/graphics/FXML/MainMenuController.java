@@ -1,6 +1,6 @@
-package application.Graphics.FXML;
+package application.graphics.FXML;
 
-import application.Graphics.item.MongoDBConnector;
+import application.graphics.item.MongoDBConnector;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;

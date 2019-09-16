@@ -1,7 +1,7 @@
-package application.Graphics.FXML;
+package application.graphics.FXML;
 
-import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.SongScoreTableRow;
+import application.graphics.item.MongoDBConnector;
+import application.graphics.item.SongScoreTableRow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

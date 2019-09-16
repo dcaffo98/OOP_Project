@@ -1,9 +1,9 @@
-package application.Graphics.FXML;
+package application.graphics.FXML;
 
 
-import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.scenes.GameScene;
-import application.Graphics.item.stages.MainStage;
+import application.graphics.item.MongoDBConnector;
+import application.graphics.item.scenes.GameScene;
+import application.graphics.item.stages.MainStage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;

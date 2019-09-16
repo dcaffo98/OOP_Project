@@ -1,11 +1,10 @@
-package application.Graphics.item.panes;
+package application.graphics.item.panes;
 
-import application.Graphics.item.gameObjects.SongProgress;
+import application.graphics.item.gameObjects.SongProgress;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;

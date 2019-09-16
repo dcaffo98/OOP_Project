@@ -1,7 +1,7 @@
 package application;
 
-import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.stages.MainStage;
+import application.graphics.item.MongoDBConnector;
+import application.graphics.item.stages.MainStage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 public class Main extends Application {

@@ -1,7 +1,7 @@
-package application.Graphics.FXML;
+package application.graphics.FXML;
 
-import application.Graphics.item.gameObjects.FrameHandler;
-import application.Graphics.item.stages.MainStage;
+import application.graphics.item.gameObjects.FrameHandler;
+import application.graphics.item.stages.MainStage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

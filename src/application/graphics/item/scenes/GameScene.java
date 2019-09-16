@@ -1,11 +1,11 @@
-package application.Graphics.item.scenes;
+package application.graphics.item.scenes;
 
-import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.gameObjects.FrameHandler;
-import application.Graphics.item.gameObjects.PlayerBar;
-import application.Graphics.item.gameObjects.Note;
-import application.Graphics.item.panes.GameTopPane;
-import application.Graphics.item.stages.MainStage;
+import application.graphics.item.MongoDBConnector;
+import application.graphics.item.gameObjects.FrameHandler;
+import application.graphics.item.gameObjects.PlayerBar;
+import application.graphics.item.gameObjects.Note;
+import application.graphics.item.panes.GameTopPane;
+import application.graphics.item.stages.MainStage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Cursor;

@@ -1,7 +1,7 @@
-package application.Graphics.item.stages;
+package application.graphics.item.stages;
 
-import application.Graphics.FXML.MainMenuController;
-import application.Graphics.item.MongoDBConnector;
+import application.graphics.FXML.MainMenuController;
+import application.graphics.item.MongoDBConnector;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,7 +16,6 @@ public class MainStage extends Stage {
         setMinWidth(width);
         setTitle(title);
         FXMLLoader loader = new FXMLLoader();
-        //loader.setLocation(getClass().getResource("../../FXML/MainMenu.fxml"));
         loader.setLocation(getClass().getResource("../../FXML/MainMenu.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();

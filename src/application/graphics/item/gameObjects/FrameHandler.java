@@ -1,11 +1,10 @@
-package application.Graphics.item.gameObjects;
+package application.graphics.item.gameObjects;
 
-import application.Graphics.FXML.HighScorePaneController;
-import application.Graphics.FXML.PausePaneController;
-import application.Graphics.FXML.ResultPaneController;
-import application.Graphics.item.MongoDBConnector;
-import application.Graphics.item.panes.GameTopPane;
-import application.Graphics.item.stages.MainStage;
+import application.graphics.FXML.PausePaneController;
+import application.graphics.FXML.ResultPaneController;
+import application.graphics.item.MongoDBConnector;
+import application.graphics.item.panes.GameTopPane;
+import application.graphics.item.stages.MainStage;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,14 +17,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;

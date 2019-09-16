@@ -1,4 +1,4 @@
-package application.Graphics.item;
+package application.graphics.item;
 
 import com.mongodb.Block;
 import com.mongodb.MongoClient;
