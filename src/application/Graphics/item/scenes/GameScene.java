@@ -55,7 +55,10 @@ public class GameScene extends Scene {
 
 
 
+    /*
+        listener che rileva input da tastiera e lo passa al frameHandler
 
+     */
     public void setKeyListener() {
         setOnKeyPressed((KeyEvent key) -> {
             KeyCode code = key.getCode();
