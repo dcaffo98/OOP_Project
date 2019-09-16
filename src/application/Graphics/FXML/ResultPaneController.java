@@ -80,6 +80,7 @@ public class ResultPaneController {
                     }
                 });
                 textInputDialog.close();
+                resultBorderPane.requestFocus();
             }
         });
         textInputDialog.setOnCloseRequest(new EventHandler<DialogEvent>() {

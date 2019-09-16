@@ -145,10 +145,8 @@ public class PlayPaneController {
                 songs.add(correctName);
                 songs.sort((a, b) -> a.compareTo(b));
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid or no file detected");
-            alert.showAndWait();
         }
+        playBorderPane.requestFocus();
     }
 
     @FXML
