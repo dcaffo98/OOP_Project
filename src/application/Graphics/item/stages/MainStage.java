@@ -16,6 +16,7 @@ public class MainStage extends Stage {
         setMinWidth(width);
         setTitle(title);
         FXMLLoader loader = new FXMLLoader();
+        //loader.setLocation(getClass().getResource("../../FXML/MainMenu.fxml"));
         loader.setLocation(getClass().getResource("../../FXML/MainMenu.fxml"));
         Parent root = loader.load();
         MainMenuController controller = loader.getController();
