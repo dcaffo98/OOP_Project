@@ -5,7 +5,6 @@ import application.Graphics.item.stages.MainStage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -110,16 +109,8 @@ public class ResultPaneController {
         songNameLabel.setText(songName.split("/")[songName.split("/").length - 1]);
         this.score = score;
         this.songName = songNameLabel.getText();
-        setMongoDBConnector(mongoDBConnector);
-        this.mainStage = mainStage;
-
-    }
-
-    public MongoDBConnector getMongoDBConnector() {
-        return mongoDBConnector;
-    }
-
-    public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
         this.mongoDBConnector = mongoDBConnector;
+        this.mainStage = mainStage;
     }
+
 }

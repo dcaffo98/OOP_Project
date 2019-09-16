@@ -5,6 +5,7 @@ import application.Graphics.item.stages.MainStage;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -101,11 +102,9 @@ public class PausePaneController {
     }
 
     public void resume() {
-
         parentPane.getChildren().remove(pausePane);
         ((Stage) parentPane.getScene().getWindow()).setResizable(true);
         frameHandler.onResumeRequest();
-
     }
 
 }

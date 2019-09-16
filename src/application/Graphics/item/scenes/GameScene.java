@@ -8,16 +8,14 @@ import application.Graphics.item.panes.GameTopPane;
 import application.Graphics.item.stages.MainStage;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 
@@ -52,6 +50,7 @@ public class GameScene extends Scene {
         mediaPlayer.play();
         timeline.play();
         setKeyListener();
+        setCursor(Cursor.NONE);
     }
 
 

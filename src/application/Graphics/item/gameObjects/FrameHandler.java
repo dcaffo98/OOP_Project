@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -118,6 +119,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
                         gamePane.getChildren().add(pausePane);
                         pausePaneController.setData(gamePane, this, mainStage);
                         pausePaneController.setLayout();
+                        gamePane.getScene().setCursor(Cursor.DEFAULT);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -226,6 +228,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
             tmp.setX((screenBounds.getWidth() - tmp.getWidth()) / 2);
             tmp.setY((screenBounds.getHeight() - tmp.getHeight()) / 2);
             tmp.setResizable(false);
+            tmp.getScene().getRoot().requestFocus();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -234,10 +237,10 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     public void onResumeRequest() {
         timeline.play();
         mediaPlayer.play();
+        gamePane.getScene().setCursor(Cursor.NONE);
     }
 
     public void restart() {
-
         player.setLayoutX((gamePane.getWidth()  - player.getFitWidth()) / 2);
         gamePane.getChildren().removeAll(notes);
         notes = new ArrayList<Note>();
@@ -251,6 +254,7 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.maxCombo = 0;
         gameTopPane.setShowCombo(combo);
         gameTopPane.setScore(getScore());
+        gamePane.getScene().setCursor(Cursor.NONE);
     }
 
     public void resume() {
