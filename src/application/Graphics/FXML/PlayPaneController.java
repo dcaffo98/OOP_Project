@@ -65,14 +65,17 @@ public class PlayPaneController {
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                 selectedSong = songsListView.getSelectionModel().getSelectedItem();
                 if (selectedSong !=  null) {
+                    //controllo se la canzone è presente in locale
                     if (Arrays.asList(new File(SONGS_PATH).list()).contains(selectedSong)) {
                         media = new Media(Paths.get(SONGS_PATH + selectedSong).toUri().toString());
                     } else {
+                        //download della canzone dal database come file binario
                         tmpSongFile = mongoDBConnector.downloadSong(SONGS_PATH, selectedSong);
                         media = new Media(Paths.get(tmpSongFile.getPath()).toUri().toString());
                     }
+                    //insieme al file audio, viene fatta una query al db per ottenere i bpm della canzone attualmente selezionata, che verranno utilizzati nel gameplay
                     bpm = mongoDBConnector.getBPM(selectedSong);
-
+                    //una volta cambiata la canzone, elimino il media player precedente e ne creo uno nuovo per la attuale traccia audio
                     if (mediaPlayer != null) {
                         mediaPlayer.dispose();
                     }
@@ -84,6 +87,9 @@ public class PlayPaneController {
         });
     }
 
+    /*
+    viene creata una nuova scena per il gameplay, controllando che sia stata selezionata una canzone da giocare
+     */
     @FXML
     public void playButtonClicked(ActionEvent event) {
         if (media != null && selectedSong != null) {
@@ -102,6 +108,10 @@ public class PlayPaneController {
         }
     }
 
+    /*
+    carica un file mp3 nella cartella locale (se non è gia presente sul db), ne calcola i bpm e ne estrae il file binario.
+    Successivamente viene create una nuova Collection sul database avente come campi il file binario e i bpm appena ottenuti
+    */
     @FXML
     public void uploadSongButtonClicked(ActionEvent event) throws IOException, InterruptedException {
         FileChooser fileChooser = new FileChooser();
@@ -110,6 +120,7 @@ public class PlayPaneController {
         List<File> fileList = fileChooser.showOpenMultipleDialog(playBorderPane.getScene().getWindow());
         if (fileList != null) {
             for (File file : fileList) {
+                //gli spazi nei nomi delle canzoni vengono eliminati, perchè possono interferire col db oppure con l'eseguibile che si occupa di calcolare i bpm
                 String correctName;
                 if (file.getName().contains(" "))
                     correctName = file.getName().replace(" ", "");
@@ -124,7 +135,7 @@ public class PlayPaneController {
                 Path filePath = Paths.get(SONGS_PATH + correctName);
                 File copyFile = new File(filePath.toUri());
                 try {
-                    //copio il file in locale               *********************************
+                    //copia del file in locale               *********************************
                     copyFile.createNewFile();
                     FileInputStream source = new FileInputStream(file);
                     FileOutputStream destination = new FileOutputStream(copyFile);
@@ -132,12 +143,12 @@ public class PlayPaneController {
                     byte[] buffer = new byte[lenght];
                     source.read(buffer);
                     destination.write(buffer, 0, lenght);
-                    //estraggo i bpm                **********************************
+                    //estrazione dei bpm utilizzando un eseguibile Java               **********************************
                     Process proc =  Runtime.getRuntime().exec(" java -jar src/trackanalyzer/TrackAnalyzer.jar " + copyFile.getCanonicalPath());
                     BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
                     String line = stdInput.readLine();
                     double newSongBPM = Double.parseDouble(line.split("BPM: ")[1]);
-                    //creo il bson document e faccio l'upload sul database            *****************************
+                    //upload sul database            *****************************
                     mongoDBConnector.uploadSong(correctName, buffer, newSongBPM);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -160,16 +171,16 @@ public class PlayPaneController {
         ((Pane) playBorderPane.getParent()).getChildren().remove(playBorderPane);
     }
 
-    public MongoDBConnector getMongoDBConnector() {
-        return mongoDBConnector;
-    }
-
     public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
         this.mongoDBConnector = mongoDBConnector;
     }
 
+    /*
+    funzione chiamata esternamente dal loader dell'FXML, per inizializzare la ListView delle canzoni
+     */
     public void setListViewItem() {
         songs = FXCollections.observableArrayList(mongoDBConnector.populateSongList());
+        songs.sort((a, b) -> a.compareTo(b));
         songsListView.setItems(songs);
     }
 

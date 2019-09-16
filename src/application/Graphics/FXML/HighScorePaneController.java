@@ -41,20 +41,18 @@ public class HighScorePaneController {
     @FXML
     private TableColumn songCol;
 
-    @FXML
-    public void initialize() {}
 
     @FXML
     public void backButtonClicked(ActionEvent event) {((Pane) highScoreBorderPane.getParent()).getChildren().remove(highScoreBorderPane);}
-
-    public MongoDBConnector getMongoDBConnector() {
-        return mongoDBConnector;
-    }
 
     public void setMongoDBConnector(MongoDBConnector mongoDBConnector) {
         this.mongoDBConnector = mongoDBConnector;
     }
 
+
+    /*
+    funzione richiamata esternamente dal loader del file FXML, si occupa di inizializzare la TableView dei punteggi
+     */
     public void setTableViewItems() {
 
         ArrayList<HighScoreTableRow> highScores = mongoDBConnector.downloadHighScore();

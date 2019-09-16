@@ -22,7 +22,7 @@ public class MainMenuController {
     private MongoDBConnector mongoDBConnector;
 
     @FXML
-    private BorderPane mainMenuBorderPanel;
+    private BorderPane mainMenuBorderPane;
 
     @FXML
     private ImageView title;
@@ -56,13 +56,13 @@ public class MainMenuController {
         buttons.add(exitButton);
 
         //binding elements
-        title.fitWidthProperty().bind(mainMenuBorderPanel.widthProperty());
-        title.fitHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.4));
-        mainBox.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.6));
-        mainBox.spacingProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.07));
+        title.fitWidthProperty().bind(mainMenuBorderPane.widthProperty());
+        title.fitHeightProperty().bind(mainMenuBorderPane.heightProperty().multiply(0.4));
+        mainBox.prefHeightProperty().bind(mainMenuBorderPane.heightProperty().multiply(0.6));
+        mainBox.spacingProperty().bind(mainMenuBorderPane.heightProperty().multiply(0.07));
         for (Button button : buttons) {
-            button.prefWidthProperty().bind(mainMenuBorderPanel.widthProperty().multiply(0.11));
-            button.prefHeightProperty().bind(mainMenuBorderPanel.heightProperty().multiply(0.07));
+            button.prefWidthProperty().bind(mainMenuBorderPane.widthProperty().multiply(0.11));
+            button.prefHeightProperty().bind(mainMenuBorderPane.heightProperty().multiply(0.07));
             button.setMaxHeight(60);
         }
 
@@ -78,8 +78,8 @@ public class MainMenuController {
         PlayPaneController controller = loader.getController();
         controller.setMongoDBConnector(this.mongoDBConnector);
         controller.setListViewItem();
-        mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(playPane);
+        mainMenuBorderPane.getChildren().remove(mainBox);
+        mainMenuBorderPane.setCenter(playPane);
     }
 
     @FXML
@@ -90,8 +90,8 @@ public class MainMenuController {
         SongScoreController controller = loader.getController();
         controller.setMongoDBConnector(this.mongoDBConnector);
         controller.setComboBoxItems();
-        mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(songScorePane);
+        mainMenuBorderPane.getChildren().remove(mainBox);
+        mainMenuBorderPane.setCenter(songScorePane);
     }
 
     @FXML
@@ -102,8 +102,8 @@ public class MainMenuController {
         HighScorePaneController controller = loader.getController();
         controller.setMongoDBConnector(this.mongoDBConnector);
         controller.setTableViewItems();
-        mainMenuBorderPanel.getChildren().remove(mainBox);
-        mainMenuBorderPanel.setCenter(highScorePane);
+        mainMenuBorderPane.getChildren().remove(mainBox);
+        mainMenuBorderPane.setCenter(highScorePane);
     }
 
     @FXML
@@ -113,15 +113,15 @@ public class MainMenuController {
 
 
     /*
-        Questo listener viene chiamato ogni volta che un elemento viene aggiunto/eliminato dalla root (cioè il BorderPane)
+        Questo listener viene chiamato ogni volta che un elemento viene aggiunto/eliminato dallo scene-graph con radice il mainMenuBorderPane
     */
     public void showMenu() {
-        mainMenuBorderPanel.getChildren().addListener(new InvalidationListener() {
+        mainMenuBorderPane.getChildren().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
                 boolean subSceneShowed = false;
-                for (Node node : mainMenuBorderPanel.getChildren()) {
-                    //se tra gli elementi viene trovato un SubScenePane, significa che una SubScene è aperta e quindi il menu non deve essere visualizzato
+                for (Node node : mainMenuBorderPane.getChildren()) {
+                    //se tra gli elementi dello scene-graph viene trovato un Parent, significa che un bottone è stato premuto e quindi il menu non deve essere visualizzato
                     if (node instanceof Parent){
                         subSceneShowed = true;
                         break;
@@ -129,10 +129,13 @@ public class MainMenuController {
                     else
                         subSceneShowed = false;
                 }
-
+                /*
+                    se non viene torvato un elemento Parent, deve essere visualizzato il menu principale, costituito dai 4 bottoni racchiusi nella Vbox,
+                    la quale sarà posta nella sezione centrale del BorderPane
+                */
                 if (!subSceneShowed) {
-                    mainMenuBorderPanel.setCenter(mainBox);
-                    mainMenuBorderPanel.requestFocus();
+                    mainMenuBorderPane.setCenter(mainBox);
+                    mainMenuBorderPane.requestFocus();
                 }
             }
         });
