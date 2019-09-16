@@ -11,6 +11,5 @@ public class SongProgress extends ProgressBar {
         this.setPrefWidth(200);
         this.setLayoutY(20);
         this.setProgress(100);
-
     }
 }

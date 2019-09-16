@@ -1,11 +1,14 @@
-.myButton {
-    -fx-background-color: #C4C0BF;
-    -fx-text-alignment: center;
-    -fx-font-family: 'Space_Comics';
-    src: url('resources/font/Space_Comics.ttf');
-   
+
+#mainBorderPane{
+
+        -fx-background-color : linear-gradient(to top,#393939,#FFC300);
+
+
 }
 
-.myButton:hover {
-    -fx-background-color: #EC3A0E;
+.mainBorderPane{
+
+        -fx-background-color : linear-gradient(to top,#393939,#FFC300);
+
+
 }

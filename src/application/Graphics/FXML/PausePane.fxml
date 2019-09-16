@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="pausePane" maxHeight="350.0" maxWidth="250.0" minHeight="350.0" minWidth="250.0" prefHeight="350.0" prefWidth="250.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/ManiMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.PausePaneController">
+<AnchorPane fx:id="pausePane" maxHeight="350.0" maxWidth="250.0" minHeight="350.0" minWidth="250.0" prefHeight="350.0" prefWidth="250.0" styleClass="mainBorderPane" stylesheets="@../../../resources/style/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Graphics.FXML.PausePaneController">
    <children>
       <VBox alignment="CENTER" layoutX="35.0" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
