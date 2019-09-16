@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="JavaFX" level="application" />
     <orderEntry type="library" exported="" name="mongo-java-driver-3.11.0" level="application" />
+    <orderEntry type="library" name="JavaFx" level="application" />
   </component>
 </module>

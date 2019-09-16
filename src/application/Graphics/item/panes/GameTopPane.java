@@ -45,18 +45,19 @@ public class GameTopPane extends AnchorPane {
         setPrefHeight(parent.getHeight() * 0.1);
         prefWidthProperty().bind(parent.widthProperty());
         this.progress = new SongProgress(this);
-        this.scoreLabel = new Label("Score: "+ 0);
+        this.scoreLabel = new Label("SCORE: "+ 0);
         scoreLabel.setLayoutY(20);
         scoreLabel.setLayoutX(20);
         scoreLabel.setFont(new Font("Times new Roman",30));
         this.getChildren().add(scoreLabel);
         this.showCombo = new Label("COMBO: 0");
-        showCombo.setLayoutX(this.getPrefWidth() / 2);
         showCombo.setTextAlignment(TextAlignment.CENTER);
         showCombo.setFont(new Font("Times new Roman",30));
         showCombo.setLayoutY(20);
         this.getChildren().add(showCombo);
         this.getChildren().add(progress);
+        showCombo.setPrefWidth(200);
+        showCombo.setLayoutX((this.getPrefWidth() - showCombo.getPrefWidth())/ 2);
 
     }
 
