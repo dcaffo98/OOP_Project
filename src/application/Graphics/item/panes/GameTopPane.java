@@ -14,6 +14,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
+/*
+
+        pannello che contiene tutti gli oggetti grafici come le label e la progress bar all'interno del pane di gioco
+
+ */
 public class GameTopPane extends AnchorPane {
 
     private Pane parent;

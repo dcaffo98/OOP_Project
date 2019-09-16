@@ -17,6 +17,7 @@ public class PlayerBar extends ImageView {
         super(url);
         speed = new SimpleDoubleProperty();
         position = getLayoutX() + (getFitWidth() / 2);
+        // listener per impostare in modo dinamico le dimensioni della barra se viene allargata o diminuita la schermata
         parentProperty().addListener(new ChangeListener<Parent>() {
             @Override
             public void changed(ObservableValue<? extends Parent> observable, Parent oldValue, Parent newValue) {

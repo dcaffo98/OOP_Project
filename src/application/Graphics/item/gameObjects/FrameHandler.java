@@ -32,6 +32,11 @@ import java.util.Random;
 
 public class FrameHandler implements EventHandler<ActionEvent> {
 
+      /*
+         oggetto che si occupa di gestire ogni frame della GameScene e aggiornare collisioni e posizioni degli oggetti nella scena
+
+     */
+
     private KeyCode code;
     private GameTopPane gameTopPane;
     private PlayerBar player;
@@ -52,7 +57,8 @@ public class FrameHandler implements EventHandler<ActionEvent> {
     private  MongoDBConnector mongoDBConnector;
     private  MainStage mainStage;
     private PausePaneController pausePaneController;
-    
+
+
 
     public FrameHandler(AnchorPane gamePane, GameTopPane gameTopPane, PlayerBar player, Timeline timeline, MediaPlayer mediaPlayer, double bpm, MongoDBConnector mongoDBConnector, MainStage mainStage) {
 
@@ -83,13 +89,24 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.code = code;
     }
 
+
+
+    /*
+      metodo principale per la gestione della schermata di gioco
+
+     */
     @Override
     public void handle(ActionEvent event) {
-        
-        // move player, if key is pressed
+
+
         gamePane.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         frameCounter++;
         gameTopPane.getProgress().setProgress((mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getMedia().getDuration().toMillis()));
+
+        /*
+              entra nell'if alla fine della canzone e invoca il pannello dei risultati
+         */
+
         if(mediaPlayer.getCurrentTime().greaterThanOrEqualTo(mediaPlayer.getMedia().getDuration())) {
             timeline.stop();
             if (combo > maxCombo)
@@ -98,7 +115,11 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         }
 
 
+        /*
 
+            controllo e gestione dei input da tastiera per spostamento e gestione menu di pausa
+
+         */
 
         if (code != null) {
             switch (code) {
@@ -127,11 +148,23 @@ public class FrameHandler implements EventHandler<ActionEvent> {
             }
         }
 
+        /*
+
+            richiama il metodo per aggiungere una nota quando il contatore dei frame raggiunge il frame desiderato
+
+         */
 
         if ((frameCounter > this.frameBeat) && (mediaPlayer.getCurrentTime().toMillis() < endOfGenerationTime)) {
             addNote();
             frameCounter = 0;
         }
+
+        /*
+
+            se è presente almeno una nota sullo schermo richiama il metodo update
+
+
+         */
         if (notes.size() > 0) {
             update();
         }
@@ -140,10 +173,19 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
     }
 
+    /*
+
+       metodo che aggiorna la posizione di tutti gli oggetti all'interno della schermata di gioco
+
+     */
+
     public void update() {
         Note toDelete = null;
         for (Note n: notes) {
             n.updatePosition();
+
+            /* se la nota tocca il bordo inferiore della schermata significa
+            che è stata mancata, aggiornamento degli attributi locali per il punteggio */
             if ((n.getBottomBorder() >= gamePane.getHeight())) {
                     toDelete = n;
                     this.missedNotes++;
@@ -165,6 +207,10 @@ public class FrameHandler implements EventHandler<ActionEvent> {
 
 
     }
+
+    /*
+        metodo che si occupa di creare e aggiungere una nota alla schermata di gioco
+     */
 
     public void addNote() {
         Random random = new Random();
@@ -188,10 +234,14 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         note.setCenterX(randomInt);
         notes.add(note);
         gamePane.getChildren().addAll(note);
-
-
-
     }
+
+    /*
+
+            metodo che si occupa di controllare se è avvenuta una collisione tra una nota e la playerBar
+
+     */
+
     public boolean checkCollision(Note n) {
         if ((n.getBottomBorder() >= player.getLayoutY()) && (n.getCenterX() >= player.getLayoutX()) && (n.getCenterX() <= player.getLayoutX() + player.getFitWidth())   ) {
             this.hitNotes++;
@@ -212,6 +262,11 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         this.score = score;
     }
 
+    /*
+
+        genera il pannello dei risultati della partita
+
+     */
     public void showResultPane() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -234,12 +289,22 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         }
     }
 
+    /*
+
+        necessario per far ripartire la timeline premendo il bottone di resume
+
+     */
     public void onResumeRequest() {
         timeline.play();
         mediaPlayer.play();
         gamePane.getScene().setCursor(Cursor.NONE);
     }
 
+    /*
+
+        metodo per reimpostare la finestra di gioco all'inizio della canzone e giocare da capo
+
+     */
     public void restart() {
         player.setLayoutX((gamePane.getWidth()  - player.getFitWidth()) / 2);
         gamePane.getChildren().removeAll(notes);
@@ -256,6 +321,12 @@ public class FrameHandler implements EventHandler<ActionEvent> {
         gameTopPane.setScore(getScore());
         gamePane.getScene().setCursor(Cursor.NONE);
     }
+
+    /*
+
+        richiama la resume sul menu di pausa quando viene invocato da tastiera tramire ENTER
+
+     */
 
     public void resume() {
 
