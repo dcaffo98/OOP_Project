@@ -164,7 +164,10 @@ public class MongoDBConnector {
                 }
                 scores.sort((a,b) -> a.getValue().compareTo(b.getValue()));
                 Collections.reverse(scores);
-                highScores.add(new HighScoreTableRow(colName,scores.get(0).getKey(),scores.get(0).getValue()));
+                if (!scores.isEmpty()) {
+                    highScores.add(new HighScoreTableRow(colName,scores.get(0).getKey(),scores.get(0).getValue()));
+                    scores = new ArrayList<Pair<String,Integer>>();
+                }
             }
 
         }
